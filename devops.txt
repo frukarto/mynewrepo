@@ -1,0 +1,46 @@
+J2P2 -- 10.11.29.1
+
+-- Jenkins Set up
+VM - 10.10.31.111 (sdsuser/iag12345)
+
+Jenkins home: /var/lib/jenkins
+UI - 10.10.31.111:8080 (sdsuser/iag12345)
+
+Jenkinsfile: iag/work/POProject/PRVAPIFrwk (In BitBucket)
+
+Apache Maven 3.0.5
+Maven home: /usr/share/maven
+
+Java version: 1.8.0_161
+Java home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.161-0.b14.el7_4.x86_64/jre
+
+ansible playbooks: /home/sdsuser/Ansible
+Playbook to Deploy: Deploy_to_openshift.yml
+Playbook varibles file : Deploy_to_openshift_vars.yml (To specify which cluster to deploy, to give project, application, user details)
+log file : /var/log/ansible.log
+
+Apache Jmeter : /opt/apache-jmeter-4.0
+FuctionalTesing Test plan: iag/work/POProject/PRVAPIFrwk/Releases/FunctionalTesing/PRVAPI_TEST_PLANS.jmx (BitBucket)
+TestResults: $JENKINS_HOME/workspace/PRVAPIFramework/iag/work/POProject/PRVAPIFrwk/Releases/FunctionalTesing/PRVAPI_TEST_PLAN_RESULTS.xml
+
+--Openshift cluster 
+VM - 10.10.31.81 (<lab-username>@iaglab.local/<password>)
+
+
+Openshiftcluster IP: https://sosmaster.iaglab.com:8443 (<lab-username>/<password>) same for Openshift UI
+Openshift Environment Variables file: iag/work/POProject/PRVAPIFrwk/Releases/CUT_DOCKER_ENV.env
+
+
+DockerRegistry in openshift: 
+login command : sudo docker login -u openshift -p $(oc whoami -t ) docker-registry-default.sdg.iaglab.com (Do oc login before to get openshift token)
+DockerRegistry UI for project Dev1(Working Project) : https://registry-console-default.sdg.iaglab.com/registry (<lab-username>/<password>)
+
+--To push to above registry tag the image with docker-registry-default.sdg.iaglab.com/dev1/<imagename>
+
+Docker file to build PRVAPI Application : iag/work/POProject/PRVAPIFrwk/DockerBuild/Dockerfile
+Docker file to build JBOSS Image : iag/work/POProject/PRVAPIFrwk/DockerBuild/Dockerfile-jboss
+
+Jfrog UI : 10.10.31.111:8081/artifactory(admin/iag12345)
+Artifactory Home: /var/opt/jfrog/artifactory
+
+
