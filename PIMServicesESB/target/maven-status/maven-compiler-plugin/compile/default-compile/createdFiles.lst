@@ -1,0 +1,10 @@
+com\hughes\bits\esb\custom\action\PIMProcessorAction.class
+com\hughes\bits\esb\custom\utils\HeaderValue.class
+com\hughes\bits\esb\custom\action\PIMErrorMappingAction.class
+com\hughes\bits\esb\custom\action\CustomPIMAuthorizationAction.class
+com\hughes\bits\esb\custom\action\PartnerRequestValidator.class
+com\hughes\bits\esb\custom\utils\Constants.class
+com\hughes\bits\esb\custom\utils\PIMUtil.class
+com\hughes\bits\esb\custom\utils\PartnerValue.class
+com\hughes\bits\esb\custom\action\PimSmooksValidationAction.class
+com\hughes\bits\esb\custom\utils\SmooksPIMUtils.class

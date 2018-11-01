@@ -1,0 +1,9 @@
+<TransportFeasibilityRequestMsg xmlns="http://transportfeasibility.bits.hughes.com">     
+	<UserCredential>
+		<LoginId xmlns="http://www.hns.com/iag/schemas/core">dssadmin</LoginId>
+		<AuthorizationFlag xmlns="http://www.hns.com/iag/schemas/core">true</AuthorizationFlag>
+	</UserCredential>
+	<Latitude>$!{exchange.properties.Latitude}</Latitude>
+	<Longitude>$!{exchange.properties.Longitude}</Longitude>
+	<ClassACustomerId>$!{exchange.properties.PartnerId}</ClassACustomerId>                    
+</TransportFeasibilityRequestMsg>

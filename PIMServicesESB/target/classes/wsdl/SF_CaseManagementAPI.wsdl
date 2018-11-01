@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Web Services API : SF_CaseManagementAPI
+-->
+<definitions targetNamespace="http://soap.sforce.com/schemas/class/SF_CaseManagementAPI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error"
+xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soap.sforce.com/schemas/class/SF_CaseManagementAPI">
+ <types>
+			<xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xsd:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xsd:schema>
+		
+  <xsd:schema elementFormDefault="qualified" targetNamespace="http://soap.sforce.com/schemas/class/SF_CaseManagementAPI">
+   <xsd:element name="AllowFieldTruncationHeader">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="allowFieldTruncation" type="xsd:boolean"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CallOptions">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="client" type="xsd:string"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DebuggingHeader">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="categories" minOccurs="0" maxOccurs="unbounded" type="tns:LogInfo"/>
+      <xsd:element name="debugLevel" type="tns:LogType"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="LogInfo">
+    <xsd:sequence>
+     <xsd:element name="category" type="tns:LogCategory"/>
+     <xsd:element name="level" type="tns:LogCategoryLevel"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="LogCategory">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Db"/>
+     <xsd:enumeration value="Workflow"/>
+     <xsd:enumeration value="Validation"/>
+     <xsd:enumeration value="Callout"/>
+     <xsd:enumeration value="Apex_code"/>
+     <xsd:enumeration value="Apex_profiling"/>
+     <xsd:enumeration value="Visualforce"/>
+     <xsd:enumeration value="System"/>
+     <xsd:enumeration value="All"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="LogCategoryLevel">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="None"/>
+     <xsd:enumeration value="Finest"/>
+     <xsd:enumeration value="Finer"/>
+     <xsd:enumeration value="Fine"/>
+     <xsd:enumeration value="Debug"/>
+     <xsd:enumeration value="Info"/>
+     <xsd:enumeration value="Warn"/>
+     <xsd:enumeration value="Error"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="LogType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="None"/>
+     <xsd:enumeration value="Debugonly"/>
+     <xsd:enumeration value="Db"/>
+     <xsd:enumeration value="Profiling"/>
+     <xsd:enumeration value="Callout"/>
+     <xsd:enumeration value="Detail"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:element name="DebuggingInfo">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="debugLog" type="xsd:string"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SessionHeader">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="sessionId" type="xsd:string"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:simpleType name="ID">
+    <xsd:restriction base="xsd:string">
+     <xsd:length value="18"/>
+     <xsd:pattern value="[a-zA-Z0-9]{18}"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="AccountWrapper">
+    <xsd:sequence>
+     <xsd:element name="accountNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AssetWrapper">
+    <xsd:sequence>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CaseRequestWrapper">
+    <xsd:sequence>
+     <xsd:element name="caseNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CaseResultWrapper">
+    <xsd:sequence>
+     <xsd:element name="accountName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="action" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="activityDescription" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="activityTypeName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="actualIssue" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="assetSAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseReAssign" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseRecordType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseSubType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="customerRequestType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="description" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="origin" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="parentCaseNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="priority" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="resolutionCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="resolutionCodeDescription" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="severity" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="status" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="subject" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CaseWrapper">
+    <xsd:sequence>
+     <xsd:element name="accountDets" minOccurs="0" type="tns:AccountWrapper" nillable="true"/>
+     <xsd:element name="action" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="activityDescription" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="activityTypeName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="actualIssue" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="assetDets" minOccurs="0" type="tns:AssetWrapper" nillable="true"/>
+     <xsd:element name="caseNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseReAssign" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseRecordType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseStatus" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseSubType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="caseType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="customerRequestType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="description" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="origin" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="parentCaseNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="priority" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="resolutionCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="resolutionCodeDescription" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="severity" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="source" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="sourceCreatedBy" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="sourceCreatedDate" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="sourceLastModifiedBy" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="sourceLastModifiedDate" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="status" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="subject" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ContactWrapper">
+    <xsd:sequence>
+     <xsd:element name="AccountDets" minOccurs="0" type="tns:AccountWrapper" nillable="true"/>
+     <xsd:element name="ContactId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FirstName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="LastName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Source" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ResultWrapper">
+    <xsd:sequence>
+     <xsd:element name="isSuccess" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="objectId" minOccurs="0" type="tns:ID" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="address">
+    <xsd:complexContent>
+     <xsd:extension base="tns:location">
+      <xsd:sequence>
+       <xsd:element name="city" type="xsd:string"/>
+       <xsd:element name="country" type="xsd:string"/>
+       <xsd:element name="countryCode" type="xsd:string"/>
+       <xsd:element name="geocodeAccuracy" type="xsd:string"/>
+       <xsd:element name="postalCode" type="xsd:string"/>
+       <xsd:element name="state" type="xsd:string"/>
+       <xsd:element name="stateCode" type="xsd:string"/>
+       <xsd:element name="street" type="xsd:string"/>
+      </xsd:sequence>
+     </xsd:extension>
+    </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="location">
+    <xsd:sequence>
+     <xsd:element name="latitude" type="xsd:double"/>
+     <xsd:element name="longitude" type="xsd:double"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="createCases">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="caseObject" minOccurs="0" maxOccurs="unbounded" type="tns:CaseWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="createCasesResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" minOccurs="0" maxOccurs="unbounded" type="tns:ResultWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="createContact">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="Contacts" minOccurs="0" maxOccurs="unbounded" type="tns:ContactWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="createContactResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" minOccurs="0" maxOccurs="unbounded" type="tns:ResultWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="queryCase">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="caseNumbers" minOccurs="0" maxOccurs="unbounded" type="tns:CaseRequestWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="queryCaseResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" minOccurs="0" maxOccurs="unbounded" type="tns:CaseResultWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="updateCases">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="caseObject" minOccurs="0" maxOccurs="unbounded" type="tns:CaseWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="updateCasesResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" minOccurs="0" maxOccurs="unbounded" type="tns:ResultWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="updateContact">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="Contacts" minOccurs="0" maxOccurs="unbounded" type="tns:ContactWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="updateContactResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" minOccurs="0" maxOccurs="unbounded" type="tns:ResultWrapper" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+  </xsd:schema>
+ </types>
+ <!-- Message for the header parts -->
+ <message name="Header">
+  <part name="AllowFieldTruncationHeader" element="tns:AllowFieldTruncationHeader"/>
+  <part name="CallOptions" element="tns:CallOptions"/>
+  <part name="DebuggingHeader" element="tns:DebuggingHeader"/>
+  <part name="DebuggingInfo" element="tns:DebuggingInfo"/>
+  <part name="SessionHeader" element="tns:SessionHeader"/>
+ </message>
+ <!-- Operation Messages -->
+ <message name="createCasesRequest">
+  <part element="tns:createCases" name="parameters"/>
+ </message>
+ <message name="createCasesResponse">
+  <part element="tns:createCasesResponse" name="parameters"/>
+ </message>
+ <message name="createContactRequest">
+  <part element="tns:createContact" name="parameters"/>
+ </message>
+ <message name="createContactResponse">
+  <part element="tns:createContactResponse" name="parameters"/>
+ </message>
+ <message name="queryCaseRequest">
+  <part element="tns:queryCase" name="parameters"/>
+ </message>
+ <message name="queryCaseResponse">
+  <part element="tns:queryCaseResponse" name="parameters"/>
+ </message>
+ <message name="updateCasesRequest">
+  <part element="tns:updateCases" name="parameters"/>
+ </message>
+ <message name="updateCasesResponse">
+  <part element="tns:updateCasesResponse" name="parameters"/>
+ </message>
+ <message name="updateContactRequest">
+  <part element="tns:updateContact" name="parameters"/>
+ </message>
+ <message name="updateContactResponse">
+  <part element="tns:updateContactResponse" name="parameters"/>
+ </message>
+ 	 <message name="ServiceFault">
+  	<part name="parameters" element="xws:ServiceFault"></part>
+  </message>
+  
+ <portType name="SF_CaseManagementAPIPortType">
+  <operation name="createCases">
+   <input message="tns:createCasesRequest"/>
+   <output message="tns:createCasesResponse"/>
+   <fault name="fault" message="tns:ServiceFault"></fault>
+  </operation>
+  <operation name="createContact">
+   <input message="tns:createContactRequest"/>
+   <output message="tns:createContactResponse"/>
+   <fault name="fault" message="tns:ServiceFault"></fault>
+  </operation>
+  <operation name="queryCase">
+   <input message="tns:queryCaseRequest"/>
+   <output message="tns:queryCaseResponse"/>
+   <fault name="fault" message="tns:ServiceFault"></fault>
+  </operation>
+  <operation name="updateCases">
+   <input message="tns:updateCasesRequest"/>
+   <output message="tns:updateCasesResponse"/>
+   <fault name="fault" message="tns:ServiceFault"></fault>
+  </operation>
+  <operation name="updateContact">
+   <input message="tns:updateContactRequest"/>
+   <output message="tns:updateContactResponse"/>
+   <fault name="fault" message="tns:ServiceFault"></fault>
+  </operation>
+ </portType>
+ <binding name="SF_CaseManagementAPIBinding" type="tns:SF_CaseManagementAPIPortType">
+  <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="createCases">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="createContact">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="queryCase">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="updateCases">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="updateContact">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+ </binding>
+ <service name="SF_CaseManagementAPIService">
+  <documentation></documentation>
+  <port binding="tns:SF_CaseManagementAPIBinding" name="SF_CaseManagementAPI">
+   <soap:address location="https://cs2.salesforce.com/services/Soap/class/SF_CaseManagementAPI"/>
+  </port>
+ </service>
+</definitions>

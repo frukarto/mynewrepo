@@ -1,0 +1,2426 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route xmlns:pim="http://www.hns.com/iag/schemas/partner" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error" xmlns:ns2="http://transportfeasibility.bits.hughes.com" handleFault="true">
+		<from uri="switchyard://PIMGatewayProxy"/>
+		<doTry>
+			<setProperty propertyName="ProxyName">
+				<constant>PIMGatewayProxy</constant>
+			</setProperty>
+			<setProperty propertyName="TransactionId">
+				<constant>TransactionSequenceId</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.TransactionMarkerAction" method="start"/>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print Input Request</constant>
+			</setProperty>
+			<setProperty propertyName="simulation">
+				<simple>${in.headers.simulation}</simple>
+			</setProperty>
+			<convertBodyTo type="java.lang.String"/>
+			<setProperty propertyName="ActionStep">
+				<constant>Authorization</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+			<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeEmptyTags"/>
+			<choice>
+				<when>
+					<simple>${exchangeProperty.simulation} == 'true' </simple>
+				</when>
+				<otherwise>
+					<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+					<wireTap uri="switchyard://DebugLogService"/>
+				</otherwise>
+			</choice>
+			<bean beanType="com.hughes.bits.esb.custom.action.CustomPIMAuthorizationAction" method="process"/>
+			<setProperty propertyName="ActionStep">
+				<constant>Validation</constant>
+			</setProperty>
+			<setProperty propertyName="validation-config">
+				<constant>{{pim.validation.config.file}}</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.PimSmooksValidationAction"/>
+			<setHeader headerName="SOAPAction">
+				<constant>""</constant>
+			</setHeader>
+			<setProperty propertyName="ActionStep">
+				<constant>BackendAPI</constant>
+			</setProperty>
+			<setProperty propertyName="ElementList">
+				<constant>Code,TransactionDateTime</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+			<choice>
+				<when>
+					<simple>${exchangeProperty.Code} == 401 </simple>
+					<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+				</when>
+				<!--<when>									
+					<simple>${exchangeProperty.TransactionSequenceId} == null or ${exchangeProperty.TransactionSequenceId} == ''</simple>
+					<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>					
+				</when>
+				<when>									
+					<simple>${exchangeProperty.TransactionDateTime} == null or ${exchangeProperty.TransactionDateTime} == ''</simple>
+					<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>					
+				</when> -->
+				<otherwise>
+					<choice>
+							<when>
+							<xpath logNamespaces="true">/pim:EnhancedServicePrequalRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>EnhancedServicePrequalOp</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,Latitude,Longitude,TransportName,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting the Input/Request Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting Request Parameters is successful and now Extract Mandatory Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,Latitude,Longitude,TransactionCode,TransactionDateTime,TransactionSequenceId</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<!-- Original Input Request Saved -->
+							<setProperty propertyName="InputRequest">
+								<simple>${body}</simple>
+							</setProperty>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<to pattern="InOut" uri="velocity:templates/TransportRequest.vm?contentCache=true"/>
+									<convertBodyTo type="java.lang.String"/>
+									<removeHeaders pattern="Camel*"/>
+									<doTry>
+										<setProperty propertyName="PrintMessage">
+											<constant>Mandatory Check Successful and invoke Transport Feasibility</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+										<to uri="switchyard://TransportFeasibilityService"/>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<setProperty propertyName="Code">
+												<constant>40000000</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Exception occurred in Transport Feasibility Service</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/EnhancedServicePrequalResponse.vm?contentCache=true"/>
+										</doCatch>
+									</doTry>
+									<setProperty propertyName="ElementList">
+										<constant>Status</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+									<!-- Checking Status = 1-->
+									<choice>
+										<when>
+											<simple>${exchangeProperty.Status} == '1' </simple>
+											<setProperty propertyName="Code">
+												<constant>40000000</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Exception occurred in Transport Feasibility Service with Status = 1</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/EnhancedServicePrequalResponse.vm?contentCache=true"/>
+										</when>									
+										<otherwise>
+											<setProperty propertyName="TransportBody">
+												<simple>${body}</simple>
+											</setProperty>
+											<setProperty propertyName="SLVT_BODY">
+												<constant/>
+											</setProperty>
+											<setProperty propertyName="Count">
+												<xpath resultType="java.lang.String">
+										count(ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters)
+									  </xpath>
+											</setProperty>
+											<setProperty propertyName="PrintMessage">
+												<constant>Transport Feasibility is success and now invoking SLVT Service</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+											<log message="the count is ${exchangeProperty.Count}"/>
+											<loop doWhile="true">
+												<simple>${exchangeProperty.Count}</simple>
+												<setProperty propertyName="AvailabilityFlag">
+													<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:AvailabilityFlag
+											</xpath>
+												</setProperty>
+												<!-- Invoking SLVT-->
+												<choice>
+													<when>
+														<simple>${exchangeProperty.AvailabilityFlag} == 'true' </simple>
+														<log message="the loop index is ${exchangeProperty.CamelLoopIndex}"/>
+														<setProperty propertyName="SatelliteID">
+															<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:SatellitedID
+												  </xpath>
+														</setProperty>
+														<setProperty propertyName="BeamID">
+															<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:BeamID
+												  </xpath>
+														</setProperty>
+														<setProperty propertyName="TransportName">
+															<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:TransportName
+												  </xpath>
+														</setProperty>
+														<to pattern="InOut" uri="velocity:templates/SLVT_Req.vm?contentCache=true"/>
+														<doTry>
+															<to uri="switchyard://SLVTService"/>
+															<convertBodyTo type="java.lang.String"/>
+															<doCatch>
+																<exception>java.lang.Exception</exception>
+																<log message="${exception.stacktrace}"/>
+																<setProperty propertyName="Code">
+																	<constant>40000004</constant>
+																</setProperty>
+																<setProperty propertyName="Message">
+																	<constant>Exception occurred in  SLVT Service</constant>
+																</setProperty>
+																<to pattern="InOut" uri="velocity:templates/EnhancedServicePrequalResponse.vm?contentCache=true"/>
+															</doCatch>
+														</doTry>
+
+														<setProperty propertyName="ElementList">
+															<constant>Status</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+														<choice>
+															<when>
+																<simple>${exchangeProperty.Status} != '1'</simple>
+																<!--<xforms:insert context="tns1:SLVTResponseMsg" origin="tns1:element('tns1:SatelliteId', '${exchangeProperty.SatelliteId}')"/>-->
+																<setProperty propertyName="SLVT_BODY">
+																	<simple>${exchangeProperty.SLVT_BODY}&lt;MergedSLVTMsg xmlns:sslvt=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${body}&lt;SatellitedID xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.SatelliteID}&lt;/SatellitedID&gt;&lt;BeamID xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.BeamID}&lt;/BeamID&gt;&lt;AvailabilityFlag xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.AvailabilityFlag}&lt;/AvailabilityFlag &gt;&lt;/MergedSLVTMsg&gt;</simple>
+																</setProperty>																
+															</when>
+														</choice>
+														<setBody>
+															<simple>${exchangeProperty.TransportBody}</simple>
+														</setBody>
+													</when>
+												</choice>
+											</loop>
+											<setProperty propertyName="transportandslvtReq">
+												<simple>${exchangeProperty.TransportBody}${exchangeProperty.SLVT_BODY}</simple>
+											</setProperty>
+											<setProperty propertyName="Mergedtransport_SLVTReq">
+												<simple>&lt;SLVT_finalmerge xmlns=&quot;http://mergedslvt.bits.hughes.com&quot; xmlns:slvt=&quot;http://slvt.bits.hughes.com&quot; xmlns:tns1=&quot;http://transportfeasibility.bits.hughes.com&quot; xmlns:core=&quot;http://www.hns.com/iag/schemas/core&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;${exchangeProperty.transportandslvtReq}&lt;/SLVT_finalmerge&gt;</simple>
+											</setProperty>
+											<setBody>
+												<simple>${exchangeProperty.Mergedtransport_SLVTReq}</simple>
+											</setBody>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+											<to uri="xslt:xslt/EPQTransportinfo.xslt"/>
+											<setProperty propertyName="top_element_name">
+												<simple>EnhancedServicePrequalRequest</simple>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="finalmerge"/>
+											<log message="merged the response for salesforce and now starting xslt for SF request"/>
+											<to uri="xslt:xslt/EnhancedServicePrequalRequest_PIM.xslt"/>
+											<setProperty propertyName="PrintMessage">
+												<constant>Response ready for invoking salesforce</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+											<doTry>
+												<setProperty propertyName="PrintMessage">
+													<constant>Invoking Salesforce</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+												<setProperty propertyName="org.switchyard.operationName">
+													<constant>EnhancedServicePrequalRequest</constant>
+												</setProperty>
+												<to pattern="InOut" uri="switchyard://SFPIMEXTProxy"/>
+												<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+												<convertBodyTo type="java.lang.String"/>
+												<removeHeaders pattern="Camel*"/>
+												<doCatch>
+													<exception>java.lang.Exception</exception>
+													<log message="${exception.stacktrace}"/>
+													<setProperty propertyName="Code">
+														<constant>40000006</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>Exception in  Backend SFDC Partners Service</constant>
+													</setProperty>
+													<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+												</doCatch>
+											</doTry>
+											<!--Converting the response from Salesforce for Client-->
+											<to uri="xslt:xslt/ESB_Salesforce_PIM_EPQResponse.xslt"/>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+										</otherwise>
+										</choice>
+								</when>
+								<!-- Block for mandatory check faliure message-->
+								<otherwise>
+									<setProperty propertyName="Code">
+										<constant>40000100</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Validation Error: One of the Mandatory Parameter Missing: Latitude/Longitude/PartnerId/Message Header: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+									<to pattern="InOut" uri="velocity:templates/EnhancedServicePrequalResponse.vm?contentCache=true"/>
+								</otherwise>
+							</choice>
+							<!-- Final output-->
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>EnhancedServicePrequalOp</constant>
+							</setProperty>
+						</when>
+						
+						<when>
+							<xpath logNamespaces="true">/pim:NewOrderRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>NewOrderReq</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,Latitude,Longitude,TransportName,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting the Input/Request Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting Request Parameters is successfull and now Extract Mandatory Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,Latitude,Longitude,TransactionCode,TransportName,TransactionSequenceId,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<!-- Original Input Request Saved -->
+							<setProperty propertyName="InputRequest">
+								<simple>${body}</simple>
+							</setProperty>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<to pattern="InOut" uri="velocity:templates/TF_Req_ORD.vm?contentCache=true"/>
+									<convertBodyTo type="java.lang.String"/>
+									<doTry>
+										<setProperty propertyName="PrintMessage">
+											<constant>Mandatory Check Successful and invoke Transport Feasibility</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+										<to uri="switchyard://TransportFeasibilityService"/>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<setProperty propertyName="Code">
+												<constant>40000000</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Exception occurred in Transport Feasibility Service</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+										</doCatch>
+									</doTry>
+									<setProperty propertyName="ElementList">
+										<constant>Status</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+									<!-- Checking Status = 1-->
+									<choice>
+										<when>
+											<simple>${exchangeProperty.Status} == '1' </simple>
+											<setProperty propertyName="Code">
+												<constant>40000000</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Exception occurred in Transport Feasibility Service with Status = 1</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+										</when>
+										<otherwise>
+											<setProperty propertyName="TransportBody">
+												<simple>${body}</simple>
+											</setProperty>
+											<setProperty propertyName="SLVT_BODY">
+												<constant/>
+											</setProperty>
+											<setProperty propertyName="Count">
+												<xpath resultType="java.lang.String">
+										count(ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters)
+									  </xpath>
+											</setProperty>
+											<setProperty propertyName="PrintMessage">
+												<constant>Transport Feasibility is success and now invoking SLVT Service</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+											<log message="the count is ${exchangeProperty.Count}"/>
+											<loop doWhile="true">
+												<simple>${exchangeProperty.Count}</simple>
+												<setProperty propertyName="AvailabilityFlag">
+													<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:AvailabilityFlag
+											</xpath>
+												</setProperty>
+												<!-- Invoking SLVT-->
+												<choice>
+													<when>
+														<simple>${exchangeProperty.AvailabilityFlag} == 'true' </simple>
+														<log message="the loop index is ${exchangeProperty.CamelLoopIndex}"/>
+														<setProperty propertyName="SatelliteID">
+															<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:SatellitedID
+												  </xpath>
+														</setProperty>
+														<setProperty propertyName="BeamID">
+															<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:BeamID
+												  </xpath>
+														</setProperty>
+														<setProperty propertyName="TransportName">
+															<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:TransportName
+												  </xpath>
+														</setProperty>
+														<to pattern="InOut" uri="velocity:templates/SLVT_Req.vm?contentCache=true"/>
+														<doTry>
+															<to uri="switchyard://SLVTService"/>
+															<convertBodyTo type="java.lang.String"/>
+															<doCatch>
+																<exception>java.lang.Exception</exception>
+																<log message="${exception.stacktrace}"/>
+																<setProperty propertyName="Code">
+																	<constant>40000004</constant>
+																</setProperty>
+																<setProperty propertyName="Message">
+																	<constant>Exception occurred in  SLVT Service</constant>
+																</setProperty>
+																<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+															</doCatch>
+														</doTry>
+
+														<setProperty propertyName="ElementList">
+															<constant>Status</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+														<choice>
+															<when>
+																<simple>${exchangeProperty.Status} != '1'</simple>
+																<!--<xforms:insert context="tns1:SLVTResponseMsg" origin="tns1:element('tns1:SatelliteId', '${exchangeProperty.SatelliteId}')"/>-->
+																<setProperty propertyName="SLVT_BODY">
+																	<simple>${exchangeProperty.SLVT_BODY}&lt;MergedSLVTMsg xmlns:sslvt=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${body}&lt;SatellitedID xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.SatelliteID}&lt;/SatellitedID&gt;&lt;BeamID xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.BeamID}&lt;/BeamID&gt;&lt;AvailabilityFlag xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.AvailabilityFlag}&lt;/AvailabilityFlag &gt;&lt;/MergedSLVTMsg&gt;</simple>
+																</setProperty>																
+															</when>
+														</choice>
+														<setBody>
+															<simple>${exchangeProperty.TransportBody}</simple>
+														</setBody>
+													</when>
+												</choice>
+											</loop>
+											<setProperty propertyName="transportandslvtReq">
+												<simple>${exchangeProperty.TransportBody}${exchangeProperty.SLVT_BODY}</simple>
+											</setProperty>
+											<setProperty propertyName="Mergedtransport_SLVTReq">
+												<simple>&lt;SLVT_finalmerge xmlns=&quot;http://mergedslvt.bits.hughes.com&quot; xmlns:slvt=&quot;http://slvt.bits.hughes.com&quot; xmlns:tns1=&quot;http://transportfeasibility.bits.hughes.com&quot; xmlns:core=&quot;http://www.hns.com/iag/schemas/core&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;${exchangeProperty.transportandslvtReq}&lt;/SLVT_finalmerge&gt;</simple>
+											</setProperty>
+											<setBody>
+												<simple>${exchangeProperty.Mergedtransport_SLVTReq}</simple>
+											</setBody>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+											<!--<to uri="xslt:xslt/ORDTransportinfo.xslt"/>-->
+											<to uri="xslt:xslt/ORD_slvtmerge.xslt"/>
+											<setProperty propertyName="top_element_name">
+												<simple>NewOrderRequest</simple>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="finalmerge"/>
+											<log message="merged the response for salesforce and now starting xslt for SF request"/>
+											<to uri="xslt:xslt/NewOrderRequest_PIM.xslt"/>
+											<setProperty propertyName="PrintMessage">
+												<constant>Response ready for invoking salesforce</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+											<doTry>
+												<setProperty propertyName="PrintMessage">
+													<constant>Invoking Salesforce</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+												<setProperty propertyName="org.switchyard.operationName">
+													<constant>NewOrderRequest</constant>
+												</setProperty>
+												<to pattern="InOut" uri="switchyard://SFPIMEXTProxy"/>
+												<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+												<convertBodyTo type="java.lang.String"/>
+												<removeHeaders pattern="Camel*"/>
+												<doCatch>
+													<exception>java.lang.Exception</exception>
+													<log message="${exception.stacktrace}"/>
+													<setProperty propertyName="Code">
+														<constant>40000006</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>Exception in  Backend SFDC Partners Service</constant>
+													</setProperty>
+													<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+												</doCatch>
+											</doTry>
+											<!--Converting the response from Salesforce for Client-->
+											<to uri="xslt:xslt/ESB_Salesforce_PIM_NEWResponse.xslt"/>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+										</otherwise>
+									</choice>
+								</when>
+								<!-- Block for mandatory check faliure message-->
+								<otherwise>
+									<setProperty propertyName="Code">
+										<constant>40000100</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Validation Error: One of the Mandatory Parameter Missing: Latitude/Longitude/PartnerId/Message Header: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+									<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+								</otherwise>
+							</choice>
+							<!-- Final output-->
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>NewOrderReq</constant>
+							</setProperty>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:UpgradeOrderRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>UpgradeOrderRequest</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,Latitude,Longitude,TransportName,TransactionSequenceId,TransactionCode,TransactionDateTime,SAN</constant>
+							</setProperty>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting the Input/Request Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting Request Parameters is successfull and now Extract Mandatory Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,TransactionCode,TransportName,TransactionSequenceId,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<!-- Original Input Request Saved -->
+							<setProperty propertyName="InputRequest">
+								<simple>${body}</simple>
+							</setProperty>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<!-- Invoke Manage_site -->
+									<to pattern="InOut" uri="velocity:templates/SearchSiteReq.vm?contentCache=true"/>
+									<convertBodyTo type="java.lang.String"/>
+									<removeHeaders pattern="Camel*"/>
+									<doTry>
+										<setProperty propertyName="PrintMessage">
+											<constant>Mandatory Check Successful and invoke Manage_site Service</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+										<setProperty propertyName="org.switchyard.operationName">
+											<constant>SearchSite</constant>
+										</setProperty>
+										<to uri="switchyard://ManageSiteInfoService"/>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<setProperty propertyName="Code">
+												<constant>40000007</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Exception occurred in Manage_site Service</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+										</doCatch>
+									</doTry>
+									<setProperty propertyName="ElementList">
+										<constant>Code,Latitude,Longitude</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+									<!-- Checking text is 1000,311114004 or not-->
+									<choice>
+										<when>
+											<simple>${exchangeProperty.Code} != '311114004' and ${exchangeProperty.Code} != '1000' </simple>
+											<setProperty propertyName="Code">
+												<constant>40000007</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Exception occurred in Manage_site Service due to Code	</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+										</when>
+										<otherwise>
+											<choice>
+												<when>
+													<simple>${exchangeProperty.Latitude} == '' or ${exchangeProperty.Longitude} == '' or ${exchangeProperty.Latitude} == null or ${exchangeProperty.Longitude} == null </simple>
+													<setProperty propertyName="Code">
+														<constant>40000009</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>Manage Site Info failed as no latitude and longitude provided</constant>
+													</setProperty>
+													<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+												</when>
+												<otherwise>
+													<!-- Invoking Billing -->
+													<to pattern="InOut" uri="velocity:templates/getAcInOpReq.vm?contentCache=true"/>
+													<doTry>
+														<setProperty propertyName="PrintMessage">
+															<constant>Lat Long provided by Manage Site info now invoking Billing</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+														<to uri="switchyard://BillingEXTProxyService"/>
+														<doCatch>
+															<exception>java.lang.Exception</exception>
+															<log message="${exception.stacktrace}"/>
+															<setProperty propertyName="Code">
+																<constant>40000010</constant>
+															</setProperty>
+															<setProperty propertyName="Message">
+																<constant>Exception occurred in Billing Service</constant>
+															</setProperty>
+															<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+														</doCatch>
+													</doTry>
+													<setProperty propertyName="ElementList">
+														<constant>NoOfUnusedFAPTokens</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+													<setProperty propertyName="PrintMessage">
+														<constant>Checking NoOfUnusedFAPTokens</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+													<choice>
+														<when>
+															<simple>${exchangeProperty.NoOfUnusedFAPTokens} == null</simple>
+															<setProperty propertyName="Code">
+																<constant>40000006</constant>
+															</setProperty>
+															<setProperty propertyName="Message">
+																<constant>Exception occurred in Billing Service</constant>
+															</setProperty>
+															<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+														</when>
+														<otherwise>
+															<choice>
+																<when>
+																	<simple>${exchangeProperty.NoOfUnusedFAPTokens} == '-1'</simple>
+																	<setProperty propertyName="Code">
+																		<constant>40000011</constant>
+																	</setProperty>
+																	<setProperty propertyName="Message">
+																		<constant>Billing Service failed as Underlying system is down</constant>
+																	</setProperty>
+																	<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+																</when>
+																<when>
+																	<simple>${exchangeProperty.NoOfUnusedFAPTokens} != 0</simple>
+																	<setProperty propertyName="Code">
+																		<constant>40000011</constant>
+																	</setProperty>
+																	<setProperty propertyName="Message">
+																		<constant>Billing Service failed as Unused FAP Tokens Exist</constant>
+																	</setProperty>
+																	<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+																</when>
+																<otherwise>
+																	<doTry>
+																		<to pattern="InOut" uri="velocity:templates/TF_Req_ORD.vm?contentCache=true"/>
+																		<setProperty propertyName="PrintMessage">
+																			<constant>Invoke Transport Feasibility</constant>
+																		</setProperty>
+																		<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																		<to uri="switchyard://TransportFeasibilityService"/>
+																		<doCatch>
+																			<exception>java.lang.Exception</exception>
+																			<log message="${exception.stacktrace}"/>
+																			<setProperty propertyName="Code">
+																				<constant>40000000</constant>
+																			</setProperty>
+																			<setProperty propertyName="Message">
+																				<constant>Exception occurred in Transport Feasibility Service</constant>
+																			</setProperty>
+																			<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+																		</doCatch>
+																	</doTry>
+																	<setProperty propertyName="ElementList">
+																		<constant>Status</constant>
+																	</setProperty>
+																	<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+																	<!-- Checking Status = 1-->
+																	<choice>
+																		<when>
+																			<simple>${exchangeProperty.Status} == '1' </simple>
+																			<setProperty propertyName="Code">
+																				<constant>40000000</constant>
+																			</setProperty>
+																			<setProperty propertyName="Message">
+																				<constant>Exception occurred in Transport Feasibility Service with Status = 1</constant>
+																			</setProperty>
+																			<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+																		</when>
+																		<otherwise>
+																			<setProperty propertyName="TransportBody">
+																				<simple>${body}</simple>
+																			</setProperty>
+																			<setProperty propertyName="SLVT_BODY">
+																				<constant/>
+																			</setProperty>
+																			<!-- Using XPATH Begins -->
+																			<setProperty propertyName="Count">
+																				<xpath resultType="java.lang.String">
+																		count(ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters)
+																	  </xpath>
+																			</setProperty>
+																			<setProperty propertyName="PrintMessage">
+																				<constant>Transport Feasibility is success and now invoking SLVT Service</constant>
+																			</setProperty>
+																			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																			<loop doWhile="true">
+																				<simple>${exchangeProperty.Count}</simple>
+																				<setProperty propertyName="AvailabilityFlag">
+																					<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:AvailabilityFlag
+																			</xpath>
+																				</setProperty>
+																				<!-- Invoking SLVT-->
+																				<choice>
+																					<when>
+																						<simple>${exchangeProperty.AvailabilityFlag} == 'true' </simple>
+																						<setProperty propertyName="SatelliteID">
+																							<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:SatellitedID
+																				  </xpath>
+																						</setProperty>
+																						<setProperty propertyName="BeamID">
+																							<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:BeamID
+																				  </xpath>
+																						</setProperty>
+																						<setProperty propertyName="TransportName">
+																							<xpath resultType="java.lang.String">ns2:TransportFeasibilityResponseMsg/ns2:TransportFeasibilityResponse/ns2:TransportFeasibilityParameters[function:simple('${exchangeProperty.CamelLoopIndex}')  + 1]/ns2:TransportName
+																				  </xpath>
+																						</setProperty>
+																						<to pattern="InOut" uri="velocity:templates/SLVT_Req.vm?contentCache=true"/>
+																						<doTry>
+																							<to uri="switchyard://SLVTService"/>
+																							<convertBodyTo type="java.lang.String"/>
+																							<doCatch>
+																								<exception>java.lang.Exception</exception>
+																								<log message="${exception.stacktrace}"/>
+																								<setProperty propertyName="Code">
+																									<constant>40000004</constant>
+																								</setProperty>
+																								<setProperty propertyName="Message">
+																									<constant>Exception occurred in  SLVT Service</constant>
+																								</setProperty>
+																								<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+																							</doCatch>
+																						</doTry>
+																						<setProperty propertyName="ElementList">
+																							<constant>Status</constant>
+																						</setProperty>
+																						<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+																						<choice>
+																							<when>
+																								<simple>${exchangeProperty.Status} != '1'</simple>
+																								<!--<xforms:insert context="tns1:SLVTResponseMsg" origin="tns1:element('tns1:SatelliteId', '${exchangeProperty.SatelliteId}')"/>-->
+																								<setProperty propertyName="SLVT_BODY">
+																									<simple>${exchangeProperty.SLVT_BODY}&lt;MergedSLVTMsg xmlns:sslvt=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${body}&lt;SatellitedID xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.SatelliteID}&lt;/SatellitedID&gt;&lt;BeamID xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.BeamID}&lt;/BeamID&gt;&lt;AvailabilityFlag xmlns=&quot;http://mergedslvt.bits.hughes.com&quot;&gt;${exchangeProperty.AvailabilityFlag}&lt;/AvailabilityFlag &gt;&lt;/MergedSLVTMsg&gt;</simple>
+																								</setProperty>
+																							</when>
+																						</choice>
+																						<setBody>
+																							<simple>${exchangeProperty.TransportBody}</simple>
+																						</setBody>
+																					</when>
+																				</choice>
+																			</loop>
+																			<setProperty propertyName="transportandslvtReq">
+																				<simple>${exchangeProperty.TransportBody}${exchangeProperty.SLVT_BODY}</simple>
+																			</setProperty>
+																			<setProperty propertyName="Mergedtransport_SLVTReq">
+																				<simple>&lt;SLVT_finalmerge xmlns=&quot;http://mergedslvt.bits.hughes.com&quot; xmlns:slvt=&quot;http://slvt.bits.hughes.com&quot; xmlns:tns1=&quot;http://transportfeasibility.bits.hughes.com&quot; xmlns:core=&quot;http://www.hns.com/iag/schemas/core&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;${exchangeProperty.transportandslvtReq}&lt;/SLVT_finalmerge&gt;</simple>
+																			</setProperty>
+																			<setBody>
+																				<simple>${exchangeProperty.Mergedtransport_SLVTReq}</simple>
+																			</setBody>
+																			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																			<to uri="xslt:xslt/UPG_Transportinfo.xslt"/>
+																			<setProperty propertyName="top_element_name">
+																				<simple>UpgradeOrderRequest</simple>
+																			</setProperty>
+																			<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="finalmerge"/>
+																			<log message="merged the response for salesforce and now starting xslt for SF request"/>
+																			<to uri="xslt:xslt/ESB_PIM_Salesforce_UpgradeOrderRequest.xslt"/>
+																			<setProperty propertyName="PrintMessage">
+																				<constant>Response ready for invoking salesforce</constant>
+																			</setProperty>
+																			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																			
+																			<doTry>
+																				<setProperty propertyName="PrintMessage">
+																					<constant>Invoking Salesforce</constant>
+																				</setProperty>
+																				<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																				<setProperty propertyName="org.switchyard.operationName">
+																					<constant>UpgradeOrderRequest</constant>
+																				</setProperty>
+																				<to pattern="InOut" uri="switchyard://SFPIMEXTProxy"/>
+																				<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+																				<convertBodyTo type="java.lang.String"/>
+																				<removeHeaders pattern="Camel*"/>
+																				<doCatch>
+																					<exception>java.lang.Exception</exception>
+																					<log message="${exception.stacktrace}"/>
+																					<setProperty propertyName="Code">
+																						<constant>40000006</constant>
+																					</setProperty>
+																					<setProperty propertyName="Message">
+																						<constant>Exception in  Backend SFDC Partners Service</constant>
+																					</setProperty>
+																					<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+																				</doCatch>
+																			</doTry>
+																			<to uri="xslt:xslt/ESB_Salesforce_PIM_UPGRADEResponse.xslt"/>
+																			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+																		</otherwise>
+																	</choice>
+																</otherwise>
+															</choice>
+														</otherwise>
+													</choice>
+												</otherwise>
+											</choice>
+										</otherwise>
+									</choice>
+								</when>
+								<!-- Block for mandatory check faliure message-->
+								<otherwise>
+									<setProperty propertyName="Code">
+										<constant>40000100</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Validation Error: One of the Mandatory Parameter Missing: Latitude/Longitude/PartnerId/Message Header: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+									<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+								</otherwise>
+							</choice>
+							<!-- Final output-->
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>UpgradeOrderRequest</constant>
+							</setProperty>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ModifyOrderRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ModifyOrderRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ModifyOrderRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_Salesforce_PIM_MODIFYResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:CreateCustomerRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>CreateCustomerRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_Salesforce_PIM_CreateCustomerRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_Salesforce_PIM_CreateCustomerResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ModifyCustomerRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ModifyCustomerRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ModifyCustomerRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ModifyCustomerResposne.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ExistingCustomerOrderRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ExistingCustomerOrderRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ExistingCustomerOrderRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ExistingCustomerOrderResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:CancelOrderRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>CancelOrderRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_CancelOrderRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_CancelOrderResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:FAPTokenAllocateRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>FAPTokenAllocateRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_FAPTokenAllocateRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_FAPTokenAllocateResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:SearchCustomerRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>SearchCustomerRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_SearchCustomerRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_SearchCustomerResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:GetFSOBySANOrderIdRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>GetFSOBySANOrderIdRequest</constant>
+							</setProperty>
+							<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=PIMGetFSOBySAN&amp; httpClient.soTimeout={{GetFSOBySANOrderIdRequestProxy.proxy.timeout}}"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ViewOrderRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ViewOrderRequest</constant>
+							</setProperty>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,TransactionSequenceId,TransactionCode,TransactionDateTime,OrderId,CustomerCategory,SAN</constant>
+							</setProperty>
+							<setProperty propertyName="PrintMessage">
+								<constant>Extracting the Input/Request Parameters</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.PartnerId} == null or ${exchangeProperty.TransactionCode} == null or ${exchangeProperty.OrderId} == null or ${exchangeProperty.CustomerCategory} == null</simple>
+									<setProperty propertyName="Code">
+										<constant>40000006</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<constant>Essential parameters is not provided/Error in extracting the elements</constant>
+									</setProperty>
+									<to pattern="InOut" uri="velocity:templates/VOR_Response.vm?contentCache=true"/>
+								</when>
+								<otherwise>
+									<setProperty propertyName="PrintMessage">
+										<constant>Extracting Request Parameters is successful and now Extract Mandatory Parameters</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+									<setProperty propertyName="MandatoryParameterList">
+										<constant>PartnerId,TransactionCode,OrderId</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+									<choice>
+										<when>
+											<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+											<!-- Calling Apiframework-->
+											<doTry>
+												<setProperty propertyName="PrintMessage">
+													<constant>ApiFrameworkProxy Response</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+												<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=PIMViewOrder&amp; httpClient.soTimeout={{GetFSOBySANOrderIdRequestProxy.proxy.timeout}}"/>
+												<convertBodyTo type="java.lang.String"/>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+												<setProperty propertyName="DSSResponse">
+													<simple>${body}</simple>
+												</setProperty>
+												<doCatch>
+													<exception>java.lang.Exception</exception>
+													<log message="${exception.stacktrace}"/>
+													<setProperty propertyName="Code">
+														<constant>40000006</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>Exception in  ApiframeworkProxy</constant>
+													</setProperty>
+												</doCatch>
+											</doTry>
+											<setProperty propertyName="ElementList">
+												<constant>Code,Message</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+											<!-- CHECK WHETHER success response from Apiframework-->
+											<choice>
+												<when>
+													<simple>${exchangeProperty.Code} != 'API1000' </simple>
+													<to pattern="InOut" uri="velocity:templates/VOR_Response.vm?contentCache=true"/>
+												</when>
+												<otherwise>
+													<to pattern="InOut" uri="velocity:templates/VOR_request.vm?contentCache=true"/>
+													<to uri="xslt:xslt/ESB_PIM_Salesforce_ViewOrderReq.xslt"/>
+													<setProperty propertyName="PrintMessage">
+														<constant>After xslt</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+													<!-- Calling Salesforce -->
+													<doTry>
+														<setProperty propertyName="PrintMessage">
+															<constant>Invoking Salesforce</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+														<setProperty propertyName="org.switchyard.operationName">
+															<constant>ViewOrderRequest</constant>
+														</setProperty>
+														<to pattern="InOut" uri="switchyard://SFPIMEXTProxy"/>
+														<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+														<doCatch>
+															<exception>java.lang.Exception</exception>
+															<handled>
+																<constant>true</constant>
+															</handled>
+														</doCatch>
+													</doTry>
+													<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeXMLVersion"/>
+													<setProperty propertyName="SFResponse">
+														<simple>${body}</simple>
+													</setProperty>
+													<setProperty propertyName="ElementList">
+														<constant>Code,Message</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+													<choice>
+														<when>
+															<simple>${exchangeProperty.Code} == 'API1000' </simple>
+															<setProperty propertyName="Code">
+																<constant>40000006</constant>
+															</setProperty>
+															<setProperty propertyName="Message">
+																<constant> Exception (Internal) in SFDC</constant>
+															</setProperty>
+															<to pattern="InOut" uri="velocity:templates/VOR_Response.vm?contentCache=true"/>
+														</when>
+														<otherwise>
+															<choice>
+																<when>
+																	<simple>${exchangeProperty.Code} != 'SF1000' </simple>
+																	<to pattern="InOut" uri="velocity:templates/VOR_Response.vm?contentCache=true"/>
+																</when>
+																<otherwise>
+																	<!-- Concatinating the DSSRoute and SFRoute Request-->
+																	<setProperty propertyName="merge_resp">
+																		<simple>${exchangeProperty.DSSResponse}${exchangeProperty.SFResponse}</simple>
+																	</setProperty>
+																	<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="addpresuffix"/>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																	<setProperty propertyName="PrintMessage">
+																		<constant>Successfully added Prefix and Suffix and now starting the xslt</constant>
+																	</setProperty>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+																	<to uri="xslt:xslt/ESB_PIM_Salesforce_VORResponse.xslt"/>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+																</otherwise>
+															</choice>
+														</otherwise>
+													</choice>
+												</otherwise>
+											</choice>
+										</when>
+										<otherwise>
+											<setProperty propertyName="Code">
+												<constant>40000100</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<simple>Validation Error: One of the Mandatory Parameter Missing: PartnerId,TransactionCode,OrderId: ${exchangeProperty.MandatoryParametersFailed}</simple>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/StandardResponse.vm?contentCache=true"/>
+										</otherwise>
+									</choice>
+								</otherwise>
+							</choice>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ResendNotifications</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ResendNotifications</constant>
+							</setProperty>
+							<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=PIMResendNotifications&amp; httpClient.soTimeout={{GetFSOBySANOrderIdRequestProxy.proxy.timeout}}"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ViewCustomerRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ViewCustomerRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ViewCustomerRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_ViewCustomerResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:StatusRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>StatusRequest</constant>
+							</setProperty>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_StatusRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to uri="switchyard://SFPIMEXTProxy"/>
+							<to uri="xslt:xslt/ESB_PIM_Salesforce_StatusResponse.xslt"/>
+						</when>
+						<when>
+							<xpath logNamespaces="true">/pim:ChangeServiceStatusRequest</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ChangeServiceStatusRequest</constant>
+							</setProperty>
+							<setProperty propertyName="sender">
+								<constant>ESB</constant>
+							</setProperty>
+							<setProperty propertyName="classNamePrefix">
+								<constant>com.hns.iag.framework.xml.billing</constant>
+							</setProperty>
+							<setProperty propertyName="replyRequired">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="destination">
+								<constant>BILLING</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="setMessageHeader"/>
+							<to pattern="InOut" uri="xslt:xslt/ESB_Salesforce_PIM_ChangeServiceStatusRequest.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.WSTransportCustomAction"/>
+							<to pattern="InOut" uri="switchyard://MsgControllerBillingService"/>
+							<convertBodyTo type="java.lang.String"/>
+							<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print After Service Invocation</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.WSTransportCustomAction" method="postprocess"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print After WSTransport unwrap</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<to pattern="InOut" uri="xslt:xslt/ESB_PIM_Salesforce_BillingStatusUpdateResponseMsg.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="appendMessageHeader"/>
+						</when>
+						<!-- GetAccountINfo -->
+						<when>
+							<xpath logNamespaces="true">/pim:GetBillingDetailsReq</xpath>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>GetBillingDetailsReq</constant>
+							</setProperty>
+							<setProperty propertyName="sender">
+								<constant>ESB</constant>
+							</setProperty>
+							<setProperty propertyName="classNamePrefix">
+								<constant>com.hns.iag.framework.xml.billing</constant>
+							</setProperty>
+							<setProperty propertyName="replyRequired">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="destination">
+								<constant>BILLING</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="setMessageHeader"/>
+							<to pattern="InOut" uri="xslt:xslt/ESB_GetBillingDetailsReq.xslt"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.WSTransportCustomAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<doTry>
+								<to pattern="InOut" uri="switchyard://MsgControllerBillingService"/>
+								<convertBodyTo type="java.lang.String"/>
+								<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+								<setProperty propertyName="PrintMessage">
+									<constant>Print After Service Invocation</constant>
+								</setProperty>
+								<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+								<setProperty propertyName="ElementList">
+									<constant>errorCode,message,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+								</setProperty>
+								<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+								<choice>
+									<when>
+										<simple>${exchangeProperty.errorCode} != null </simple>
+										<to pattern="InOut" uri="velocity:templates/GetBillingDetailsResp_Error.vm?contentCache=true"/>
+										<setProperty propertyName="PrintMessage">
+											<constant>Print After setBody unwrap</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+									</when>
+									<otherwise>
+										<bean beanType="com.hughes.bits.esb.custom.action.WSTransportCustomAction" method="postprocess"/>
+										<setProperty propertyName="PrintMessage">
+											<constant>Print After WSTransport unwrap</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+										<to pattern="InOut" uri="xslt:xslt/PIM_GetBillingDetailsResp.xslt"/>
+									</otherwise>
+								</choice>
+								<doCatch>
+									<exception>java.lang.Exception</exception>
+									<log message="Exception Occured ${exchangeId} ${exception}"/>
+									<setBody>
+										<simple>${exception}</simple>
+									</setBody>
+									<setBody>
+										<simple>${body.substring(32,${body.length()-1})}</simple>
+									</setBody>
+									
+									<setProperty propertyName="ElementList">
+										<constant>Code,Description</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+									<setBody>
+										<simple>
+											<GetBillingDetailsResp xmlns="_http://www.hns.com/iag/schemas/partner" xmlns:xsi="_http://www.w3.org/2001/XMLSchema-instance">
+												<MessageHeader>
+													<TransactionDateTime>${TransactionDateTime}</TransactionDateTime>
+													<TransactionCode>${TransactionCode}</TransactionCode>
+													<TransactionSequenceId>${TransactionSequenceId}</TransactionSequenceId>
+												</MessageHeader>
+												<Code>${Code}</Code>
+												<Message>${Description}</Message>
+											</GetBillingDetailsResp>
+										</simple>
+									</setBody>
+									<convertBodyTo type="java.lang.String"/>
+									<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+								</doCatch>
+							</doTry>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="appendMessageHeader"/>
+						</when>
+						<!-- GenerateVoucherBatchRequest -->
+						<when>
+							<xpath logNamespaces="true">/pim:GenerateVoucherBatchRequest</xpath>
+							<convertBodyTo type="java.lang.String"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,VoucherBatchName,VoucherType,VoucherQuantity,VoucherExpirationDate,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,VoucherBatchName,VoucherType,VoucherQuantity,VoucherExpirationDate,TransactionSequenceId,TransactionCode</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<to pattern="InOut" uri="velocity:templates/ESB_SFDC_ValidateGenerateVoucher_SFDCEvent.vm?contentCache=true"/>
+									<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+									<removeHeaders pattern="Camel*"/>
+									<doTry>
+										<to uri="direct:SFVoucherPartner"/>
+										<setProperty propertyName="ElementList">
+											<constant>Code,Message</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+										<setProperty propertyName="parenttag">
+											<constant>Parameters</constant>
+										</setProperty>
+										<setProperty propertyName="keytag">
+											<constant>Key</constant>
+										</setProperty>
+										<setProperty propertyName="valuetag">
+											<constant>Value</constant>
+										</setProperty>
+										<setProperty propertyName="selectedKeys">
+											<constant>VoucherPrice,VoucherType</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractNameValueToProperties"/>
+										<setProperty propertyName="MandatoryCheck">
+											<simple>false</simple>
+										</setProperty>
+										<setProperty propertyName="MandatoryParameterList">
+											<constant>VoucherPrice,VoucherType</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+										<log message="Print MandatoryCheck Value ${exchangeProperty.MandatoryCheck}"/>
+										<doCatch>
+											<!--  Input mandatory parameters check failed -->
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<setProperty propertyName="Code">
+												<constant>ESB301</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>ValidateVoucher to SFPartner Failed</constant>
+											</setProperty>
+										</doCatch>
+									</doTry>
+									<choice>
+										<when>
+											<simple>${exchangeProperty.Code} == 'SF1000' </simple>
+											<setProperty propertyName="InputDateMonth">
+												<groovy>exchange.getProperty('VoucherExpirationDate').substring(0,2)</groovy>
+											</setProperty>
+											<log message="InputDateDay:  ${exchangeProperty.InputDateDay}"/>
+											<setProperty propertyName="InputDateDay">
+												<groovy>exchange.getProperty('VoucherExpirationDate').substring(3,5)</groovy>
+											</setProperty>
+											<setProperty propertyName="InputDateYear">
+												<groovy>exchange.getProperty('VoucherExpirationDate').substring(6,10)</groovy>
+											</setProperty>
+											<log message="InputDateMonth:  ${exchangeProperty.InputDateMonth}"/>
+											<log message="InputDateYear:  ${exchangeProperty.InputDateYear}"/>
+											<to pattern="InOut" uri="velocity:templates/ESB_Billing_GenerateVoucherBatch.vm?contentCache=true"/>
+											<setProperty propertyName="org.switchyard.operationName">
+												<constant>generateVoucherBatch</constant>
+											</setProperty>
+											<doTry>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="process"/>
+												<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+												<setProperty propertyName="ElementList">
+													<constant>status,batchId,errorCode,errorDetails</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+												<doCatch>
+													<exception>org.apache.camel.CamelException</exception>
+													<log message="${exchangeId} ${exception}"/>
+													<setBody>
+														<simple>${exception}</simple>
+													</setBody>
+													<convertBodyTo type="java.lang.String"/>
+													<setBody>
+														<simple>${body.substring(32,${body.length()-1})}</simple>
+													</setBody>
+													<log message="${exchangeId} body is  ${body}"/>
+													<setProperty propertyName="ElementList">
+														<constant>errorCode,errorDetails</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+													<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+												</doCatch>
+												<doCatch>
+													<exception>java.lang.Exception</exception>
+													<log message="${exception.stacktrace}"/>
+													<setProperty propertyName="status">
+														<constant>false</constant>
+													</setProperty>
+													<setProperty propertyName="Code">
+														<constant>ESB201</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>Billing Invocation failed for generateVoucherBatch Operation</constant>
+													</setProperty>
+												</doCatch>
+											</doTry>
+											<choice>
+												<when>
+													<simple>${exchangeProperty.status} == 'true'</simple>
+													<setProperty propertyName="SFDCAPIName">
+														<constant>GenerateVoucher</constant>
+													</setProperty>
+													<to pattern="InOut" uri="velocity:templates/ESB_SFDC_GenerateVoucher_SFDCEvent.vm?contentCache=true"/>
+													<removeHeaders pattern="*"/>
+													<choice>
+														<when>
+															<simple>${sys.monitor_enable_flag} ==  'true'</simple>
+															<setProperty propertyName="GROUP_NAME">
+																<constant>VoucherBatchId</constant>
+															</setProperty>
+															<setProperty propertyName="GROUPID">
+																<simple>${exchangeProperty.batchId}</simple>
+															</setProperty>
+															<setProperty propertyName="TASK_PRIORITY">
+																<constant>1</constant>
+															</setProperty>
+															<to uri="direct:StoreSFDCEvent"/>
+														</when>
+														<otherwise>
+															<wireTap copy="true" uri="direct:SFVoucherPartner"/>
+														</otherwise>
+													</choice>
+												</when>
+											</choice>
+											<convertBodyTo type="java.lang.String"/>
+										</when>
+									</choice>
+								</when>
+								<otherwise>
+									<!--  Input mandatory parameters check failed -->
+									<setProperty propertyName="Code">
+										<constant>210050002</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Mandatory Check Failed for Input: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+								</otherwise>
+							</choice>
+							<to pattern="InOut" uri="velocity:templates/ESB_Billing_GenerateVoucherBatchResponse.vm?contentCache=true"/>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>GenerateVoucherBatchRequest</constant>
+							</setProperty>
+						</when>
+						<!-- ReverseVoucherRequest -->
+						<when>
+							<xpath logNamespaces="true">/pim:ReverseVoucherRequest</xpath>
+							<setProperty propertyName="nomask">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>SFDCAPIEvent</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request for ReverseVoucherRequest</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,VoucherNumber,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="filterkey">
+								<simple>${exchangeProperty.VoucherNumber}</simple>
+							</setProperty>
+							<log message="filterKey Value   ${exchangeProperty.VoucherNumber}     ${exchangeProperty.filterkey}"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,VoucherNumber,TransactionSequenceId,TransactionCode</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<!-- 1. Call BILLING to the VoucherNumber Status -->
+									<to pattern="InOut" uri="velocity:templates/ESB_Billing_GetVoucherStatusList.vm?contentCache=true"/>
+									<convertBodyTo type="java.lang.String"/>
+									<setProperty propertyName="PrintMessage">
+										<constant>Print Input Request for:  BILLING   to the VoucherNumber  Status  </constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+									<doTry>
+										<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+										<convertBodyTo type="java.lang.String"/>
+										<setProperty propertyName="PrintMessage">
+											<constant>Print Response  for:  BILLING   to the VoucherNumber  Status  </constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+										<setProperty propertyName="ElementList">
+											<constant>voucherState,errorCode,errorDetails</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+										<doCatch>
+											<exception>org.apache.camel.CamelException</exception>
+											<log message="${exchangeId} ${exception}"/>
+											<setBody>
+												<simple>${exception}</simple>
+											</setBody>
+											<convertBodyTo type="java.lang.String"/>
+											<setBody>
+												<simple>${body.substring(32,${body.length()-1})}</simple>
+											</setBody>
+											<log message="${exchangeId} body is  ${body}"/>
+											<setProperty propertyName="ElementList">
+												<constant>errorCode,errorDetails</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+											<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+										</doCatch>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<handled>
+												<constant>true</constant>
+											</handled>
+											<setProperty propertyName="errorCode">
+												<constant>-1</constant>
+											</setProperty>
+											<setProperty propertyName="Code">
+												<constant>ESB201</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>Billing Service Failed for GetVoucherStatusList message</constant>
+											</setProperty>
+										</doCatch>
+									</doTry>
+									<!-- End Billing to the VoucherNumber Status -->
+									<choice>
+										<when>
+											<simple>${exchangeProperty.errorCode} == '0' </simple>
+											<!-- 2. Call Salesforce to get SAN,TransportName and SatelliteID -->
+											<removeHeaders pattern="Camel*"/>
+											<setProperty propertyName="SFDCAPIName">
+												<constant>GetSANByVoucher</constant>
+											</setProperty>
+											<to pattern="InOut" uri="velocity:templates/ESB_GetSANByVoucher_SFDCEvent.vm?contentCache=true"/>
+											<convertBodyTo type="java.lang.String"/>
+											<setProperty propertyName="PrintMessage">
+												<constant>Print Input Request for:  Salesforce to get SAN,TransportName and SatelliteID</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+											<doTry>
+												<to uri="direct:SFVoucherPartner"/>
+												<setProperty propertyName="PrintMessage">
+													<constant>Print Input Response  for:  Salesforce to get SAN,TransportName and Satellite</constant>
+												</setProperty>
+												<setProperty propertyName="ElementList">
+													<constant>Code,Message</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+												<setProperty propertyName="parenttag">
+													<constant>Parameters</constant>
+												</setProperty>
+												<setProperty propertyName="keytag">
+													<constant>Key</constant>
+												</setProperty>
+												<setProperty propertyName="valuetag">
+													<constant>Value</constant>
+												</setProperty>
+												<setProperty propertyName="selectedKeys">
+													<constant>SAN,Satellite,TransportName</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractNameValueToProperties"/>
+												<!-- 2. End Salesforce to get SAN,TransportName and SatelliteID -->
+												<log message="Mandatory  Check value  ${exchangeProperty.Code}"/>
+												<setProperty propertyName="MandatoryCheck">
+													<simple trim="true">false</simple>
+												</setProperty>
+												<setProperty propertyName="MandatoryList">
+													<constant>SAN,Satellite,TransportName</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+												<doCatch>
+													<exception>java.lang.Exception</exception>
+													<log message="$exchangeId  ${exception.stacktrace}"/>
+													<setProperty propertyName="Code">
+														<constant>ESB301</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>SoapFault Occured in Invoking get SAN details from backend salesforce </constant>
+													</setProperty>
+												</doCatch>
+											</doTry>
+											<choice>
+												<when>
+													<simple>${exchangeProperty.Code} == 'SF1000'    </simple>
+													<log message="Mandatory  Check value  ${exchangeProperty.MandatoryCheck}"/>
+													<!-- 3. Call Procera to get List of Vouchers for the SAN -->
+													<setProperty propertyName="PrintMessage">
+														<constant>Print Input Request  for:   Call Procera  to  get  List of Vouchers for the SAN</constant>
+													</setProperty>
+													<to pattern="InOut" uri="velocity:templates/ESB_APIFrmwk_GetProceraStatsAPI.vm?contentCache=true"/>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+													<choice>
+														<when>
+															<simple>${exchangeProperty.simulation} == 'true' </simple>
+															<to pattern="InOut" uri="https://ordweby3s1.iaglab.com/HealthCheck/runMock.jsp?apiName=MockGetAPIFrmwkProceraStatsResponse"/>
+														</when>
+														<otherwise>
+															<removeHeaders pattern="*"/>
+															<setHeader headerName="Content-Type">
+																<constant>application/json</constant>
+															</setHeader>
+															<doTry>
+																<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=PSMAPI&amp;httpClient.soTimeout={{ApiFrameworkProxy.proxy.timeout}}"/>
+																<doCatch>
+																	<exception>java.lang.Exception</exception>
+																	<log message="${exception.stacktrace}"/>
+																	<handled>
+																		<constant>true</constant>
+																	</handled>
+																	<setProperty propertyName="Code">
+																		<constant>ESB401</constant>
+																	</setProperty>
+																	<setProperty propertyName="Message">
+																		<constant>Procera Failed</constant>
+																	</setProperty>
+																</doCatch>
+															</doTry>
+														</otherwise>
+													</choice>
+													<convertBodyTo type="java.lang.String"/>
+													<setProperty propertyName="PrintMessage">
+														<constant>Print Response  for:   Call Procera  to  get  List of Vouchers for the SAN</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+													<setProperty propertyName="ElementList">
+														<constant>status,responseMsg</constant>
+													</setProperty>
+													<setProperty propertyName="filtekey">
+														<simple>${exchangeProperty.VoucherNumber}</simple>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+													<setBody>
+														<simple trim="true">${exchangeProperty.responseMsg}</simple>
+													</setBody>
+													<setProperty propertyName="PrintMessage">
+														<constant>Print  new body  from responseMsg</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+													<setProperty propertyName="configList">
+														<constant>ArrayName:counters,key:tokenNumber,extractProperties:name^totalState</constant>
+													</setProperty>
+													<setProperty propertyName="filterkey">
+														<simple>${exchangeProperty.VoucherNumber}</simple>
+													</setProperty>
+													<log message="Before calling extractJSONArrayToMap:  ${exchangeProperty.VoucherNumber}     ${exchangeProperty.filterkey}"/>
+													<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONArrayToMap"/>
+													<!-- 3. End Call Procera to get List of Vouchers for the SAN -->
+													<!-- 4 . Call Billing to Reverse Voucher -->
+													<to pattern="InOut" uri="velocity:templates/ESB_Billing_ReverseVoucherRequest.vm?contentCache=true"/>
+													<setProperty propertyName="PrintMessage">
+														<constant>Before Calling Billing for reverseVoucherList Operation</constant>
+													</setProperty>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+													<setProperty propertyName="org.switchyard.operationName">
+														<constant>reverseVoucherList</constant>
+													</setProperty>
+													<doTry>
+														<setHeader headerName="Content-Type">
+															<constant>text/xml</constant>
+														</setHeader>
+														<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+														<setProperty propertyName="PrintMessage">
+															<constant>After Calling Billing for reverseVoucherList Operation</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+														<setProperty propertyName="ElementList">
+															<constant>actionStatus,errorCode,errorDetails</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+														<doCatch>
+															<exception>org.apache.camel.CamelException</exception>
+															<log message="${exchangeId} ${exception}"/>
+															<setBody>
+																<simple>${exception}</simple>
+															</setBody>
+															<convertBodyTo type="java.lang.String"/>
+															<setBody>
+																<simple>${body.substring(32,${body.length()-1})}</simple>
+															</setBody>
+															<log message="${exchangeId} body is  ${body}"/>
+															<setProperty propertyName="ElementList">
+																<constant>errorCode,errorDetails</constant>
+															</setProperty>
+															<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+															<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+														</doCatch>
+														<doCatch>
+															<exception>java.lang.Exception</exception>
+															<log message="${exception.stacktrace}"/>
+															<setProperty propertyName="errorCode">
+																<constant>-1</constant>
+															</setProperty>
+															<setProperty propertyName="Code">
+																<constant>ESB201</constant>
+															</setProperty>
+															<setProperty propertyName="Message">
+																<constant>Billing Exception</constant>
+															</setProperty>
+														</doCatch>
+													</doTry>
+													<!-- 4 . End of Call Billing to Reverse Voucher -->
+													<choice>
+														<when>
+															<simple>${exchangeProperty.errorCode} == '0' </simple>
+															<choice>
+																<when>
+																	<simple>${exchangeProperty.simulation} == 'true' </simple>
+																	<to pattern="InOut" uri="https://ordweby3s1.iaglab.com/HealthCheck/runMock.jsp?apiName=MockAPIFrmwkUnprovisionVoucherAPI"/>
+																</when>
+																<otherwise>
+																	<removeHeaders pattern="*"/>
+																	<setHeader headerName="Content-Type">
+																		<constant>application/json</constant>
+																	</setHeader>
+																	<!-- 5 . Start : Call Procera to Unprovision Voucher -->
+																	<setProperty propertyName="PrintMessage">
+																		<constant>Before Calling Procera for reverseVoucher</constant>
+																	</setProperty>
+																	<to pattern="InOut" uri="velocity:templates/ESB_APIFrmwk_UnprovisionVoucher.vm?contentCache=true"/>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+																	<doTry>
+																		<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=PSMAPI&amp;httpClient.soTimeout={{ApiFrameworkProxy.proxy.timeout}}"/>
+																		<setProperty propertyName="PrintMessage">
+																			<constant>After Calling Procera for reverseVoucher</constant>
+																		</setProperty>
+																		<doCatch>
+																			<exception>java.lang.Exception</exception>
+																			<log message="${exception.stacktrace}"/>
+																			<setProperty propertyName="Code">
+																				<constant>ESB401</constant>
+																			</setProperty>
+																			<setProperty propertyName="Message">
+																				<constant>Backend  APIFramework failed throwed Exception</constant>
+																			</setProperty>
+																			<setProperty propertyName="status">
+																				<constant>false</constant>
+																			</setProperty>
+																		</doCatch>
+																	</doTry>
+																	<convertBodyTo type="java.lang.String"/>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+																</otherwise>
+															</choice>
+															<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+															<setProperty propertyName="ElementList">
+																<constant>status,responseMsg</constant>
+															</setProperty>
+															<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+															<choice>
+																<when>
+																	<simple>${exchangeProperty.status} == 'true' </simple>
+																	<setProperty propertyName="error/code">
+																		<simple>1000</simple>
+																	</setProperty>
+																	<setProperty propertyName="message">
+																		<simple>Unprovision in Procera successfully</simple>
+																	</setProperty>
+																</when>
+																<otherwise>
+																	<setProperty propertyName="filterkey">
+																		<simple>${exchangeProperty.VoucherNumber}</simple>
+																	</setProperty>
+																	<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+																	<setBody>
+																		<simple>${exchangeProperty.responseMsg}</simple>
+																	</setBody>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+																	<setProperty propertyName="ElementList">
+																		<constant>error/code:int,error/message</constant>
+																	</setProperty>
+																	<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+																	<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+																	<!-- 5 . End : Call Procera to Unprovision Voucher -->
+																</otherwise>
+															</choice>
+															<choice>
+																<when>
+																	<simple>${exchangeProperty.error/code} == '1000'</simple>
+																	<to pattern="InOut" uri="velocity:templates/ESB_SFDC_ReverseVoucher_SFDCEvent.vm?contentCache=true"/>
+																	<setProperty propertyName="responseMsg">
+																		<constant>test</constant>
+																	</setProperty>
+																	<choice>
+																		<when>
+																			<simple>${sys.monitor_enable_flag} ==  'true'</simple>
+																			<to uri="direct:StoreSFDCEvent"/>
+																		</when>
+																		<otherwise>
+																			<wireTap copy="true" uri="direct:SFVoucherPartner"/>
+																		</otherwise>
+																	</choice>
+																	<setProperty propertyName="code">
+																		<simple>API1000</simple>
+																	</setProperty>
+																	<setProperty propertyName="message">
+																		<simple>Reverse voucher done successfully</simple>
+																	</setProperty>
+																</when>
+																<otherwise>
+																	<setProperty propertyName="code">
+																		<simple>${exchangeProperty.error/code}</simple>
+																	</setProperty>
+																	<setProperty propertyName="message">
+																		<simple>${exchangeProperty.Message}</simple>
+																	</setProperty>
+																</otherwise>
+															</choice>
+															<to pattern="InOut" uri="velocity:templates/ESB_PIM_ReverseVoucherResponse.vm?contentCache=true"/>
+															<!-- 5 . Start : Create DATA record in salesforce -->
+														</when>
+														<otherwise>
+															<!-- Second  when for Billing call check failed -->
+															<setProperty propertyName="code">
+																<simple>${exchangeProperty.errorCode}</simple>
+															</setProperty>
+															<setProperty propertyName="message">
+																<constant>Underlying Billing Service returned Error Response</constant>
+															</setProperty>
+														</otherwise>
+													</choice>
+												</when>
+												<otherwise>
+													<!-- Second  when for Salesforce call check failed -->
+													<setProperty propertyName="code">
+														<simple>${exchangeProperty.Code}</simple>
+													</setProperty>
+													<setProperty propertyName="message">
+														<simple>${exchangeProperty.Message}</simple>
+													</setProperty>
+												</otherwise>
+											</choice>
+										</when>
+										<otherwise>
+											<!-- Second  when for Billing call check failed -->
+											<setProperty propertyName="code">
+												<simple>${exchangeProperty.errorCode}</simple>
+											</setProperty>
+											<setProperty propertyName="message">
+												<constant>Underlying Billing Service returned Error Response</constant>
+											</setProperty>
+										</otherwise>
+									</choice>
+								</when>
+								<otherwise>
+									<!-- First  when for Mandatory check failed -->
+									<setProperty propertyName="code">
+										<constant>210050002</constant>
+									</setProperty>
+									<setProperty propertyName="message">
+										<simple>Mandatory Check Failed for Input: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+								</otherwise>
+							</choice>
+							<to pattern="InOut" uri="velocity:templates/ESB_PIM_ReverseVoucherResponse.vm?contentCache=true"/>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ReverseVoucherRequest</constant>
+							</setProperty>
+						</when>
+						<!-- CheckVoucherStatusRequest -->
+						<when>
+							<xpath logNamespaces="true">/pim:CheckVoucherStatusRequest</xpath>
+							<setProperty propertyName="nomask">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>SFDCAPIEvent</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request for CheckVoucherStatusRequest</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,VoucherNumber,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="filterkey">
+								<simple>${exchangeProperty.VoucherNumber}</simple>
+							</setProperty>
+							<log message="filterKey Value   ${exchangeProperty.VoucherNumber}     ${exchangeProperty.filterkey}"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,VoucherNumber,TransactionSequenceId,TransactionCode</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<!-- 1. Call BILLING to the VoucherNumber Status -->
+									<to pattern="InOut" uri="velocity:templates/ESB_Billing_GetVoucherStatusList.vm?contentCache=true"/>
+									<convertBodyTo type="java.lang.String"/>
+									<setProperty propertyName="PrintMessage">
+										<constant>Print Input Request for:  BILLING   to the VoucherNumber  Status  </constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+									<doTry>
+										<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+										<convertBodyTo type="java.lang.String"/>
+										<setProperty propertyName="PrintMessage">
+											<constant>Print Response  for:  BILLING   to the VoucherNumber  Status</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+										<setProperty propertyName="ElementList">
+											<constant>voucherState,errorCode,errorDescr,errorDetails</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+										<doCatch>
+											<exception>org.apache.camel.CamelException</exception>
+											<log message="${exchangeId} ${exception}"/>
+											<setBody>
+												<simple>${exception}</simple>
+											</setBody>
+											<convertBodyTo type="java.lang.String"/>
+											<setBody>
+												<simple>${body.substring(32,${body.length()-1})}</simple>
+											</setBody>
+											<log message="${exchangeId} body is  ${body}"/>
+											<setProperty propertyName="ElementList">
+												<constant>errorCode,errorDetails</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+											<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+										</doCatch>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<handled>
+												<constant>true</constant>
+											</handled>
+											<setProperty propertyName="status">
+												<constant>false</constant>
+											</setProperty>
+											<setProperty propertyName="errorCode">
+												<constant>-1</constant>
+											</setProperty>
+											<setProperty propertyName="Code">
+												<constant>201</constant>
+											</setProperty>
+											<setProperty propertyName="Message">
+												<constant>BillingVoucher call failed  with exception for GetVoucherStatus operation</constant>
+											</setProperty>
+										</doCatch>
+									</doTry>
+									<!-- End Billing to the VoucherNumber Status -->
+									<!-- 2. Call Salesforce to get SAN,TransportName and SatelliteID -->
+									<removeHeaders pattern="*"/>
+									<choice>
+										<when>
+											<simple>${exchangeProperty.errorCode} == '0' </simple>
+											<to pattern="InOut" uri="velocity:templates/ESB_GetSANByVoucher_SFDCEvent.vm?contentCache=true"/>
+											<convertBodyTo type="java.lang.String"/>
+											<setProperty propertyName="PrintMessage">
+												<constant>Print Input Request for:  Salesforce to get SAN,TransportName and SatelliteID</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+											<doTry>
+												<to uri="direct:SFVoucherPartner"/>
+												<convertBodyTo type="java.lang.String"/>
+												<setProperty propertyName="PrintMessage">
+													<constant>Print Input Response  for:  Salesforce to get SAN,TransportName and SatelliteID</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+												<setProperty propertyName="ElementList">
+													<constant>Code,Message</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+												<setProperty propertyName="parenttag">
+													<constant>Parameters</constant>
+												</setProperty>
+												<setProperty propertyName="keytag">
+													<constant>Key</constant>
+												</setProperty>
+												<setProperty propertyName="valuetag">
+													<constant>Value</constant>
+												</setProperty>
+												<setProperty propertyName="selectedKeys">
+													<constant>SAN,Satellite,TransportName</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractNameValueToProperties"/>
+												<!-- 2. End Salesforce to get SAN,TransportName and SatelliteID -->
+												<setProperty propertyName="MandatoryParameterList">
+													<constant>SAN,Satellite,TransportName</constant>
+												</setProperty>
+												<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+												<doCatch>
+													<!--  Input mandatory parameters check failed -->
+													<exception>java.lang.Exception</exception>
+													<log message="${exception.stacktrace}"/>
+													<handled>
+														<constant>true</constant>
+													</handled>
+													<setProperty propertyName="Code">
+														<constant>ESB301</constant>
+													</setProperty>
+													<setProperty propertyName="Message">
+														<constant>ValidateVoucher to SFPartner Failed</constant>
+													</setProperty>
+												</doCatch>
+											</doTry>
+											<choice>
+												<when>
+													<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+													<!-- 3. Call Procera to get List of Vouchers for the SAN -->
+													<setProperty propertyName="PrintMessage">
+														<constant>Print Input Request  for:   Call Procera  Fetch Subscriber Details </constant>
+													</setProperty>
+													<to pattern="InOut" uri="velocity:templates/ESB_APIFrmwk_GetProceraStatsAPI.vm?contentCache=true"/>
+													<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+													<removeHeaders pattern="*"/>
+													<setHeader headerName="Content-Type">
+														<constant>application/json</constant>
+													</setHeader>
+													<doTry>
+														<choice>
+															<when>
+																<simple>${in.headers.simulation} == 'true' </simple>
+																<to pattern="InOut" uri="https://ordweby3s1.iaglab.com/HealthCheck/runMock.jsp?apiName=MockGetAPIFrmwkProceraStatsResponse"/>
+															</when>
+															<otherwise>
+																<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=PSMAPI&amp;httpClient.soTimeout={{ApiFrameworkProxy.proxy.timeout}}"/>
+															</otherwise>
+														</choice>
+														<convertBodyTo type="java.lang.String"/>
+														<setProperty propertyName="PrintMessage">
+															<constant>Print Response  for:   Call Procera  to  get  List of Vouchers for the SAN</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+														<setProperty propertyName="ElementList">
+															<constant>status,responseMsg</constant>
+														</setProperty>
+														<setProperty propertyName="filtekey">
+															<simple>${exchangeProperty.VoucherNumber}</simple>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+														<setBody>
+															<simple>${exchangeProperty.responseMsg}</simple>
+														</setBody>
+														<setProperty propertyName="PrintMessage">
+															<constant>Print  new body  from responseMsg</constant>
+														</setProperty>
+														<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+														<setProperty propertyName="configList">
+															<constant>ArrayName:counters,key:tokenNumber,extractProperties:name^totalState</constant>
+														</setProperty>
+														<setProperty propertyName="filterkey">
+															<simple>${exchangeProperty.VoucherNumber}</simple>
+														</setProperty>
+														<setProperty propertyName="status">
+															<simple>${exchangeProperty.filter_totalState}</simple>
+														</setProperty>
+														<log message="${exchangeProperty.VoucherNumber}     ${exchangeProperty.filterkey}"/>
+														<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONArrayToMap"/>
+														<!-- 3. End Call Procera to get List of Vouchers for the SAN -->
+														<doCatch>
+															<exception>java.lang.Exception</exception>
+															<log message="${exception.stacktrace}"/>
+															<handled>
+																<constant>true</constant>
+															</handled>
+															<setProperty propertyName="Status">
+																<constant>false</constant>
+															</setProperty>
+															<setProperty propertyName="Code">
+																<constant>ESB401</constant>
+															</setProperty>
+															<setProperty propertyName="Message">
+																<constant>APIFramework invocation  failed for Procera  to  get  the Subscriber Details</constant>
+															</setProperty>
+														</doCatch>
+													</doTry>
+												</when>
+											</choice>
+										</when>
+									</choice>
+									<to pattern="InOut" uri="velocity:templates/ESB_PIM_CheckVoucherStatusResponse.vm?contentCache=true"/>
+								</when>
+								<otherwise>
+									<!-- First  when for Mandatory check failed -->
+									<setProperty propertyName="Code">
+										<constant>210050002</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Mandatory Check Failed for Input: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+									<to pattern="InOut" uri="velocity:templates/ESB_PIM_CheckVoucherStatusResponse.vm?contentCache=true"/>
+								</otherwise>
+							</choice>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>CheckVoucherStatusRequest</constant>
+							</setProperty>
+						</when>
+						<!--	Activate Voucher Batch  -->
+						<when>
+							<xpath logNamespaces="true">/pim:ActivateVoucherBatchRequest</xpath>
+							<setProperty propertyName="nomask">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>SFDCAPIEvent</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request for ActivateVoucherBatchRequest</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,VoucherBatchName,VoucherBatchId,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,VoucherBatchName,VoucherBatchId,TransactionSequenceId,TransactionCode</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<to pattern="InOut" uri="velocity:templates/ESB_Billing_ActivateVoucherBatchRequest.vm?contentCache=true"/>
+									<setProperty propertyName="PrintMessage">
+										<constant>Print  Request to Billing:  ActivateVoucherBatchRequest</constant>
+									</setProperty>
+									<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+									<setProperty propertyName="org.switchyard.operationName">
+										<constant>notifyVoucherBatchPrint</constant>
+									</setProperty>
+									<doTry>
+										<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+										<setProperty propertyName="PrintMessage">
+											<constant>Print Response from Billing:  ActivateVoucherBatchRequest</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+										<setProperty propertyName="ElementList">
+											<constant>status,errorCode,errorDetails</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+										<choice>
+											<when>
+												<simple>${exchangeProperty.status} == 'true' </simple>
+												<to pattern="InOut" uri="velocity:templates/ESB_SFDC_ActivateVoucherBatchRequest.vm?contentCache=true"/>
+												<choice>
+													<when>
+														<simple>${sys.monitor_enable_flag} ==  'true'</simple>
+														<setProperty propertyName="GROUP_NAME">
+															<constant>VoucherBatchId</constant>
+														</setProperty>
+														<setProperty propertyName="GROUPID">
+															<simple>${exchangeProperty.VoucherBatchId}</simple>
+														</setProperty>
+														<setProperty propertyName="TASK_PRIORITY">
+															<constant>2</constant>
+														</setProperty>
+														<to uri="direct:StoreSFDCEvent"/>
+													</when>
+													<otherwise>
+														<wireTap copy="true" uri="direct:SFVoucherPartner"/>
+													</otherwise>
+												</choice>
+											</when>
+										</choice>
+										<doCatch>
+											<exception>org.apache.camel.CamelException</exception>
+											<log message="${exchangeId} ${exception}"/>
+											<setBody>
+												<simple>${exception}</simple>
+											</setBody>
+											<convertBodyTo type="java.lang.String"/>
+											<setBody>
+												<simple>${body.substring(32,${body.length()-1})}</simple>
+											</setBody>
+											<log message="${exchangeId} body is  ${body}"/>
+											<setProperty propertyName="ElementList">
+												<constant>errorCode,errorDetails</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+											<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+										</doCatch>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<handled>
+												<constant>true</constant>
+											</handled>
+											<setProperty propertyName="status">
+												<constant>false</constant>
+											</setProperty>
+											<setProperty propertyName="errorCode">
+												<constant>-1</constant>
+											</setProperty>
+											<setProperty propertyName="Code">
+												<constant>ESB201</constant>
+											</setProperty>
+										</doCatch>
+									</doTry>
+								</when>
+								<otherwise>
+									<!--<to pattern="InOut" uri="velocity:templates/ESB_PIM_ActivateVoucherBatchResponse.vm?contentCache=true"/>-->
+									<!-- First  when for Mandatory check failed -->
+									<setProperty propertyName="Code">
+										<constant>210050002</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Mandatory Check Failed for Input: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+								</otherwise>
+							</choice>
+							<to pattern="InOut" uri="velocity:templates/ESB_PIM_ActivateVoucherBatchResponse.vm?contentCache=true"/>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>ActivateVoucherBatchRequest</constant>
+							</setProperty>
+						</when>
+						<!--	Check Voucher Batch Status -->
+						<when>
+							<xpath logNamespaces="true">/pim:CheckVoucherBatchRequest</xpath>
+							<setProperty propertyName="nomask">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>SFDCAPIEvent</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request for CheckVoucherBatchRequest</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,VoucherBatchId,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,VoucherBatchId,TransactionSequenceId,TransactionCode</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<to pattern="InOut" uri="velocity:templates/ESB_Billing_CheckVoucherBatchRequest.vm?contentCache=true"/>
+									<setProperty propertyName="org.switchyard.operationName">
+										<constant>getVoucherBatchStatus</constant>
+									</setProperty>
+									<doTry>
+										<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+										<setProperty propertyName="ElementList">
+											<constant>errorCode,batchStatus,errorDetails</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+										<doCatch>
+											<exception>org.apache.camel.CamelException</exception>
+											<log message="${exchangeId} ${exception}"/>
+											<setBody>
+												<simple>${exception}</simple>
+											</setBody>
+											<convertBodyTo type="java.lang.String"/>
+											<setBody>
+												<simple>${body.substring(32,${body.length()-1})}</simple>
+											</setBody>
+											<log message="${exchangeId} body is  ${body}"/>
+											<setProperty propertyName="ElementList">
+												<constant>errorCode,errorDetails</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+											<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+										</doCatch>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<handled>
+												<constant>true</constant>
+											</handled>
+											<setProperty propertyName="status">
+												<constant>false</constant>
+											</setProperty>
+											<setProperty propertyName="errorCode">
+												<constant>-1</constant>
+											</setProperty>
+										</doCatch>
+									</doTry>
+								</when>
+								<otherwise>
+									<!-- First  when for Mandatory check failed -->
+									<setProperty propertyName="Code">
+										<constant>210050002</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Mandatory Check Failed for Input: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+								</otherwise>
+							</choice>
+							<to pattern="InOut" uri="velocity:templates/ESB_PIM_CheckVoucherBatchResponse.vm?contentCache=true"/>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>CheckVoucherBatchRequest</constant>
+							</setProperty>
+						</when>
+						<!--	Download Voucher Status -->
+						<when>
+							<xpath logNamespaces="true">/pim:DownloadVoucherRequest</xpath>
+							<setProperty propertyName="nomask">
+								<constant>true</constant>
+							</setProperty>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>SFDCAPIEvent</constant>
+							</setProperty>
+							<convertBodyTo type="java.lang.String"/>
+							<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print Input Request for DownloadVoucherRequest</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractUserName"/>
+							<setProperty propertyName="ElementList">
+								<constant>PartnerId,VoucherBatchName,VoucherBatchId,TransactionSequenceId,TransactionCode,TransactionDateTime</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+							<setProperty propertyName="MandatoryParameterList">
+								<constant>PartnerId,VoucherBatchId,TransactionSequenceId,TransactionCode</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="checkMandatoryParametersinProperties"/>
+							<choice>
+								<when>
+									<simple>${exchangeProperty.MandatoryCheck} == 'true' </simple>
+									<to pattern="InOut" uri="velocity:templates/ESB_Billing_DownloadVoucherRequest.vm?contentCache=true"/>
+									<setProperty propertyName="org.switchyard.operationName">
+										<constant>getVoucherInformationFile</constant>
+									</setProperty>
+									<doTry>
+										<to pattern="InOut" uri="switchyard://BillingVoucherManagementService"/>
+										<setProperty propertyName="ElementList">
+											<constant>status,downloadFile,errorCode,errorDetails</constant>
+										</setProperty>
+										<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+										<doCatch>
+											<exception>org.apache.camel.CamelException</exception>
+											<log message="${exchangeId} ${exception}"/>
+											<setBody>
+												<simple>${exception}</simple>
+											</setBody>
+											<convertBodyTo type="java.lang.String"/>
+											<setBody>
+												<simple>${body.substring(32,${body.length()-1})}</simple>
+											</setBody>
+											<log message="${exchangeId} body is  ${body}"/>
+											<setProperty propertyName="ElementList">
+												<constant>errorCode,errorDetails</constant>
+											</setProperty>
+											<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+											<log message="${exchangeId} Billing ErrorCode:${exchangeProperty.errorCode}  Billing errorDetails:${exchangeProperty.errorDetails}"/>
+										</doCatch>
+										<doCatch>
+											<exception>java.lang.Exception</exception>
+											<log message="${exception.stacktrace}"/>
+											<handled>
+												<constant>true</constant>
+											</handled>
+											<setProperty propertyName="status">
+												<constant>false</constant>
+											</setProperty>
+											<setProperty propertyName="errorCode">
+												<constant>-1</constant>
+											</setProperty>
+										</doCatch>
+									</doTry>
+								</when>
+								<otherwise>
+									<!-- First  when for Mandatory check failed -->
+									<setProperty propertyName="Code">
+										<constant>210050002</constant>
+									</setProperty>
+									<setProperty propertyName="Message">
+										<simple>Mandatory Check Failed for Input: ${exchangeProperty.MandatoryParametersFailed}</simple>
+									</setProperty>
+								</otherwise>
+							</choice>
+							<to pattern="InOut" uri="velocity:templates/ESB_PIM_DownloadVoucherResponse.vm?contentCache=true"/>
+							<setProperty propertyName="org.switchyard.operationName">
+								<constant>DownloadVoucherRequest</constant>
+							</setProperty>
+						</when>
+					</choice>
+				</otherwise>
+			</choice>
+			<bean beanType="com.hughes.bits.esb.custom.action.PIMErrorMappingAction" method="process"/>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print Final Message</constant>
+			</setProperty>
+			<removeHeaders pattern="[Tt]ransfer-[Ee]ncoding"/>
+			<removeHeaders pattern="Camel*"/>
+			<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeEmptyTags"/>
+			<choice>
+				<when>
+					<simple>${exchangeProperty.simulation} == 'true' </simple>
+				</when>
+				<otherwise>
+					<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+					<wireTap uri="switchyard://DebugLogService"/>
+				</otherwise>
+			</choice>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+			<doCatch>
+				<exception>java.lang.Exception</exception>
+				<handled>
+					<constant>true</constant>
+				</handled>
+				<setProperty propertyName="PrintMessage">
+					<constant>Print Exception</constant>
+				</setProperty>
+				<log message="${exchangeId}    ${exception.stacktrace}"/>
+				<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="process"/>
+				<bean beanType="com.hughes.bits.esb.custom.action.PIMErrorMappingAction" method="process"/>
+				<choice>
+					<when>
+						<simple>${exchangeProperty.simulation} == 'true' </simple>
+					</when>
+					<otherwise>
+						<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+						<wireTap uri="switchyard://DebugLogService"/>
+					</otherwise>
+				</choice>
+				<!--xmlns="http://www.hns.com/iag/schemas/commonservice" -->
+				<!-- <continued> <constant>true</constant> </continued> -->
+			</doCatch>
+			<doFinally>
+				<bean beanType="com.hughes.bits.esb.custom.action.TransactionMarkerAction" method="end"/>
+			</doFinally>
+		</doTry>
+	</route>
+	<route>
+		<from uri="direct:SFVoucherPartner"/>
+		<doTry>
+			<convertBodyTo type="java.lang.String"/>
+			<setProperty propertyName="SF_NS_PREFIX">
+				<constant>PartnersVoucher</constant>
+			</setProperty>
+			<setProperty propertyName="SF_NS">
+				<constant>http://www.salesforce.com</constant>
+			</setProperty>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print Before Invoking PartnersVoucherService</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="nomask"/>
+			<removeHeaders pattern="*"/>
+			<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="addSalesforceTokenForWebservice"/>
+			<setProperty propertyName="org.switchyard.operationName">
+				<constant>SFDCAPIEventRequest</constant>
+			</setProperty>
+			<setHeader headerName="Content-Type">
+				<constant>text/xml</constant>
+			</setHeader>
+			<to uri="switchyard://PartnersVoucherService"/>
+			<convertBodyTo type="java.lang.String"/>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print After Invoking PartnersVoucherService</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="nomask"/>
+			<doCatch>
+				<exception>java.lang.Exception</exception>
+				<log message="Exception occured in SFVoucherPartner:  ${exchangeId}:    ${exception.stacktrace}"/>
+				<setBody>
+					<constant>
+						<SFDCAPIEventResponse>
+							<result>
+								<TransactionSequenceId>TransactionId</TransactionSequenceId>
+								<APIName>GetSANByVoucher</APIName>
+								<Code>ESB301</Code>
+								<Message>Exception occured in SFVoucherPartner Service</Message>
+							</result>
+						</SFDCAPIEventResponse>
+					</constant>
+				</setBody>
+			</doCatch>
+		</doTry>
+	</route>
+	<route>
+		<from uri="direct:StoreSFDCEvent"/>
+		<removeHeaders pattern="*"/>
+		<setHeader headerName="content-type">
+			<constant>text/xml</constant>
+		</setHeader>
+		<setHeader headerName="username">
+			<simple>${exchangeProperty.userName}</simple>
+		</setHeader>
+		<setHeader headerName="operationname">
+			<simple>SFDCAPIEventRequest</simple>
+		</setHeader>
+		<setProperty propertyName="SELECT_HEADERS">
+			<constant>content-type,username,operationname</constant>
+		</setProperty>
+		<setProperty propertyName="ESB_MESSAGE_ENDPOINT">
+			<constant>http://soawsserver:8080/internal/SFVoucherIntProxy</constant>
+		</setProperty>
+		<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="persistExchange"/>
+		<setProperty propertyName="SUCCESS_CONTENT_CHECK">
+			<constant>SFDCAPIEventRequestResponse</constant>
+		</setProperty>
+		<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="persistTask"/>
+	</route>
+</routes>

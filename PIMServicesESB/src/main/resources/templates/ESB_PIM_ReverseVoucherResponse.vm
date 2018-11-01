@@ -1,0 +1,9 @@
+<ReverseVoucherResponse xmlns="http://www.hns.com/iag/schemas/partner">
+	<MessageHeader>
+		<TransactionDateTime>${exchange.properties.TransactionDateTime}</TransactionDateTime>
+		<TransactionCode>${exchange.properties.TransactionCode}</TransactionCode>
+		<TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+	</MessageHeader>
+	<Code>${exchange.properties.code}</Code>
+	<Message>${exchange.properties.message}</Message>
+</ReverseVoucherResponse>

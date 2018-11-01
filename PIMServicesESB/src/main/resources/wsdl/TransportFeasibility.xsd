@@ -1,0 +1,78 @@
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://transportfeasibility.bits.hughes.com" xmlns:tns1="http://transportfeasibility.bits.hughes.com" xmlns:core="http://www.hns.com/iag/schemas/core" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:import namespace="http://www.hns.com/iag/schemas/core" schemaLocation="./Core.xsd" />
+
+<xs:element name="TransportFeasibilityRequestMsg">
+	<xs:annotation>
+		<xs:documentation>Validates that the Service is available at specified location identified by Latitude/Longitude.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>	
+			<xs:element name="UserCredential" type="core:UserCredentialType" minOccurs="0"/>		
+			<xs:element name="ClassACustomerId" type="core:CustomerIDType" minOccurs="0"/>
+			<xs:element name="Latitude" type="core:LatitudeType"/>
+			<xs:element name="Longitude" type="core:LongitudeType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="TransportFeasibilityResponseMsg">
+	<xs:annotation>
+		<xs:documentation>Message is sent as a response to TransportFeasibilityRequestMsg.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="TransportFeasibilityResponse" type="tns1:TransportFeasibilityResponseType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="TransportFeasibilityResponseType">
+	<xs:annotation>
+		<xs:documentation>This is used to signify the feasibility of a transport along with network parameters if transport is available</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>		
+		<xs:element name="Response" type="core:ResponseStatusType"/>
+		<xs:element name="TransportFeasibilityParameters" type="tns1:TransportFeasibilityParameterType" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+<xs:complexType name="TransportFeasibilityParameterType">
+	<xs:annotation>
+		<xs:documentation>This is used to signify the feasibility of a transport along with network parameters if transport is available</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>		
+		<xs:element name="AvailabilityFlag" type="xs:boolean" minOccurs="0">
+			<xs:annotation>
+				<xs:documentation>This flag determines the Technical availability of a transport Service at given LAT/LONG.</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="BusinessAvailabilityFlag" type="xs:boolean" minOccurs="0">
+			<xs:annotation>
+				<xs:documentation>This flag determines the Business availability of a transport Service at given LAT/LONG.</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="SatellitedID" type="core:SatelliteIdType" minOccurs="0"/>
+		<xs:element name="BeamID" type="core:BeamIDType" minOccurs="0"/>
+		<xs:element name="Polarization" type="core:PolarizationType" minOccurs="0"/>
+		<xs:element name="Band" type="core:BandType" minOccurs="0"/>			
+		<xs:element name="MinODUPower" type="core:ODUPowerType" minOccurs="0"/>
+		<xs:element name="MinAntennaSize" type="core:AntennaSizeType" minOccurs="0"/>
+		<xs:element name="TransportName" type="tns1:TransportNameType" minOccurs="0"/>
+	</xs:sequence>
+</xs:complexType>
+
+
+<xs:simpleType name="TransportNameType">
+	<xs:annotation>
+		<xs:documentation>The name of the transport. Possible values are : Ju,Ku and Ka</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="1"/>
+		<xs:maxLength value="256"/>
+		<xs:whiteSpace value="collapse"/>
+	</xs:restriction>
+</xs:simpleType>
+
+
+</xs:schema>
+

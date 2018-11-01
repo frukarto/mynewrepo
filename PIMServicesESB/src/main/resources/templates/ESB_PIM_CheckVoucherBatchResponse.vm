@@ -1,0 +1,33 @@
+<CheckVoucherBatchResponse xmlns="http://www.hns.com/iag/schemas/partner">
+		<MessageHeader>
+		<TransactionDateTime>${exchange.properties.TransactionDateTime}</TransactionDateTime>
+		<TransactionCode>${exchange.properties.TransactionCode}</TransactionCode>
+		<TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+	</MessageHeader>
+	#if ( ${exchange.properties.errorCode}  ==  "0" )
+	  <Code>API1000</Code>
+	<Message>Message successfully Processed</Message>
+	#if (   ${exchange.properties.batchStatus}  ==  "VoucherBatchRequestQueued"  )
+	<VoucherBatchStatus>Requested</VoucherBatchStatus>
+	#elseif (   ${exchange.properties.batchStatus}  ==  "VoucherBatchFileGenerated" ||  ${exchange.properties.batchStatus}  ==  "VoucherBatchPrintNotified" )
+	<VoucherBatchStatus>Generated</VoucherBatchStatus>
+	#elseif (   ${exchange.properties.batchStatus}  ==  "VoucherBatchProcessed"  )
+	<VoucherBatchStatus>Activated</VoucherBatchStatus>
+	#elseif ( ${exchange.properties.MandatoryCheck}  ==  "false" )
+					<Code>ESB101</Code>
+					<Message>Mandatory Check Failed for Input</Message>
+	#elseif ( ${exchange.properties.errorCode}  ==  "-1" )
+					<Code>ESB201</Code>
+					<Message>SoapFault thrown from BillingService</Message>
+	#elseif ( ${exchange.properties.errorCode}  !=  "0" )
+					<Code>${exchange.properties.errorCode}</Code>
+					<Message>BillingService Failed</Message>
+	
+	#end
+	
+	#else
+	<Code>9000</Code>
+	<Message>CheckVoucher Voucher Batch Failed</Message>
+	#end
+	
+</CheckVoucherBatchResponse>

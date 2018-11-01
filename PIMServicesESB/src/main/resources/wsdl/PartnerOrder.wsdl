@@ -1,0 +1,1323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Web Services API : PartnersOrder
+-->
+<definitions targetNamespace="http://soap.sforce.com/schemas/class/PartnersOrder" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soap.sforce.com/schemas/class/PartnersOrder">
+ <types>
+  <xsd:schema elementFormDefault="qualified" targetNamespace="http://soap.sforce.com/schemas/class/PartnersOrder">
+   <xsd:element name="AllowFieldTruncationHeader">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="allowFieldTruncation" type="xsd:boolean"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CallOptions">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="client" type="xsd:string"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="DebuggingHeader">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="categories" minOccurs="0" maxOccurs="unbounded" type="tns:LogInfo"/>
+      <xsd:element name="debugLevel" type="tns:LogType"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="LogInfo">
+    <xsd:sequence>
+     <xsd:element name="category" type="tns:LogCategory"/>
+     <xsd:element name="level" type="tns:LogCategoryLevel"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:simpleType name="LogCategory">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="Db"/>
+     <xsd:enumeration value="Workflow"/>
+     <xsd:enumeration value="Validation"/>
+     <xsd:enumeration value="Callout"/>
+     <xsd:enumeration value="Apex_code"/>
+     <xsd:enumeration value="Apex_profiling"/>
+     <xsd:enumeration value="Visualforce"/>
+     <xsd:enumeration value="System"/>
+     <xsd:enumeration value="Wave"/>
+     <xsd:enumeration value="All"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="LogCategoryLevel">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="None"/>
+     <xsd:enumeration value="Finest"/>
+     <xsd:enumeration value="Finer"/>
+     <xsd:enumeration value="Fine"/>
+     <xsd:enumeration value="Debug"/>
+     <xsd:enumeration value="Info"/>
+     <xsd:enumeration value="Warn"/>
+     <xsd:enumeration value="Error"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="LogType">
+    <xsd:restriction base="xsd:string">
+     <xsd:enumeration value="None"/>
+     <xsd:enumeration value="Debugonly"/>
+     <xsd:enumeration value="Db"/>
+     <xsd:enumeration value="Profiling"/>
+     <xsd:enumeration value="Callout"/>
+     <xsd:enumeration value="Detail"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:element name="DebuggingInfo">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="debugLog" type="xsd:string"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SessionHeader">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="sessionId" type="xsd:string"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:simpleType name="ID">
+    <xsd:restriction base="xsd:string">
+     <xsd:length value="18"/>
+     <xsd:pattern value="[a-zA-Z0-9]{18}"/>
+    </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:complexType name="AcceptedCommunicationsType">
+    <xsd:sequence>
+     <xsd:element name="AcceptsEmail" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="AcceptsLetter" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="AcceptsPhoneCall" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="AcceptsSMS" minOccurs="0" type="xsd:boolean" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="AddressType">
+    <xsd:sequence>
+     <xsd:element name="City" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Complement" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CountryCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="County" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="EACFStatus" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="ErrorCode" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="ErrorDescription" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Landmark" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Latitude" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Longitude" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Neighborhood" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OverrideAddress" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="PostalCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="RBDI" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="State" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="StreetAddress1" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="StreetAddress2" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="BankAccountType">
+    <xsd:sequence>
+     <xsd:element name="AccountNumberVerifierDigit" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="AgencyNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="AgencyVerifierDigit" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BankAccountNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BankCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="NameOfOwner" minOccurs="0" type="tns:NameType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CancelOrderRequest_element">
+    <xsd:sequence>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FallOutDate" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FallOutNAPSource" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FallOutNAPSubType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FallOutReasonCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="Note" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ReasonCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ServiceOrderNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CreateCustomerRequest_element">
+    <xsd:sequence>
+     <xsd:element name="BillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="BillingName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="CompanyName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ContactAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="ContactName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="CreditCardInfo" minOccurs="0" type="tns:CreditCardType" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DistributorFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="DistributorId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Fax" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="FaxNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="InvoiceInfo" minOccurs="0" type="tns:InvoiceInfoType" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PaymentMode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="PhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ProgramCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ProspectId" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CreditCardType">
+    <xsd:sequence>
+     <xsd:element name="BilingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="CCAuthAmount" minOccurs="0" type="xsd:double" nillable="true"/>
+     <xsd:element name="CCAuthAmtReleaseDate" minOccurs="0" type="xsd:dateTime" nillable="true"/>
+     <xsd:element name="CreditCardName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="CreditCardNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CreditCardType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CVV" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ExpirationMonth" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ExpirationYear" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TokenNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CustomerDetailsResponse_element">
+    <xsd:sequence>
+     <xsd:element name="BillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="BillingName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CompanyName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ContactAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="ContactName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="CreditCardInfo" minOccurs="0" type="tns:CreditCardType" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DistributorFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="DistributorId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Fax" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="FaxNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PaymentMode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="PhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ProspectId" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CustomerInfoShortType">
+    <xsd:sequence>
+     <xsd:element name="CompanyName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ContactName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="ContactPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="ContactPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CustomerPermissionsType">
+    <xsd:sequence>
+     <xsd:element name="DataConfirmed" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="LandlordPermission" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="NoHitOverride" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OwnerPermission" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="VermontFlag" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="CustomerStandardResponse_element">
+    <xsd:sequence>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="LoginURL" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="Password" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="RequestType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="UserName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="EnhancedServicePrequalRequest_element">
+    <xsd:sequence>
+     <xsd:element name="BillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerCreditCheckConsentFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="CustomerName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="CustomerPermissionFlags" minOccurs="0" type="tns:CustomerPermissionsType" nillable="true"/>
+     <xsd:element name="DOB" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="tns:FederalTaxInfoType" nillable="true"/>
+     <xsd:element name="InstallAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="InternationalCellPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalDayPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalNightPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="IsInterestedInVoIP" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="LandlinePhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PreviousBillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="ServiceGrade" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SSN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransportInformation" minOccurs="0" type="tns:TransportFeasibilityParameterListType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="EnhancedServicePrequalResponse_element">
+    <xsd:sequence>
+     <xsd:element name="AvailableODUParameters" minOccurs="0" type="tns:ODUParametersListType" nillable="true"/>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerPermissionFlags" minOccurs="0" type="tns:CustomerPermissionsType" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="ProductList" minOccurs="0" type="tns:ProductListType" nillable="true"/>
+     <xsd:element name="SFDCProductList" minOccurs="0" maxOccurs="unbounded" type="tns:SFDCProductListType" nillable="true"/>
+     <xsd:element name="StandardizedBillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="StandardizedInstallAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="TransportInformation" minOccurs="0" type="tns:TransportFeasibilityParameterListType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ExtraFieldType">
+    <xsd:sequence>
+     <xsd:element name="ExtraField" minOccurs="0" maxOccurs="unbounded" type="tns:ExtraField_element" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ExtraField_element">
+    <xsd:sequence>
+     <xsd:element name="ParameterName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FAPTokenAllocateRequest_element">
+    <xsd:sequence>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Quantity" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TokenAction" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FAPTokenAllocateResponse_element">
+    <xsd:sequence>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FAPTokenServiceOfferingName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransportServiceOfferingName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="FederalTaxInfoType">
+    <xsd:sequence>
+     <xsd:element name="CNPJ" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CPF" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="InstallStatusType">
+    <xsd:sequence>
+     <xsd:element name="ActualInstalledDate" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DealerName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="DealerPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DealerPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DistributorName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="DistributorPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DistributorPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="EventOccurrenceTime" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FSOId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="InstallAMPM" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="InstallerName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="InstallerPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="InstallerPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="IRSCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="IRSMessage" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Notes" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reason" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SignalStrength" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="IntPhoneType">
+    <xsd:sequence>
+     <xsd:element name="AreaCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Extension" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="IntPhoneNo" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ISDCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Type_x" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="InvoiceInfoType">
+    <xsd:sequence>
+     <xsd:element name="Branch" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BusinessBankAccountNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BusinessBankReference" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BusinessType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TradeReference" minOccurs="0" maxOccurs="unbounded" type="tns:TradeReferenceType" nillable="true"/>
+     <xsd:element name="YearsInBusiness" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="MessageHeaderType">
+    <xsd:sequence>
+     <xsd:element name="CorrelationTransactionId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransactionCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransactionDateTime" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransactionSequenceId" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ModifyCustomerRequest_element">
+    <xsd:sequence>
+     <xsd:element name="BillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="BillingName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="ContactAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="ContactName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="CreditCardInfo" minOccurs="0" type="tns:CreditCardType" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Fax" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="FaxNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PaymentMode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="PhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ModifyOrderRequest_element">
+    <xsd:sequence>
+     <xsd:element name="AcceptedCommunications" minOccurs="0" type="tns:AcceptedCommunicationsType" nillable="true"/>
+     <xsd:element name="AdapterId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="AgentId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BankAccountInfo" minOccurs="0" type="tns:BankAccountType" nillable="true"/>
+     <xsd:element name="BillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="BillingDueDay" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="BillingMethod" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CaseId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CreditCardInfo" minOccurs="0" type="tns:CreditCardType" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerCompany" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerPermissionFlags" minOccurs="0" type="tns:CustomerPermissionsType" nillable="true"/>
+     <xsd:element name="DayPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DayPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DOB" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="tns:FederalTaxInfoType" nillable="true"/>
+     <xsd:element name="InstallAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="InternationalCellPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalDayPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalNightPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="isPostalMailRequired" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="LandlinePhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="Name" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="NightPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="NightPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Note" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ODUParameters" minOccurs="0" type="tns:ODUParametersType" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderSubType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrganizationInfo" minOccurs="0" type="tns:OrganizationInfoType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PIN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PreviousBillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="Product" minOccurs="0" type="tns:ProductType" nillable="true"/>
+     <xsd:element name="ProtocolId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved1" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved2" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved3" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved4" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved5" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved6" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved7" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved8" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SecurityPasscode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ServiceOrderNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SFDCProduct" minOccurs="0" type="tns:SFDCProductType" nillable="true"/>
+     <xsd:element name="SSN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransportInformation" minOccurs="0" type="tns:TransportFeasibilityParameterListType" nillable="true"/>
+     <xsd:element name="UpfrontChargingDetails" minOccurs="0" type="tns:UpfrontChargingDetailsType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="NameType">
+    <xsd:sequence>
+     <xsd:element name="FirstName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="LastName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="LastNameSuffix" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MiddleName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="NewOrderRequest_element">
+    <xsd:sequence>
+     <xsd:element name="AcceptedCommunications" minOccurs="0" type="tns:AcceptedCommunicationsType" nillable="true"/>
+     <xsd:element name="AgentId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BankAccountInfo" minOccurs="0" type="tns:BankAccountType" nillable="true"/>
+     <xsd:element name="BillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="BillingDueDay" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="BillingMethod" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CaseId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CreditCardInfo" minOccurs="0" type="tns:CreditCardType" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerCompany" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerLocationId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerPermissionFlags" minOccurs="0" type="tns:CustomerPermissionsType" nillable="true"/>
+     <xsd:element name="DayPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DayPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DOB" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="tns:FederalTaxInfoType" nillable="true"/>
+     <xsd:element name="FraudAlertOverrideFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="InstallAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="InternationalCellPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalDayPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalNightPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="isPostalMailRequired" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="LandlinePhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="Name" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="NightPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="NightPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Note" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ODUParameters" minOccurs="0" type="tns:ODUParametersType" nillable="true"/>
+     <xsd:element name="OrderSubType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrganizationInfo" minOccurs="0" type="tns:OrganizationInfoType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PartnerType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PIN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PreviousBillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="PriceCheckFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="Product" minOccurs="0" type="tns:ProductType" nillable="true"/>
+     <xsd:element name="ProtocolId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ReferralId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ReferralSource" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved1" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved2" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved3" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved4" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved5" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved6" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved7" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved8" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SecurityPasscode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SFDCProduct" minOccurs="0" type="tns:SFDCProductType" nillable="true"/>
+     <xsd:element name="SSN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransportInformation" minOccurs="0" type="tns:TransportFeasibilityParameterListType" nillable="true"/>
+     <xsd:element name="UpfrontChargingDetails" minOccurs="0" type="tns:UpfrontChargingDetailsType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ODUParametersListType">
+    <xsd:sequence>
+     <xsd:element name="ODUParameters" minOccurs="0" maxOccurs="unbounded" type="tns:ODUParametersType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ODUParametersType">
+    <xsd:sequence>
+     <xsd:element name="AntennaSize" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Availability" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="RadioPower" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OfferLineItemListType">
+    <xsd:sequence>
+     <xsd:element name="OfferLineItem" minOccurs="0" maxOccurs="unbounded" type="tns:OfferLineItemType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OfferLineItemType">
+    <xsd:sequence>
+     <xsd:element name="OfferLineItemCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OfferLineItemName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OrderStatusType">
+    <xsd:sequence>
+     <xsd:element name="CONCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ConMessage" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DayPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DayPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DealerName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="DealerPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DealerPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DistributorName" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="DistributorPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DistributorPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="EventOccurrenceTime" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FSOId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="InstallAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="InstallAMPM" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Name" minOccurs="0" type="tns:NameType" nillable="true"/>
+     <xsd:element name="NightPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="NightPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Notes" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PartnerRefNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PIN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reason" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ScheduledInstallDate" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="OrganizationInfoType">
+    <xsd:sequence>
+     <xsd:element name="Activity" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MunicipalRegistry" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="StateRegistry" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TradeName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="PhoneType">
+    <xsd:sequence>
+     <xsd:element name="AreaCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Exchange" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Prefix" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="PlanType">
+    <xsd:sequence>
+     <xsd:element name="ExtraParameter" minOccurs="0" type="tns:ExtraFieldType" nillable="true"/>
+     <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PONumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ServiceOffering" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProductListType">
+    <xsd:sequence>
+     <xsd:element name="Product" minOccurs="0" maxOccurs="unbounded" type="tns:ProductType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ProductType">
+    <xsd:sequence>
+     <xsd:element name="ExtraParameters" minOccurs="0" type="tns:ExtraFieldType" nillable="true"/>
+     <xsd:element name="OptionPlan" minOccurs="0" maxOccurs="unbounded" type="tns:PlanType" nillable="true"/>
+     <xsd:element name="Package_x" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ProgramCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ProgramName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SFDCProductListType">
+    <xsd:sequence>
+     <xsd:element name="SFDCProduct" minOccurs="0" maxOccurs="unbounded" type="tns:SFDCProductType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SFDCProductType">
+    <xsd:sequence>
+     <xsd:element name="AnytimeBytes" minOccurs="0" type="xsd:double" nillable="true"/>
+     <xsd:element name="BonusBytes" minOccurs="0" type="xsd:double" nillable="true"/>
+     <xsd:element name="DataAllowanceManager" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DownloadSpeed" minOccurs="0" type="xsd:double" nillable="true"/>
+     <xsd:element name="EndDate" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OfferDisplayName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OfferLineItemList" minOccurs="0" maxOccurs="unbounded" type="tns:OfferLineItemListType" nillable="true"/>
+     <xsd:element name="OfferName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OfferType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransportName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="UploadSpeed" minOccurs="0" type="xsd:double" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SFDCProductTypeView">
+    <xsd:sequence>
+     <xsd:element name="OfferLineItemList" minOccurs="0" maxOccurs="unbounded" type="tns:OfferLineItemListType" nillable="true"/>
+     <xsd:element name="OfferName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="TransportName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SLVTParametersListType">
+    <xsd:sequence>
+     <xsd:element name="SLVTParameters" minOccurs="0" maxOccurs="unbounded" type="tns:SLVTParametersType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SLVTParametersType">
+    <xsd:sequence>
+     <xsd:element name="AntennaSize" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Availability" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="RadioPower" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SearchCustomerRequest_element">
+    <xsd:sequence>
+     <xsd:element name="CompanyName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ContactName" minOccurs="0" type="tns:SearchNameType" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="PhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SearchCustomerResponse_element">
+    <xsd:sequence>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerList" minOccurs="0" maxOccurs="unbounded" type="tns:CustomerInfoShortType" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SearchNameType">
+    <xsd:sequence>
+     <xsd:element name="FirstName" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="LastName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="SiteStatusType">
+    <xsd:sequence>
+     <xsd:element name="ActualActivationDate" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="AdapterClass" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="EventOccurrenceTime" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="HomeHubId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ISPHubId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Notes" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PvtIP" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ReasonCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SatelliteNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SerialNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SiteId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SSNCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SSNMessage" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="StandardResponse_element">
+    <xsd:sequence>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="RequestType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="ServiceOrderNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SFDCProduct" minOccurs="0" type="tns:SFDCProductType" nillable="true"/>
+     <xsd:element name="StandardizedBillingAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="StandardizedInstallAddress" minOccurs="0" type="tns:AddressType" nillable="true"/>
+     <xsd:element name="TransportInformation" minOccurs="0" type="tns:TransportFeasibilityParameterType" nillable="true"/>
+     <xsd:element name="UpfrontCharge" minOccurs="0" type="xsd:double" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="StatusRequest_element">
+    <xsd:sequence>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SerialNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="StatusResponse_element">
+    <xsd:sequence>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CurrentStatusCode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CurrentStatusMessage" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="InstallStatus" minOccurs="0" type="tns:InstallStatusType" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="OrderStatus" minOccurs="0" type="tns:OrderStatusType" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SiteStatus" minOccurs="0" type="tns:SiteStatusType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TradeReferenceType">
+    <xsd:sequence>
+     <xsd:element name="Fax" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Name" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Phone" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TransportFeasibilityParameterListType">
+    <xsd:sequence>
+     <xsd:element name="TransportFeasibilityParameter" minOccurs="0" maxOccurs="unbounded" type="tns:TransportFeasibilityParameterType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="TransportFeasibilityParameterType">
+    <xsd:sequence>
+     <xsd:element name="AvailabilityFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="Band" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BeamID" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BusinessAvailabilityFlag" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="MinAntennaSize" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MinODUPower" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Polarization" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SatellitedID" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SLVTParametersList" minOccurs="0" type="tns:SLVTParametersListType" nillable="true"/>
+     <xsd:element name="TransportName" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UpfrontChargingDetailsType">
+    <xsd:sequence>
+     <xsd:element name="NumberOfInstallments" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="PaymentDetails" minOccurs="0" type="tns:CreditCardType" nillable="true"/>
+     <xsd:element name="UpfrontAmount" minOccurs="0" type="xsd:double" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="UpgradeOrderRequest_element">
+    <xsd:sequence>
+     <xsd:element name="AcceptedCommunications" minOccurs="0" type="tns:AcceptedCommunicationsType" nillable="true"/>
+     <xsd:element name="AgentId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="BankAccountInfo" minOccurs="0" type="tns:BankAccountType" nillable="true"/>
+     <xsd:element name="BillingDueDay" minOccurs="0" type="xsd:int" nillable="true"/>
+     <xsd:element name="BillingMethod" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CaseId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerCompany" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="DayPhone" minOccurs="0" type="tns:PhoneType" nillable="true"/>
+     <xsd:element name="DayPhoneNumber" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Email" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="FederalTaxId" minOccurs="0" type="tns:FederalTaxInfoType" nillable="true"/>
+     <xsd:element name="InternationalCellPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalDayPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="InternationalNightPhone" minOccurs="0" type="tns:IntPhoneType" nillable="true"/>
+     <xsd:element name="isPostalMailRequired" minOccurs="0" type="xsd:boolean" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="Note" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderSubType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrderType" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="OrganizationInfo" minOccurs="0" type="tns:OrganizationInfoType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="PIN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Product" minOccurs="0" type="tns:ProductType" nillable="true"/>
+     <xsd:element name="ProtocolId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="RegistrationId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved1" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved2" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved3" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved4" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved5" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved6" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved7" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Reserved8" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SecurityPasscode" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SFDCProduct" minOccurs="0" type="tns:SFDCProductType" nillable="true"/>
+     <xsd:element name="TransportInformation" minOccurs="0" type="tns:TransportFeasibilityParameterListType" nillable="true"/>
+     <xsd:element name="UpfrontChargingDetails" minOccurs="0" type="tns:UpfrontChargingDetailsType" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ViewCustomerRequest_element">
+    <xsd:sequence>
+     <xsd:element name="CustomerCategory" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="CustomerId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="PartnerId" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ViewOrderRequest_element">
+    <xsd:sequence>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="ViewOrderResponse_element">
+    <xsd:sequence>
+     <xsd:element name="Code" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="Message" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="MessageHeader" minOccurs="0" type="tns:MessageHeaderType" nillable="true"/>
+     <xsd:element name="OrderId" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SAN" minOccurs="0" type="xsd:string" nillable="true"/>
+     <xsd:element name="SFDCProduct" minOccurs="0" type="tns:SFDCProductTypeView" nillable="true"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="address">
+    <xsd:complexContent>
+     <xsd:extension base="tns:location">
+      <xsd:sequence>
+       <xsd:element name="city" type="xsd:string"/>
+       <xsd:element name="country" type="xsd:string"/>
+       <xsd:element name="countryCode" type="xsd:string"/>
+       <xsd:element name="geocodeAccuracy" type="xsd:string"/>
+       <xsd:element name="postalCode" type="xsd:string"/>
+       <xsd:element name="state" type="xsd:string"/>
+       <xsd:element name="stateCode" type="xsd:string"/>
+       <xsd:element name="street" type="xsd:string"/>
+      </xsd:sequence>
+     </xsd:extension>
+    </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType name="location">
+    <xsd:sequence>
+     <xsd:element name="latitude" type="xsd:double"/>
+     <xsd:element name="longitude" type="xsd:double"/>
+    </xsd:sequence>
+   </xsd:complexType>
+   <xsd:element name="CancelOrderRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:CancelOrderRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CancelOrderRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:StandardResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateCustomerRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:CreateCustomerRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="CreateCustomerRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:CustomerStandardResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="EnhancedServicePrequalRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:EnhancedServicePrequalRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="EnhancedServicePrequalRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:EnhancedServicePrequalResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FAPTokenAllocateRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:FAPTokenAllocateRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="FAPTokenAllocateRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:FAPTokenAllocateResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ModifyCustomerRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:ModifyCustomerRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ModifyCustomerRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:CustomerStandardResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ModifyOrderRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:ModifyOrderRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ModifyOrderRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:StandardResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="NewOrderRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:NewOrderRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="NewOrderRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:StandardResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SearchCustomerRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:SearchCustomerRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="SearchCustomerRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:SearchCustomerResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="StatusRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:StatusRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="StatusRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:StatusResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="UpgradeOrderRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:UpgradeOrderRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="UpgradeOrderRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:StandardResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ViewCustomerRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:ViewCustomerRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ViewCustomerRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:CustomerDetailsResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ViewOrderRequest">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="req" type="tns:ViewOrderRequest_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="ViewOrderRequestResponse">
+    <xsd:complexType>
+     <xsd:sequence>
+      <xsd:element name="result" type="tns:ViewOrderResponse_element" nillable="true"/>
+     </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+  </xsd:schema>
+ </types>
+ <!-- Message for the header parts -->
+ <message name="Header">
+  <part name="AllowFieldTruncationHeader" element="tns:AllowFieldTruncationHeader"/>
+  <part name="CallOptions" element="tns:CallOptions"/>
+  <part name="DebuggingHeader" element="tns:DebuggingHeader"/>
+  <part name="DebuggingInfo" element="tns:DebuggingInfo"/>
+  <part name="SessionHeader" element="tns:SessionHeader"/>
+ </message>
+ <!-- Operation Messages -->
+ <message name="CancelOrderRequestRequest">
+  <part element="tns:CancelOrderRequest" name="parameters"/>
+ </message>
+ <message name="CancelOrderRequestResponse">
+  <part element="tns:CancelOrderRequestResponse" name="parameters"/>
+ </message>
+ <message name="CreateCustomerRequestRequest">
+  <part element="tns:CreateCustomerRequest" name="parameters"/>
+ </message>
+ <message name="CreateCustomerRequestResponse">
+  <part element="tns:CreateCustomerRequestResponse" name="parameters"/>
+ </message>
+ <message name="EnhancedServicePrequalRequestRequest">
+  <part element="tns:EnhancedServicePrequalRequest" name="parameters"/>
+ </message>
+ <message name="EnhancedServicePrequalRequestResponse">
+  <part element="tns:EnhancedServicePrequalRequestResponse" name="parameters"/>
+ </message>
+ <message name="FAPTokenAllocateRequestRequest">
+  <part element="tns:FAPTokenAllocateRequest" name="parameters"/>
+ </message>
+ <message name="FAPTokenAllocateRequestResponse">
+  <part element="tns:FAPTokenAllocateRequestResponse" name="parameters"/>
+ </message>
+ <message name="ModifyCustomerRequestRequest">
+  <part element="tns:ModifyCustomerRequest" name="parameters"/>
+ </message>
+ <message name="ModifyCustomerRequestResponse">
+  <part element="tns:ModifyCustomerRequestResponse" name="parameters"/>
+ </message>
+ <message name="ModifyOrderRequestRequest">
+  <part element="tns:ModifyOrderRequest" name="parameters"/>
+ </message>
+ <message name="ModifyOrderRequestResponse">
+  <part element="tns:ModifyOrderRequestResponse" name="parameters"/>
+ </message>
+ <message name="NewOrderRequestRequest">
+  <part element="tns:NewOrderRequest" name="parameters"/>
+ </message>
+ <message name="NewOrderRequestResponse">
+  <part element="tns:NewOrderRequestResponse" name="parameters"/>
+ </message>
+ <message name="SearchCustomerRequestRequest">
+  <part element="tns:SearchCustomerRequest" name="parameters"/>
+ </message>
+ <message name="SearchCustomerRequestResponse">
+  <part element="tns:SearchCustomerRequestResponse" name="parameters"/>
+ </message>
+ <message name="StatusRequestRequest">
+  <part element="tns:StatusRequest" name="parameters"/>
+ </message>
+ <message name="StatusRequestResponse">
+  <part element="tns:StatusRequestResponse" name="parameters"/>
+ </message>
+ <message name="UpgradeOrderRequestRequest">
+  <part element="tns:UpgradeOrderRequest" name="parameters"/>
+ </message>
+ <message name="UpgradeOrderRequestResponse">
+  <part element="tns:UpgradeOrderRequestResponse" name="parameters"/>
+ </message>
+ <message name="ViewCustomerRequestRequest">
+  <part element="tns:ViewCustomerRequest" name="parameters"/>
+ </message>
+ <message name="ViewCustomerRequestResponse">
+  <part element="tns:ViewCustomerRequestResponse" name="parameters"/>
+ </message>
+ <message name="ViewOrderRequestRequest">
+  <part element="tns:ViewOrderRequest" name="parameters"/>
+ </message>
+ <message name="ViewOrderRequestResponse">
+  <part element="tns:ViewOrderRequestResponse" name="parameters"/>
+ </message>
+ <portType name="PartnersOrderPortType">
+  <operation name="CancelOrderRequest">
+   <input message="tns:CancelOrderRequestRequest"/>
+   <output message="tns:CancelOrderRequestResponse"/>
+  </operation>
+  <operation name="CreateCustomerRequest">
+   <input message="tns:CreateCustomerRequestRequest"/>
+   <output message="tns:CreateCustomerRequestResponse"/>
+  </operation>
+  <operation name="EnhancedServicePrequalRequest">
+   <input message="tns:EnhancedServicePrequalRequestRequest"/>
+   <output message="tns:EnhancedServicePrequalRequestResponse"/>
+  </operation>
+  <operation name="FAPTokenAllocateRequest">
+   <input message="tns:FAPTokenAllocateRequestRequest"/>
+   <output message="tns:FAPTokenAllocateRequestResponse"/>
+  </operation>
+  <operation name="ModifyCustomerRequest">
+   <input message="tns:ModifyCustomerRequestRequest"/>
+   <output message="tns:ModifyCustomerRequestResponse"/>
+  </operation>
+  <operation name="ModifyOrderRequest">
+   <input message="tns:ModifyOrderRequestRequest"/>
+   <output message="tns:ModifyOrderRequestResponse"/>
+  </operation>
+  <operation name="NewOrderRequest">
+   <input message="tns:NewOrderRequestRequest"/>
+   <output message="tns:NewOrderRequestResponse"/>
+  </operation>
+  <operation name="SearchCustomerRequest">
+   <input message="tns:SearchCustomerRequestRequest"/>
+   <output message="tns:SearchCustomerRequestResponse"/>
+  </operation>
+  <operation name="StatusRequest">
+   <input message="tns:StatusRequestRequest"/>
+   <output message="tns:StatusRequestResponse"/>
+  </operation>
+  <operation name="UpgradeOrderRequest">
+   <input message="tns:UpgradeOrderRequestRequest"/>
+   <output message="tns:UpgradeOrderRequestResponse"/>
+  </operation>
+  <operation name="ViewCustomerRequest">
+   <input message="tns:ViewCustomerRequestRequest"/>
+   <output message="tns:ViewCustomerRequestResponse"/>
+  </operation>
+  <operation name="ViewOrderRequest">
+   <input message="tns:ViewOrderRequestRequest"/>
+   <output message="tns:ViewOrderRequestResponse"/>
+  </operation>
+ </portType>
+ <binding name="PartnersOrderBinding" type="tns:PartnersOrderPortType">
+  <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="CancelOrderRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="CreateCustomerRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="EnhancedServicePrequalRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="FAPTokenAllocateRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="ModifyCustomerRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="ModifyOrderRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="NewOrderRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="SearchCustomerRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="StatusRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="UpgradeOrderRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="ViewCustomerRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+  <operation name="ViewOrderRequest">
+   <soap:operation soapAction=""/>
+   <input>
+    <soap:header use="literal" part="SessionHeader" message="tns:Header"/>
+    <soap:header use="literal" part="CallOptions" message="tns:Header"/>
+    <soap:header use="literal" part="DebuggingHeader" message="tns:Header"/>
+    <soap:header use="literal" part="AllowFieldTruncationHeader" message="tns:Header"/>
+    <soap:body use="literal" parts="parameters"/>
+   </input>
+   <output>
+    <soap:header use="literal" part="DebuggingInfo" message="tns:Header"/>
+    <soap:body use="literal"/>
+   </output>
+  </operation>
+ </binding>
+ <service name="PartnersOrderService">
+  <documentation></documentation>
+  <port binding="tns:PartnersOrderBinding" name="PartnersOrder">
+   <soap:address location="https://cs2.salesforce.com/services/Soap/class/PartnersOrder"/>
+  </port>
+ </service>
+</definitions>

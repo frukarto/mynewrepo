@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:core="http://www.hns.com/iag/schemas/core" xmlns:tns="http://soap.sforce.com/schemas/class/PartnersOrder" xmlns:n1="http://www.hns.com/iag/schemas/partner" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://soap.sforce.com/schemas/class/PartnersOrder" schemaLocation="./SF.xsd"/>
+	<xs:import namespace="http://www.hns.com/iag/schemas/partner" schemaLocation="./pim.xsd"/>
+	<xs:element name="VOR_MergeResponse">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OrderDetailsResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OrderDetailsResponse" type="n1:OrderDetailsResponse_element" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+				<xs:element name="ViewOrderRequestResponse">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="result" type="tns:ViewOrderResponse_element" nillable="true"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

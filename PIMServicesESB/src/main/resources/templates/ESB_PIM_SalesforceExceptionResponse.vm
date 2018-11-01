@@ -1,0 +1,9 @@
+<result>
+	<MessageHeader>
+		<TransactionDateTime>${exchange.properties.TransactionDateTime}</TransactionDateTime>
+		<TransactionCode>${exchange.properties.TransactionCode}</TransactionCode>
+		<TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+	</MessageHeader>
+	<Message>${exchange.properties.Message}</Message>
+	<Code>${exchange.properties.Code}</Code>  
+</result>

@@ -1,0 +1,4 @@
+<GetBillingDetailsResp xmlns="http://www.hns.com/iag/schemas/partner" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Code>${exchange.properties.errorCode}</Code>
+	<Message>${exchange.properties.message}</Message>
+</GetBillingDetailsResp>

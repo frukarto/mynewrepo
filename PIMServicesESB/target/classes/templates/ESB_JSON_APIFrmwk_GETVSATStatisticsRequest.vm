@@ -1,0 +1,6 @@
+{
+  "TransactionCode":"${exchange.properties.TransactionCode}",
+  "TransactionSequenceId":"${exchange.properties.TransactionSequenceId}",
+  "PartnerId":"${exchange.properties.PartnerId}",
+  "SAN":"${exchange.properties.SAN}"
+}

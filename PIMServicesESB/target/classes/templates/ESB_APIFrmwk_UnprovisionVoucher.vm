@@ -1,0 +1,5 @@
+{
+  "request" : "{ \"id\":1, \"method\":\"object.updateByAid\", \"params\":[\"subscriber\",\"${exchange.properties.SAN}\",{ \"counters\":{\"op\":\"remove\",\"value\":[ \"${exchange.properties.filter_name}\"] }} ]}",
+  "transportName" : "${exchange.properties.TransportName}",
+  "satelliteId" : "${exchange.properties.Satellite}" 
+}

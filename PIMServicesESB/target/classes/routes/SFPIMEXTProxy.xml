@@ -1,0 +1,243 @@
+<routes xmlns="http://camel.apache.org/schema/spring" id="routes-434cf956-930b-43d4-9878-333feae8e7d8">
+   <route handleFault="true">
+      <from uri="switchyard://SFPIMEXTProxy" />
+      <doTry>
+         <convertBodyTo type="java.lang.String"/>
+         <setProperty propertyName="ProxyName">
+            <constant>SFPIMEXTProxy</constant>
+         </setProperty>
+         <setProperty propertyName="PrintMessage">
+            <constant>Print Input Request</constant>
+         </setProperty>
+         <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+         <transform>
+            <simple>${body.replace("http://www.hns.com/iag/schemas/partner","http://soap.sforce.com/schemas/class/PartnersOrder")}</simple>
+         </transform>
+         <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+         <setProperty propertyName="SF_NS_PREFIX">
+            <constant>partner</constant>
+         </setProperty>
+         <setProperty propertyName="SF_NS">
+            <constant>http://www.salesforce.com</constant>
+         </setProperty>
+		 <bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeEmptyTags"/>
+         <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+         <bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="addSalesforceTokenForWebservice"/>
+         <to uri="switchyard://PartnersOrderPortType"/>
+		
+         <removeHeaders pattern="[Tt]ransfer-[Ee]ncoding" />
+		
+
+	 <convertBodyTo type="java.lang.String"/>
+   
+	 <transform> 
+	        <simple>${body.replace('xsi:nil="true"', "")}</simple> 
+	</transform> 
+
+	 <transform> 
+		        <simple>${body.replace('xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"', "")}</simple> 
+	</transform> 
+	
+
+		 
+	     <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+
+	<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeEmptyTags"/>
+	    <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+	
+	      
+         <doCatch>
+            <exception>java.lang.Exception</exception>
+			<handled>
+				<constant>true</constant>
+			</handled>
+            <setProperty propertyName="PrintMessage">
+               <constant>Print Exception</constant>
+            </setProperty>
+            <log message="Exception occured for operation  ${exchangeProperty.org.switchyard.operationName} \n:  ${exception.stacktrace}"/>
+			<setProperty propertyName="ElementList">
+				<constant>TransactionCode,TransactionDateTime</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractElementToProperties"/>
+			<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="processSOAPFaultError"/>				
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>		
+            <choice>
+               <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'CreateCustomerRequest'</simple>
+				  	<to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  
+				  <setBody>
+					<simple>
+						&lt;CreateCustomerRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/CreateCustomerRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>
+			   
+               <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'ModifyCustomerRequest'</simple>               
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;ModifyCustomerRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/ModifyCustomerRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>
+			   
+               <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'NewOrderRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;NewOrderRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/NewOrderRequestResponse&gt;
+					</simple>
+				  </setBody>	
+               </when>
+			   
+               <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'EnhancedServicePrequalRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;EnhancedServicePrequalRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/EnhancedServicePrequalRequestResponse&gt;
+					</simple>
+				  </setBody>				
+               </when>
+			   
+               <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'ModifyOrderRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;ModifyOrderRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/ModifyOrderRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>
+			   
+               <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'UpgradeOrderRequest'</simple>                
+				   <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;UpgradeOrderRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/UpgradeOrderRequestResponse&gt;
+					</simple>
+				  </setBody>				  
+               </when>
+			   
+			   <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'ViewOrderRequest'</simple>
+				   <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>			  
+				  <setBody>
+					<simple>
+						&lt;ViewOrderRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/ViewOrderRequestResponse&gt;
+					</simple>
+				  </setBody>	
+               </when>
+			   
+			   <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'StatusRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;StatusRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/StatusRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>	
+
+				<when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'ExistingCustomerOrderRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;ExistingCustomerOrderRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/ExistingCustomerOrderRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>			
+
+				<when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'CancelOrderRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;CancelOrderRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/CancelOrderRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>			   
+			   
+			   <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'FAPTokenAllocateRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;FAPTokenAllocateRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/FAPTokenAllocateRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>
+			   
+			   <when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'SearchCustomerRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;SearchCustomerRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/SearchCustomerRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>
+			   
+			   	<when>
+                  <simple>${exchangeProperty.org.switchyard.operationName} contains  'ViewCustomerRequest'</simple>
+				  <to pattern="InOut" uri="velocity:templates/ESB_PIM_SalesforceExceptionResponse.vm?contentCache=true"/> 	
+				  <setBody>
+					<simple>${body}</simple>
+				  </setBody>				  				 
+				  <setBody>
+					<simple>
+						&lt;ViewCustomerRequestResponse xmlns=&quot;http://soap.sforce.com/schemas/class/PartnersOrder&quot;&gt;${body}&lt;/ViewCustomerRequestResponse&gt;
+					</simple>
+				  </setBody>
+               </when>
+			   
+            </choice>
+			<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeEmptyTags"/>
+            <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+            <continued>
+               <constant>true</constant>
+            </continued>
+         </doCatch>
+      </doTry>
+   </route>
+</routes>

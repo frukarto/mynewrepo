@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ASCII"?>
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route xmlns:pim="http://www.hns.com/iag/schemas/partner" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error" handleFault="true" id="SF_CaseManagementAPIProxy">
+		<from uri="switchyard://SF_CaseManagementAPIProxy"/>
+		<doTry>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print Input Request</constant>
+			</setProperty>
+			<setProperty propertyName="ProxyName">
+				<constant>SF_CaseManagementAPIProxy</constant>
+			</setProperty>
+			<choice>
+				<when>
+					<simple>${header.http_request_info.queryString}   contains 'caseNumber'</simple>
+					<doTry>
+					
+					<bean beanType="com.hughes.bits.esb.custom.action.CustomPIMAuthorizationAction" method="extractQueryStringToProperties"/>
+	
+					<bean beanType="com.hughes.bits.esb.custom.action.CustomPIMAuthorizationAction" method="authorizeJSON"/>
+					<doCatch>
+						<exception>java.lang.Exception</exception>
+
+					</doCatch>
+					</doTry>
+
+                    <removeHeaders  pattern="*" />
+<setHeader headerName="CamelHttpMethod">
+  <constant>GET</constant>
+</setHeader>
+
+					<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="addSalesforceTokenToAuthorizationHeader"/>
+					<setHeader headerName="Authorization">
+						<simple>${exchangeProperty.SALESFORCE_BEARER_AUTHORIZATION}</simple>
+					</setHeader>
+					<log message="${exchangeId}:   Authorization Header:  ${in.headers.Authorization}"/>
+					<!-- Auhtorization for header complete-->
+					<setHeader headerName="Content-Type">
+						<simple>application/json</simple>
+					</setHeader>
+
+					
+					<recipientList ignoreInvalidEndpoints="true">
+					<simple>${sys.SF_CaseManagementAPIProxy.proxy.endpoint}?httpClient.soTimeout=60000&amp;origin=PartnerCRM&amp;caseNumber=${exchangeProperty.caseNumber}&amp;activityRequested=true&amp;TransactionSequenceId=${exchangeProperty.TransactionSequenceId}&amp;TransactionCode=${exchangeProperty.TransactionCode}&amp;TransactionDateTime=${exchangeProperty.TransactionDateTime}</simple>
+						</recipientList>
+					<convertBodyTo type="java.lang.String"/>
+					<setProperty propertyName="PrintMessage">
+						<constant>Print after receiving business response</constant>
+					</setProperty>
+					<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+			</when>
+				<otherwise>
+						<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+						
+					   <bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+				 	    <wireTap uri="switchyard://DebugLogService"/>
+					
+					
+					<!-- extract the elements from Jason format -->
+					<!-- unknown -->
+					<setProperty propertyName="ElementList">
+						<constant>request/PartnerId,request/MessageHeader/TransactionCode,request/MessageHeader/TransactionSequenceId</constant>
+					</setProperty>
+					<bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+					 <log message="${exchangeId} Extracted Properties ${exchangeProperty.PartnerId}  ${exchangeProperty.TransactionCode}" />
+					<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+					<!--
+		   <setProperty  propertyName="AuthorizeMessageElement">
+			   <constant>action</constant>
+		   </setProperty>
+
+		   <setProperty  propertyName="AuthorizeMessages">
+			   <constant>CCASE:Create,UCASE:Update,CLCASE:Close</constant>
+		   </setProperty>
+			-->
+					<!-- Commenting the try catch block for eployment purposes-->
+					<doTry>
+						<bean beanType="com.hughes.bits.esb.custom.action.CustomPIMAuthorizationAction" method="authorizeJSON"/>
+						<setProperty propertyName="status">
+							<constant>true</constant>
+						</setProperty>
+						<doCatch>
+							<exception>java.lang.Exception</exception>
+							<log message="${exception.stacktrace}"/>
+							<handled>
+								<constant>true</constant>
+							</handled>
+							<setBody>
+								<constant>
+								{
+								
+								  "Status": "FAILED",
+								  "Response_Description": "Authorization Failed"
+								}
+						</constant>
+							</setBody>
+							<setProperty propertyName="status">
+								<constant>false	</constant>
+							</setProperty>
+						</doCatch>
+					</doTry>
+					<choice>
+						<when>
+							<simple>${exchangeProperty.status} == 'true'</simple>
+							<removeHeaders pattern="*" />
+
+							<!-- Authorization Complete -->
+							<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="addSalesforceTokenToAuthorizationHeader"/>
+							<setHeader headerName="Authorization">
+								<simple>${exchangeProperty.SALESFORCE_BEARER_AUTHORIZATION}</simple>
+							</setHeader>
+							<setHeader headerName="Content-Type">
+									<constant>application/json</constant>
+							</setHeader>
+							
+						      
+							<!-- Auhtorization for header complete-->
+							<choice>
+							<when>
+							<simple>${exchangeProperty.TransactionCode} == 'UCASE'</simple>
+							<setHeader headerName="CamelHttpMethod">
+								<constant>PUT</constant>
+							</setHeader>
+							</when>
+							   <otherwise></otherwise>
+							</choice>
+							 <log message="${exchangeId}:   Headers  ${in.headers}"/>
+							
+							
+							<to uri="{{SF_CaseManagementAPIProxy.proxy.endpoint}}?httpClient.soTimeout={{SF_CaseManagementAPIProxy.proxy.timeout}}"/>
+							<convertBodyTo type="java.lang.String"/>
+							<setProperty propertyName="PrintMessage">
+								<constant>Print after receiving business response</constant>
+							</setProperty>
+							<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+						</when>
+					</choice>
+			
+				</otherwise>
+			</choice>
+			<doCatch>
+				<exception>java.lang.Exception</exception>
+				<log message="${exchangeId}  Exception Occured: ${exception.stacktrace}"/>
+				<handled>
+					<simple/>
+				</handled>
+				<setProperty propertyName="PrintMessage">
+					<constant>Print Exception</constant>
+				</setProperty>
+				<log message="Exception"/>
+				<bean beanType="com.hughes.bits.esb.custom.action.CustomExceptionHandlerAction" method="processHttpRequest"/>
+				<setBody>
+					<constant>
+								{
+								  "Status": "FAILED",
+								  "Response_Description": "Backend Failed to Invoke"
+								}
+						</constant>
+				</setBody>
+				<setProperty propertyName="PrintMessage">
+					<constant>Print Message in Exception Block</constant>
+				</setProperty>
+				<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+			</doCatch>
+			<doFinally>
+					<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+					<wireTap uri="switchyard://DebugLogService"/>
+			</doFinally>
+		</doTry>
+	</route>
+</routes>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns:tns1="http://transportfeasibility.bits.hughes.com"   xmlns:slvt="http://slvt.bits.hughes.com" xmlns:core="http://www.hns.com/iag/schemas/core" >
+	<xs:import namespace="http://transportfeasibility.bits.hughes.com" schemaLocation="./TransportFeasibility.xsd"/>
+	<xs:import namespace="http://slvt.bits.hughes.com" schemaLocation="./SLVT.xsd"/>
+
+	<xs:element name="tfs_slvt_resp_merge">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+		<xs:sequence>
+				<xs:element name="TransportFeasibilityResponse" type="tns1:TransportFeasibilityResponseType" minOccurs="0"/>
+			<xs:element name="SLVTResponseMsg">
+	<xs:annotation>
+		<xs:documentation>Validates that the Service is available at specified location identified by Latitude/Longitude.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>
+		<!--	<xs:element name="Response" type="core:ResponseStatusType"/> -->
+			<xs:element name="SLVTParametersList" type="slvt:SLVTParametersListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	</xs:element>
+</xs:schema>

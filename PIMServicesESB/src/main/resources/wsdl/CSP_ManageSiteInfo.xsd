@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Adarsh (Hughes Network Systems) -->
+<xs:schema xmlns:tns="http://fetchsiteinfo.bits.hughes.com" xmlns:cct="http://cspcommontypes.bits.hughes.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fetchsiteinfo.bits.hughes.com" elementFormDefault="qualified">
+	<xs:import namespace="http://cspcommontypes.bits.hughes.com" schemaLocation="./CSPCommonTypes.xsd"/>
+	<xs:element name="GetSpecialOffersReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tns:GetSpecialOffersRequest"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetSpecialOffersResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tns:GetSpecialOffersResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetSpecialOffersResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="cct:ResponseType"/>
+				<xs:element name="SpecialOfferType" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetSpecialOffersRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UserName" type="cct:UserIDType"/>
+				<xs:element name="ProcessInstanceID" type="xs:string" minOccurs="0"/>
+				<xs:element name="SAN" type="cct:SANType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SearchSiteReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UserName" type="cct:UserIDType"/>
+				<xs:element name="ProcessInstanceID" type="xs:string" minOccurs="0"/>
+				<xs:element name="SAN" type="cct:SANType" minOccurs="0"/>
+				<xs:element name="ESN" type="xs:string" minOccurs="0"/>
+				<xs:element name="CustomerID" type="cct:CustomerIDType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This represents associated Class B customer Id with the site </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="SourceID" type="cct:SourceIDType" minOccurs="0"/>
+				<xs:element name="SiteContactFirstName" type="cct:FirstNameType" minOccurs="0"/>
+				<xs:element name="SiteContactLastName" type="cct:LastNameType" minOccurs="0"/>
+				<xs:element name="SiteContactDayPhone" type="cct:PhoneType" minOccurs="0"/>
+				<xs:element name="SiteContactZip" type="cct:ZipType" minOccurs="0"/>
+				<xs:element name="SiteInstallState" type="cct:StateType" minOccurs="0"/>
+				<xs:element name="SiteInstallCountry" type="cct:CountryType" minOccurs="0"/>
+				<xs:element name="SiteInstallZip" type="cct:ZipType" minOccurs="0"/>
+				<xs:element name="SiteInstallDateRange" type="cct:DateRangeType" minOccurs="0"/>
+				<xs:element name="ClassACustomerID" type="cct:CustomerIDType"/>
+				<xs:element name="BusinessModel" type="cct:BusinessModelType" minOccurs="0"/>
+				<xs:element name="PaginationReq" type="cct:PaginationRequestType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SearchSiteResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="cct:ResponseType"/>
+				<xs:element name="SiteInfo" type="tns:SiteDetailsItemType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="PaginationResp" type="cct:PaginationResponseType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetSiteDetailsReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UserName" type="cct:UserIDType"/>
+				<xs:element name="ProcessInstanceID" type="xs:string" minOccurs="0"/>
+				<xs:element name="SAN" type="cct:SANType"/>
+				<xs:element name="ClassACustomerID" type="cct:CustomerIDType"/>
+				<xs:element name="AssociatedClassBCustomerID" type="cct:CustomerIDType" minOccurs="0"/>
+				<xs:element name="BusinessModel" type="cct:BusinessModelType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetSiteDetailsResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="cct:ResponseType"/>
+				<xs:element name="SiteInfo" type="tns:SiteDetails" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="SiteDetailsItemType">
+		<xs:sequence>
+			<xs:element name="ProductID" type="xs:string" minOccurs="0"/>
+			<xs:element name="SiteAddress" type="cct:AddressValueType" minOccurs="0"/>
+			<xs:element name="IsDeInstall" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Latitude" type="xs:float" minOccurs="0"/>
+			<xs:element name="Longitude" type="xs:float" minOccurs="0"/>
+			<xs:element name="IsZipCentricLatLong" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="CustomerSiteID" type="xs:string" minOccurs="0"/>
+			<xs:element name="HNSLocationID" type="xs:string" minOccurs="0"/>
+			<xs:element name="CustomerLocationID" type="xs:string" minOccurs="0"/>
+			<xs:element name="ParentSiteID" type="xs:string" minOccurs="0"/>
+			<xs:element name="BeamTranponderID" type="xs:string" minOccurs="0"/>
+			<xs:element name="SiteDetails" type="tns:SiteDetails" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SiteDetails">
+		<xs:sequence>
+			<xs:element name="SAN" type="cct:SANType"/>
+			<xs:element name="SiteType" type="cct:SiteType"/>
+			<xs:element name="ClassACustomerID" type="cct:CustomerIDType"/>
+			<xs:element name="ESN" type="xs:string" minOccurs="0"/>
+			<xs:element name="SourceCustomerID" type="cct:CustomerIDType" minOccurs="0"/>
+			<xs:element name="ClassBCustomerID" type="cct:CustomerIDType" minOccurs="0"/>
+			<xs:element name="SiteContactInfo" type="cct:InstallContactInfo" minOccurs="0"/>
+			<xs:element name="SiteInstallDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SiteProvisioningStatus" type="cct:SiteProvisioningStatusType"/>
+			<xs:element name="CustomerLogin" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProvisionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DeleteDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SpecialOfferType" type="xs:string" minOccurs="0"/>
+			<xs:element name="AccountStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="ServiceStatus" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessModel" type="cct:BusinessModelType" minOccurs="0"/>
+			<xs:element name="HNSLocationID" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CRMSiteDetailsType">
+		<xs:sequence>
+			<xs:element name="SAN" type="cct:SANType"/>
+			<xs:element name="SiteType" type="cct:CRMSiteType"/>
+			<xs:element name="ESN" type="xs:string" minOccurs="0"/>
+			<xs:element name="SiteProvisioningStatus" type="cct:SiteProvisioningStatusType">
+				<xs:annotation>
+					<xs:documentation>0-Pending
+1-Provisioned
+2-DSS Deleted
+3-Terminated</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransportStatus" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>For Spaceway, possible values are:                    PRE                               ACT                            REG                            DRG                                                                      For Broadband Remote,possible values are:  Pending          Commissioned DeCommisioned                                                           For Jupiter, possible values are:                                    NotActivated                       TerminalActivated ServiceActivated        Deleted                                                        </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsSuspendedOrLocked" type="xs:boolean"/>
+			<xs:element name="ReasonCode" type="xs:string" minOccurs="0"/>			
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="RetrieveSiteStatusRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="cct:CSPMsgHeaderType"/>
+				<xs:element name="SAN" type="cct:SANType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RetrieveSiteStatusResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="cct:ResponseType"/>
+				<xs:element name="SiteDetails" type="tns:CRMSiteDetailsType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateSiteDetailsRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="cct:CSPMsgHeaderType"/>
+				<xs:element name="SAN" type="cct:SANType"/>
+				<xs:element name="Email" type="cct:EmailType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="UpdateSiteDetailsResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="cct:ResponseType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>	
+</xs:schema>

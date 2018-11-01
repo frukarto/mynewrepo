@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+
+
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error"
+ xmlns:core="http://www.hns.com/iag/schemas/core"  xmlns:tns1="http://transportfeasibility.bits.hughes.com"  
+ xmlns:tns="http://www.example.org/Test/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ name="Test" targetNamespace="http://www.example.org/Test/" xmlns:xsd1="http://www.hns.com/iag/schemas/partner">
+ 
+  <wsdl:types>
+  
+  	<xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+			<xsd:import namespace="http://fetchsiteinfo.bits.hughes.com" schemaLocation="./CSP_ManageSiteInfo.xsd"/>		
+	        </xsd:schema>
+			
+				
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xs:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xs:schema>
+		
+  
+    <xsd:schema targetNamespace="http://www.example.org/Test/">
+    		<xsd:import namespace="http://www.hns.com/iag/schemas/partner" schemaLocation="./pim.xsd"/>
+    
+      <xsd:element name="translate">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="in" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="translateResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="out" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.hns.com/iag/schemas/core" targetNamespace="http://www.hns.com/iag/schemas/core" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+<xs:complexType name="ResponseStatusType">
+		<xs:annotation>
+			<xs:documentation>Common Response Status Type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Status">
+				<xs:annotation>
+					<xs:documentation>Indicates the operation status
+						Possible Values :
+						0 = SUCCESS
+						1 = FAILURE
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:nonNegativeInteger">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ResponseCode"  minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Response Code ( 10 character max) If provided this code should not be an empty string.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>				
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="10"/>
+						<xs:pattern value="([A-Za-z0-9])*(:|\-|_| |#)?([A-Za-z0-9])*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ResponseMessage"  minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This provides a brief response message ( 256 characters max length)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>		
+					<xs:restriction base="xs:string">
+						<xs:minLength value="0"/>
+						<xs:maxLength value="256"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>						
+		</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="LatitudeType">
+	<xs:annotation>
+		<xs:documentation>The latitude of the ST.</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:maxLength value="12"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="LongitudeType">
+	<xs:annotation>
+		<xs:documentation>A simple time that defines the time zone</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:maxLength value="12"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="CustomerIDType">
+	<xs:annotation>
+		<xs:documentation>Service deal can only be used by the customer with this ID. If this field is not provided, deal can be used by all customers.</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="2"/>
+		<xs:maxLength value="15"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="BeamIDType">
+	<xs:annotation>
+		<xs:documentation>Identify the Beam Type</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:maxLength value="16"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="AntennaSizeType">
+	<xs:annotation>
+		<xs:documentation> A simple type that defines the Ka antennaSize.</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:float">
+		<xs:minInclusive value="0"/>
+		<xs:maxInclusive value="3.5"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="ODUPowerType">
+	<xs:annotation>
+		<xs:documentation>ODU Power </xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:float">
+		<xs:minInclusive value="0.0"/>
+		<xs:maxInclusive value="100.0" fixed="false"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="AvailabilityType">
+	<xs:annotation>
+		<xs:documentation>Availability Levels in %</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:float">
+		<xs:minInclusive value="0.0"/>
+		<xs:maxInclusive value="100.0" fixed="false"/>
+	</xs:restriction>
+</xs:simpleType>
+<!-- Satellite Id -->
+<xs:simpleType name="SatelliteIdType">
+	<xs:annotation>
+		<xs:documentation>Satellite Id </xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="0"/>
+		<xs:maxLength value="100"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="PolarizationType">
+	<xs:restriction base="xs:string">
+		<xs:maxLength value="100"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="BandType">
+	<xs:restriction base="xs:string">
+		<xs:maxLength value="100"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="UserIDType">
+	<xs:annotation>
+		<xs:documentation>Stores the value of Site-owner for consumers. This value is provided by SM at the time of Site Creation for Consumers</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="3"/>
+		<xs:maxLength value="25"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="UserCredentialType">
+	<xs:annotation>
+		<xs:documentation>
+			This is a complex type for User Credential, a corresponding
+			UserCredential Bean exists in framework
+		</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>
+		<xs:element name="LoginId" type="UserIDType"/>
+		<xs:element name="SessionKey" minOccurs="0">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="Roles" minOccurs="0" maxOccurs="unbounded">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="SiteCodes" minOccurs="0" maxOccurs="unbounded">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:element>
+		<xs:element name="AuthorizationFlag" type="xs:boolean"/>
+	</xs:sequence>
+</xs:complexType>
+	
+</xs:schema>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://transportfeasibility.bits.hughes.com" xmlns:tns1="http://transportfeasibility.bits.hughes.com" xmlns:core="http://www.hns.com/iag/schemas/core" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:import namespace="http://www.hns.com/iag/schemas/core"/>
+
+<xs:element name="TransportFeasibilityRequestMsg">
+	<xs:annotation>
+		<xs:documentation>Validates that the Service is available at specified location identified by Latitude/Longitude.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>	
+			<xs:element name="UserCredential" type="core:UserCredentialType" minOccurs="0"/>		
+			<xs:element name="ClassACustomerId" type="core:CustomerIDType" minOccurs="0"/>
+			<xs:element name="Latitude" type="core:LatitudeType"/>
+			<xs:element name="Longitude" type="core:LongitudeType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="TransportFeasibilityResponseMsg">
+	<xs:annotation>
+		<xs:documentation>Message is sent as a response to TransportFeasibilityRequestMsg.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="TransportFeasibilityResponse" type="tns1:TransportFeasibilityResponseType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:complexType name="TransportFeasibilityResponseType">
+	<xs:annotation>
+		<xs:documentation>This is used to signify the feasibility of a transport along with network parameters if transport is available</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>		
+		<xs:element name="Response" type="core:ResponseStatusType"/>
+		<xs:element name="TransportFeasibilityParameters" type="tns1:TransportFeasibilityParameterType" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+<xs:complexType name="TransportFeasibilityParameterType">
+	<xs:annotation>
+		<xs:documentation>This is used to signify the feasibility of a transport along with network parameters if transport is available</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>		
+		<xs:element name="AvailabilityFlag" type="xs:boolean" minOccurs="0">
+			<xs:annotation>
+				<xs:documentation>This flag determines the Technical availability of a transport Service at given LAT/LONG.</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="BusinessAvailabilityFlag" type="xs:boolean" minOccurs="0">
+			<xs:annotation>
+				<xs:documentation>This flag determines the Business availability of a transport Service at given LAT/LONG.</xs:documentation>
+			</xs:annotation>
+		</xs:element>
+		<xs:element name="SatellitedID" type="core:SatelliteIdType" minOccurs="0"/>
+		<xs:element name="BeamID" type="core:BeamIDType" minOccurs="0"/>
+		<xs:element name="Polarization" type="core:PolarizationType" minOccurs="0"/>
+		<xs:element name="Band" type="core:BandType" minOccurs="0"/>			
+		<xs:element name="MinODUPower" type="core:ODUPowerType" minOccurs="0"/>
+		<xs:element name="MinAntennaSize" type="core:AntennaSizeType" minOccurs="0"/>
+		<xs:element name="TransportName" type="tns1:TransportNameType" minOccurs="0"/>
+	</xs:sequence>
+</xs:complexType>
+
+
+<xs:simpleType name="TransportNameType">
+	<xs:annotation>
+		<xs:documentation>The name of the transport. Possible values are : Ju,Ku and Ka</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="1"/>
+		<xs:maxLength value="256"/>
+		<xs:whiteSpace value="collapse"/>
+	</xs:restriction>
+</xs:simpleType>
+
+
+</xs:schema>
+
+
+  	<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  		<xsd:import namespace="http://www.hns.com/iag/schemas/partner"
+  			schemaLocation="pim.xsd">
+  		</xsd:import></xsd:schema></wsdl:types>
+  <wsdl:message name="translateTransportFeasibilityResponseToEPQRequest">
+    <wsdl:part element="tns1:TransportFeasibilityResponseMsg" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="translateTransportFeasibilityResponseToEPQResponse">
+    <wsdl:part element="xsd1:EnhancedServicePrequalRequest" name="parameters"/>
+  </wsdl:message>
+		 <wsdl:message name="ServiceFault">
+  	<wsdl:part name="parameters" element="xws:ServiceFault"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Test">
+    <wsdl:operation name="translateTransportFeasibilityResponseToEPQ">
+      <wsdl:input message="tns:translateTransportFeasibilityResponseToEPQRequest"/>
+      <wsdl:output message="tns:translateTransportFeasibilityResponseToEPQResponse"/>
+	  <wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TestSOAP" type="tns:Test">
+
+  	<soap:binding style="document"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
+  	<wsdl:operation
+  		name="translateTransportFeasibilityResponseToEPQ">
+
+  		<soap:operation
+  			soapAction="http://www.example.org/Test/translateTransportFeasibilityResponseToEPQ" />
+  		<wsdl:input>
+
+  			<soap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+
+  			<soap:body use="literal" />
+  		</wsdl:output>
+  	</wsdl:operation>
+  </wsdl:binding>
+  
+   <plnk:partnerLinkType name="TestProxyPartnerLinkType">
+		<plnk:role name="testProxyPartnerLinkRole" portType="tns:Test" />
+	</plnk:partnerLinkType>
+  
+  <wsdl:service name="ESBTranslationService">
+    <wsdl:port binding="tns:TestSOAP" name="TestSOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

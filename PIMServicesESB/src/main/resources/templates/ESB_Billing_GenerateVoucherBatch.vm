@@ -1,0 +1,17 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="service">
+   <soapenv:Header/>
+   <soapenv:Body>    
+	<ser:generateVoucherBatch  xmlns:ser="service">
+         <arg0>
+            <voucherType>${exchange.properties.VoucherType}</voucherType>
+			<voucherExpirationDate>${exchange.properties.InputDateYear}-${exchange.properties.InputDateMonth}-${exchange.properties.InputDateDay}T00:00:00.000Z</voucherExpirationDate>
+            <voucherQuantity>${exchange.properties.VoucherQuantity}</voucherQuantity>
+            <voucherUnitPrice>${exchange.properties.VoucherPrice}</voucherUnitPrice>
+            <MAN>${exchange.properties.PartnerId}</MAN>
+            <batchName>${exchange.properties.VoucherBatchName}</batchName>
+            <transactionId>${exchange.properties.TransactionSequenceId}</transactionId>
+			<userLoginId>${exchange.properties.username}</userLoginId>
+         </arg0>
+      </ser:generateVoucherBatch>
+	     </soapenv:Body>
+</soapenv:Envelope>

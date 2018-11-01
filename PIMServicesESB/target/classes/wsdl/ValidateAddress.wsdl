@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="ValidateAddressService" targetNamespace="http://validateaddress.bits.hughes.com"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://validateaddress.bits.hughes.com"
+	xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error"
+	
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/">
+	<!-- IMPORTED XSDs PLUS SURROUNDING OPERATION WRAPPER ELEMENTS-->
+	<types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+			<xs:import namespace="http://validateaddress.bits.hughes.com" schemaLocation="./CSP_ValidateAddress.xsd"/>	
+		</xs:schema>	
+
+	
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xs:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xs:schema>		
+	</types>
+
+	<!-- REQUEST/RESPONSE MESSAGE FORMATS -->
+	<message name="ValidateAddressReq">
+		<part element="tns:ValidateAddressReq" name="parameters" />
+	</message>
+	<message name="ValidateAddressResp">
+		<part element="tns:ValidateAddressResp" name="parameters" />
+	</message>
+	
+		 <message name="ServiceFault">
+  	<part name="parameters" element="xws:ServiceFault"></part>
+  </message>
+	
+
+	<!-- DEFINITION OF THE SERVICE AND ITS OPERATIONS -->
+	<portType name="ValidateAddressService">
+		<operation name="ValidateAddressReq">
+			<input message="tns:ValidateAddressReq" />
+			<output message="tns:ValidateAddressResp" />
+			<fault name="fault" message="tns:ServiceFault"></fault>
+			
+		</operation>
+	</portType>
+
+	<!--
+		BIND SERICE OPERATIONS TO USE SOAP-HTTP WITH DOCUMENT-LITERAL STYLE
+	-->
+	<binding name="ValidateAddressServiceSOAP" type="tns:ValidateAddressService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="ValidateAddressReq">
+			<soap:operation
+				soapAction="http://www.hughes.com/validateaddress/ValidateAddressService/ValidateAddressReq" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+			
+		</operation>
+	</binding>
+	
+	 <plnk:partnerLinkType name="ValidateAddressServiceLinkType">
+		<plnk:role name="ValidateAddressServiceRole" portType="tns:ValidateAddressService" />
+	</plnk:partnerLinkType>
+
+	<!-- DEFINITION OF SERVICE'S ENDPONT URL -->
+	<service name="ValidateAddressService">
+		<port binding="tns:ValidateAddressServiceSOAP" name="ValidateAddressServiceImplPort">
+			<soap:address location="http://cspwsserver:8080/CSP_ValidateAddressService/ValidateAddressService"/>
+		</port>
+	</service>
+</definitions>

@@ -1,0 +1,12 @@
+<SLVTRequestMsg  xmlns="http://slvt.bits.hughes.com">
+	<UserCredential>
+		<LoginId xmlns="http://www.hns.com/iag/schemas/core">dssadmin</LoginId>
+		<AuthorizationFlag xmlns="http://www.hns.com/iag/schemas/core">true</AuthorizationFlag>
+	</UserCredential>
+	<ClassACustomerId>$!{exchange.properties.PartnerId}</ClassACustomerId>
+	<Latitude>$!{exchange.properties.Latitude}</Latitude>
+	<Longitude>$!{exchange.properties.Longitude}</Longitude>
+	<SatellitedID>$!{exchange.properties.BroadbandRemote_SatellitedID}</SatellitedID>
+	<BeamID>$!{exchange.properties.BroadbandRemote_BeamID}</BeamID>
+	<TransportName>Broadband Remote</TransportName>
+</SLVTRequestMsg>

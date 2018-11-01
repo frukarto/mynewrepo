@@ -1,0 +1,67 @@
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://slvt.bits.hughes.com" xmlns:tns1="http://slvt.bits.hughes.com" xmlns:core="http://www.hns.com/iag/schemas/core" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:import namespace="http://www.hns.com/iag/schemas/core" schemaLocation="./Core.xsd"/>
+
+<xs:element name="SLVTRequestMsg">
+	<xs:annotation>
+		<xs:documentation>Validates that the Service is available at specified location identified by Latitude/Longitude.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>
+		    <xs:element name="UserCredential" type="core:UserCredentialType" minOccurs="0"/>
+			<xs:element name="Latitude" type="core:LatitudeType"/>
+			<xs:element name="Longitude" type="core:LongitudeType"/>
+			<xs:element name="ClassACustomerId" type="core:CustomerIDType"/>
+			<xs:element name="TransportName" type="tns1:TransportNameType"/>
+			<xs:element name="BeamID" type="core:BeamIDType" minOccurs="0"/>
+			<xs:element name="SatellitedID" type="core:SatelliteIdType" minOccurs="0"/>			
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="SLVTResponseMsg">
+	<xs:annotation>
+		<xs:documentation>Validates that the Service is available at specified location identified by Latitude/Longitude.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="Response" type="core:ResponseStatusType"/>
+			<xs:element name="BeamID" type="core:BeamIDType" minOccurs="0"/>
+			<xs:element name="SLVTParametersList" type="tns1:SLVTParametersListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+
+<xs:complexType name="SLVTParametersListType">
+	<xs:annotation>
+		<xs:documentation>Represents the SLVT Parameters List</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>
+		<xs:element name="SLVTParameters" type="tns1:SLVTParametersType" minOccurs="1" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="TransportNameType">
+	<xs:annotation>
+		<xs:documentation>The name of the transport. Possible values are : Ju,Ku and Ka</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:minLength value="1"/>
+		<xs:maxLength value="256"/>
+		<xs:whiteSpace value="collapse"/>
+	</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="SLVTParametersType">
+	<xs:annotation>
+		<xs:documentation>SLVT parameter information</xs:documentation>
+	</xs:annotation>
+	<xs:sequence>
+		<xs:element name="AntennaSize" type="core:AntennaSizeType"/>
+		<xs:element name="RadioPower" type="core:ODUPowerType"/>
+		<xs:element name="Availability" type="core:AvailabilityType"/>
+	</xs:sequence>
+</xs:complexType>
+
+
+</xs:schema>

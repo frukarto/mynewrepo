@@ -1,0 +1,14 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="service">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:notifyVoucherBatchPrint>
+         <!--Optional:-->
+         <arg0>
+            <MAN>${exchange.properties.PartnerId}</MAN>
+            <batchId>${exchange.properties.VoucherBatchId}</batchId>
+            <transactionId>${exchange.properties.TransactionSequenceId}</transactionId>
+            <userLoginId>${exchange.properties.username}</userLoginId>
+         </arg0>
+      </ser:notifyVoucherBatchPrint>
+   </soapenv:Body>
+</soapenv:Envelope>

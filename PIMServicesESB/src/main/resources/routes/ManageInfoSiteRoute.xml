@@ -1,0 +1,41 @@
+<routes xmlns="http://camel.apache.org/schema/spring" >
+   <route>
+      <from uri="switchyard://ManageSiteInfoProxy" handleFault="true"/>
+      <doTry>
+         <convertBodyTo type="java.lang.String"/>
+         <setProperty propertyName="ProxyName">
+            <constant>ManageSiteInfoProxy</constant>
+         </setProperty>
+         <setProperty propertyName="PrintMessage">
+            <constant>Print Input Request</constant>
+         </setProperty>
+         <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+        
+         <to uri="switchyard://ManageSiteInfoCSPService"/>
+       <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+	 <doCatch>
+            <exception>java.lang.Exception</exception>
+            <setProperty propertyName="PrintMessage">
+               <constant>Print Exception</constant>
+            </setProperty>
+            <log message="Exception occured for messageId:  ${exchangeId}    ${exception.stacktrace}"/>
+        
+    <setBody>
+                     <constant>
+	    		 <![CDATA[		 	
+	 <ns2:SearchSiteResp xmlns="http://cspcommontypes.bits.hughes.com" xmlns:ns2="http://fetchsiteinfo.bits.hughes.com">
+         <ns2:Response>
+            <Code>311114003</Code>
+            <Description>ManageSiteInfo  service failed with SoapFault</Description>
+         </ns2:Response>
+      </ns2:SearchSiteResp>
+				]]>
+</constant>
+                </setBody>
+              <handled>
+               <constant>true</constant>
+            </handled>
+         </doCatch>
+      </doTry>
+   </route>
+</routes>

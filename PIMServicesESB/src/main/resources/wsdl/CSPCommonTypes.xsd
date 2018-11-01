@@ -1,0 +1,3592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Adarsh (Hughes Network Systems) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by RAM KUMAR (LLC) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cct="http://cspcommontypes.bits.hughes.com" targetNamespace="http://cspcommontypes.bits.hughes.com" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:simpleType name="UserIDType">
+		<xs:annotation>
+			<xs:documentation>A String thsat defines the UserID received from TW</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="3"/>
+			<xs:maxLength value="25"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SourceIDType">
+		<xs:annotation>
+			<xs:documentation>Represents the PartnerId in all SOA messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SourceTypeCodeType">
+		<xs:annotation>
+			<xs:documentation>Retailer= 1;Call Center= 2;Dealer = 3;</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="ProgramCodeType">
+		<xs:annotation>
+			<xs:documentation>A string that uniquely identifies an association between a program and a customer.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProgramNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProgramDescType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomerIDType">
+		<xs:annotation>
+			<xs:documentation>Represents the Class A Customer ID  in messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UUIDType">
+		<xs:annotation>
+			<xs:documentation>Represents the UUID of a user  in messages.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="36"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ExceptionType">
+		<xs:annotation>
+			<xs:documentation>Exception message returned to BPEL if any exception occurs</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code" type="xs:int"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Parameters" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ResponseType">
+		<xs:annotation>
+			<xs:documentation>Response message returned to BPEL if any exception occurs</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Code" type="xs:int"/>
+			<xs:element name="Description" type="xs:string"/>
+			<xs:element name="Parameters" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ServiceTrace" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PackageNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PackageDescType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PlanNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PlanDescType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceOfferingNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceOfferingHintTextType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceOfferingDescType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ExtraFieldType">
+		<xs:sequence>
+			<xs:element name="ExtraField" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="ParameterName" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PackageType">
+		<xs:restriction base="xs:long">
+			<xs:maxInclusive value="9999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PackageIDType">
+		<xs:restriction base="xs:long">
+			<xs:maxInclusive value="9999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PlanIDType">
+		<xs:restriction base="xs:long">
+			<xs:maxInclusive value="9999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceOfferingIDType">
+		<xs:restriction base="xs:long">
+			<xs:maxInclusive value="9999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceDealNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BillingDealIDType">
+		<xs:restriction base="xs:long">
+			<xs:maxInclusive value="9999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TaxCodeType">
+		<xs:annotation>
+			<xs:documentation>A string to uniquely represent the Tax codes. Possible values are : "EQ", "IS", "LI", "LE", "CH", "FR", "MA"</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BasicAddressType">
+		<xs:sequence>
+			<xs:element name="StreetNumber" type="cct:StreetNumberType" minOccurs="0"/>
+			<xs:element name="Street1" type="cct:Street1Type"/>
+			<xs:element name="Street2" type="cct:Street2Type" minOccurs="0"/>
+			<xs:element name="City" type="cct:CityType" minOccurs="0"/>
+			<xs:element name="County" type="cct:CountyType" minOccurs="0"/>
+			<xs:element name="Country" type="cct:CountryType" minOccurs="0"/>
+			<xs:element name="State" type="cct:StateType" minOccurs="0"/>
+			<xs:element name="Zip" type="cct:ZipType"/>
+			<xs:element name="IsForcedAddressFlag" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IsStandardizedAddressFlag" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="PreferredVendor" type="cct:VendorType" minOccurs="0"/>
+			<xs:element name="AddressValidatedWith" type="cct:VendorType" minOccurs="0"/>
+			<xs:element name="Landmark" type="xs:string" minOccurs="0"/>
+			<xs:element name="AddressTypeCD" type="xs:string" minOccurs="0"/>
+			<xs:element name="Neighborhood" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Complement" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Street1Type">
+		<xs:annotation>
+			<xs:documentation>The first line of a street address.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="156"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Street2Type">
+		<xs:annotation>
+			<xs:documentation>The second line of a street address.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CityType">
+		<xs:annotation>
+			<xs:documentation>Name of a city</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountyType">
+		<xs:annotation>
+			<xs:documentation>County Code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CountryType">
+		<xs:annotation>
+			<xs:documentation>Country Code </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- enumeration has been commented for SPR#46121 for POP international address feature -->
+	<xs:simpleType name="StateType">
+		<xs:restriction base="xs:string">
+			<!-- <xs:enumeration value="UNK"/>
+			<xs:enumeration value="BA"/>
+			<xs:enumeration value="CB"/>
+			<xs:enumeration value="CF"/>
+			<xs:enumeration value="CH"/>
+			<xs:enumeration value="CO"/>
+			<xs:enumeration value="CR"/>
+			<xs:enumeration value="CT"/>
+			<xs:enumeration value="ER"/>
+			<xs:enumeration value="FO"/>
+			<xs:enumeration value="JU"/>
+			<xs:enumeration value="LP"/>
+			<xs:enumeration value="LR"/>
+			<xs:enumeration value="MI"/>
+			<xs:enumeration value="MZ"/>
+			<xs:enumeration value="NQ"/>
+			<xs:enumeration value="RN"/>
+			<xs:enumeration value="SA"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="SE"/>
+			<xs:enumeration value="SF"/>
+			<xs:enumeration value="SJ"/>
+			<xs:enumeration value="SL"/>
+			<xs:enumeration value="TF"/>
+			<xs:enumeration value="TU"/>
+			<xs:enumeration value="ACT"/>
+			<xs:enumeration value="NSW"/>
+			<xs:enumeration value="NT"/>
+			<xs:enumeration value="QLD"/>
+			<xs:enumeration value="TAS"/>
+			<xs:enumeration value="VIC"/>
+			<xs:enumeration value="WA"/>
+			<xs:enumeration value="AN"/>
+			<xs:enumeration value="BC"/>
+			<xs:enumeration value="HE"/>
+			<xs:enumeration value="LI"/>
+			<xs:enumeration value="LU"/>
+			<xs:enumeration value="LX"/>
+			<xs:enumeration value="NA"/>
+			<xs:enumeration value="OV"/>
+			<xs:enumeration value="VB"/>
+			<xs:enumeration value="WB"/>
+			<xs:enumeration value="WV"/>
+			<xs:enumeration value="BE"/>
+			<xs:enumeration value="OR"/>
+			<xs:enumeration value="PA"/>
+			<xs:enumeration value="PO"/>
+			<xs:enumeration value="TA"/>
+			<xs:enumeration value="AC"/>
+			<xs:enumeration value="AL"/>
+			<xs:enumeration value="AM"/>
+			<xs:enumeration value="AP"/>
+			<xs:enumeration value="CE"/>
+			<xs:enumeration value="DF"/>
+			<xs:enumeration value="ES"/>
+			<xs:enumeration value="FN"/>
+			<xs:enumeration value="GO"/>
+			<xs:enumeration value="MA"/>
+			<xs:enumeration value="MG"/>
+			<xs:enumeration value="MS"/>
+			<xs:enumeration value="MT"/>
+			<xs:enumeration value="PB"/>
+			<xs:enumeration value="PE"/>
+			<xs:enumeration value="PI"/>
+			<xs:enumeration value="PR"/>
+			<xs:enumeration value="RJ"/>
+			<xs:enumeration value="RO"/>
+			<xs:enumeration value="RR"/>
+			<xs:enumeration value="RS"/>
+			<xs:enumeration value="SP"/>
+			<xs:enumeration value="TO"/>
+			<xs:enumeration value="AB"/>
+			<xs:enumeration value="MB"/>
+			<xs:enumeration value="NB"/>
+			<xs:enumeration value="NF"/>
+			<xs:enumeration value="NL"/>
+			<xs:enumeration value="NN"/>
+			<xs:enumeration value="NS"/>
+			<xs:enumeration value="NU"/>
+			<xs:enumeration value="ON"/>
+			<xs:enumeration value="QC"/>
+			<xs:enumeration value="SK"/>
+			<xs:enumeration value="YT"/>
+			<xs:enumeration value="ZZ"/>
+			<xs:enumeration value="AG"/>
+			<xs:enumeration value="AI"/>
+			<xs:enumeration value="AR"/>
+			<xs:enumeration value="BL"/>
+			<xs:enumeration value="BS"/>
+			<xs:enumeration value="FR"/>
+			<xs:enumeration value="GE"/>
+			<xs:enumeration value="GL"/>
+			<xs:enumeration value="GR"/>
+			<xs:enumeration value="NE"/>
+			<xs:enumeration value="NW"/>
+			<xs:enumeration value="OW"/>
+			<xs:enumeration value="SG"/>
+			<xs:enumeration value="SH"/>
+			<xs:enumeration value="SO"/>
+			<xs:enumeration value="SZ"/>
+			<xs:enumeration value="TG"/>
+			<xs:enumeration value="TI"/>
+			<xs:enumeration value="UR"/>
+			<xs:enumeration value="VD"/>
+			<xs:enumeration value="VS"/>
+			<xs:enumeration value="ZG"/>
+			<xs:enumeration value="ZH"/>
+			<xs:enumeration value="AT"/>
+			<xs:enumeration value="BB"/>
+			<xs:enumeration value="LL"/>
+			<xs:enumeration value="LO"/>
+			<xs:enumeration value="MU"/>
+			<xs:enumeration value="RM"/>
+			<xs:enumeration value="VA"/>
+			<xs:enumeration value="BR"/>
+			<xs:enumeration value="BW"/>
+			<xs:enumeration value="BY"/>
+			<xs:enumeration value="HB"/>
+			<xs:enumeration value="HH"/>
+			<xs:enumeration value="MV"/>
+			<xs:enumeration value="NI"/>
+			<xs:enumeration value="RP"/>
+			<xs:enumeration value="SN"/>
+			<xs:enumeration value="ST"/>
+			<xs:enumeration value="TH"/>
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="6"/>
+			<xs:enumeration value="7"/>
+			<xs:enumeration value="8"/>
+			<xs:enumeration value="9"/>
+			<xs:enumeration value="10"/>
+			<xs:enumeration value="11"/>
+			<xs:enumeration value="12"/>
+			<xs:enumeration value="13"/>
+			<xs:enumeration value="14"/>
+			<xs:enumeration value="15"/>
+			<xs:enumeration value="16"/>
+			<xs:enumeration value="17"/>
+			<xs:enumeration value="18"/>
+			<xs:enumeration value="19"/>
+			<xs:enumeration value="20"/>
+			<xs:enumeration value="21"/>
+			<xs:enumeration value="22"/>
+			<xs:enumeration value="23"/>
+			<xs:enumeration value="24"/>
+			<xs:enumeration value="25"/>
+			<xs:enumeration value="26"/>
+			<xs:enumeration value="27"/>
+			<xs:enumeration value="28"/>
+			<xs:enumeration value="29"/>
+			<xs:enumeration value="30"/>
+			<xs:enumeration value="31"/>
+			<xs:enumeration value="32"/>
+			<xs:enumeration value="33"/>
+			<xs:enumeration value="34"/>
+			<xs:enumeration value="35"/>
+			<xs:enumeration value="36"/>
+			<xs:enumeration value="37"/>
+			<xs:enumeration value="38"/>
+			<xs:enumeration value="39"/>
+			<xs:enumeration value="40"/>
+			<xs:enumeration value="41"/>
+			<xs:enumeration value="42"/>
+			<xs:enumeration value="43"/>
+			<xs:enumeration value="44"/>
+			<xs:enumeration value="45"/>
+			<xs:enumeration value="46"/>
+			<xs:enumeration value="47"/>
+			<xs:enumeration value="48"/>
+			<xs:enumeration value="49"/>
+			<xs:enumeration value="50"/>
+			<xs:enumeration value="51"/>
+			<xs:enumeration value="52"/>
+			<xs:enumeration value="AV"/>
+			<xs:enumeration value="BI"/>
+			<xs:enumeration value="CA"/>
+			<xs:enumeration value="CS"/>
+			<xs:enumeration value="GU"/>
+			<xs:enumeration value="H"/>
+			<xs:enumeration value="LE"/>
+			<xs:enumeration value="ML"/>
+			<xs:enumeration value="SS"/>
+			<xs:enumeration value="TE"/>
+			<xs:enumeration value="VI"/>
+			<xs:enumeration value="2A"/>
+			<xs:enumeration value="2B"/>
+			<xs:enumeration value="53"/>
+			<xs:enumeration value="54"/>
+			<xs:enumeration value="55"/>
+			<xs:enumeration value="56"/>
+			<xs:enumeration value="57"/>
+			<xs:enumeration value="58"/>
+			<xs:enumeration value="59"/>
+			<xs:enumeration value="60"/>
+			<xs:enumeration value="61"/>
+			<xs:enumeration value="62"/>
+			<xs:enumeration value="63"/>
+			<xs:enumeration value="64"/>
+			<xs:enumeration value="65"/>
+			<xs:enumeration value="66"/>
+			<xs:enumeration value="67"/>
+			<xs:enumeration value="68"/>
+			<xs:enumeration value="69"/>
+			<xs:enumeration value="70"/>
+			<xs:enumeration value="71"/>
+			<xs:enumeration value="72"/>
+			<xs:enumeration value="73"/>
+			<xs:enumeration value="74"/>
+			<xs:enumeration value="75"/>
+			<xs:enumeration value="76"/>
+			<xs:enumeration value="77"/>
+			<xs:enumeration value="78"/>
+			<xs:enumeration value="79"/>
+			<xs:enumeration value="80"/>
+			<xs:enumeration value="81"/>
+			<xs:enumeration value="82"/>
+			<xs:enumeration value="83"/>
+			<xs:enumeration value="84"/>
+			<xs:enumeration value="85"/>
+			<xs:enumeration value="86"/>
+			<xs:enumeration value="87"/>
+			<xs:enumeration value="88"/>
+			<xs:enumeration value="89"/>
+			<xs:enumeration value="90"/>
+			<xs:enumeration value="91"/>
+			<xs:enumeration value="92"/>
+			<xs:enumeration value="93"/>
+			<xs:enumeration value="94"/>
+			<xs:enumeration value="95"/>
+			<xs:enumeration value="971"/>
+			<xs:enumeration value="972"/>
+			<xs:enumeration value="973"/>
+			<xs:enumeration value="974"/>
+			<xs:enumeration value="975"/>
+			<xs:enumeration value="984"/>
+			<xs:enumeration value="985"/>
+			<xs:enumeration value="986"/>
+			<xs:enumeration value="987"/>
+			<xs:enumeration value="988"/>
+			<xs:enumeration value="99"/>
+			<xs:enumeration value="ANT"/>
+			<xs:enumeration value="ARD"/>
+			<xs:enumeration value="ARM"/>
+			<xs:enumeration value="BEDS"/>
+			<xs:enumeration value="BERKS"/>
+			<xs:enumeration value="BFS"/>
+			<xs:enumeration value="BLA"/>
+			<xs:enumeration value="BLY"/>
+			<xs:enumeration value="BNB"/>
+			<xs:enumeration value="BORDER"/>
+			<xs:enumeration value="BRIST"/>
+			<xs:enumeration value="BUCKS"/>
+			<xs:enumeration value="CAMBS"/>
+			<xs:enumeration value="CENT"/>
+			<xs:enumeration value="CFK"/>
+			<xs:enumeration value="CGV"/>
+			<xs:enumeration value="CHES"/>
+			<xs:enumeration value="CHL IS"/>
+			<xs:enumeration value="CKT"/>
+			<xs:enumeration value="CLR"/>
+			<xs:enumeration value="CLWYD"/>
+			<xs:enumeration value="CNWLL"/>
+			<xs:enumeration value="CSR"/>
+			<xs:enumeration value="CUMB"/>
+			<xs:enumeration value="D&amp;G"/>
+			<xs:enumeration value="DERBY"/>
+			<xs:enumeration value="DEVON"/>
+			<xs:enumeration value="DGN"/>
+			<xs:enumeration value="DORSET"/>
+			<xs:enumeration value="DOW"/>
+			<xs:enumeration value="DRY"/>
+			<xs:enumeration value="DUR"/>
+			<xs:enumeration value="DYFED"/>
+			<xs:enumeration value="E YORK"/>
+			<xs:enumeration value="E.SUSX"/>
+			<xs:enumeration value="ESSEX"/>
+			<xs:enumeration value="FER"/>
+			<xs:enumeration value="FIFE"/>
+			<xs:enumeration value="GLOUCS"/>
+			<xs:enumeration value="GRAMP"/>
+			<xs:enumeration value="GT LON"/>
+			<xs:enumeration value="GT MAN"/>
+			<xs:enumeration value="GWENT"/>
+			<xs:enumeration value="GWYND"/>
+			<xs:enumeration value="HANTS"/>
+			<xs:enumeration value="HERTS"/>
+			<xs:enumeration value="HFORD"/>
+			<xs:enumeration value="HIGHLD"/>
+			<xs:enumeration value="IOM"/>
+			<xs:enumeration value="IOS"/>
+			<xs:enumeration value="IOW"/>
+			<xs:enumeration value="KENT"/>
+			<xs:enumeration value="LANCS"/>
+			<xs:enumeration value="LEICS"/>
+			<xs:enumeration value="LINCS"/>
+			<xs:enumeration value="LMV"/>
+			<xs:enumeration value="LOTH"/>
+			<xs:enumeration value="LRN"/>
+			<xs:enumeration value="LSB"/>
+			<xs:enumeration value="M GLAM"/>
+			<xs:enumeration value="MDDSX"/>
+			<xs:enumeration value="MERSYD"/>
+			<xs:enumeration value="MFT"/>
+			<xs:enumeration value="MYL"/>
+			<xs:enumeration value="N YORK"/>
+			<xs:enumeration value="NDN"/>
+			<xs:enumeration value="NHANTS"/>
+			<xs:enumeration value="NORFLK"/>
+			<xs:enumeration value="NOTTS"/>
+			<xs:enumeration value="NTA"/>
+			<xs:enumeration value="NTHUMB"/>
+			<xs:enumeration value="NYM"/>
+			<xs:enumeration value="OMH"/>
+			<xs:enumeration value="ORK"/>
+			<xs:enumeration value="OXON"/>
+			<xs:enumeration value="POWYS"/>
+			<xs:enumeration value="RUTLND"/>
+			<xs:enumeration value="S GLAM"/>
+			<xs:enumeration value="SHET"/>
+			<xs:enumeration value="SHROPS"/>
+			<xs:enumeration value="SOMER"/>
+			<xs:enumeration value="STAFFS"/>
+			<xs:enumeration value="STB"/>
+			<xs:enumeration value="STRATH"/>
+			<xs:enumeration value="SUFFK"/>
+			<xs:enumeration value="SURREY"/>
+			<xs:enumeration value="SYORKS"/>
+			<xs:enumeration value="T&amp;W"/>
+			<xs:enumeration value="TAYS"/>
+			<xs:enumeration value="W GLAM"/>
+			<xs:enumeration value="W ISLS"/>
+			<xs:enumeration value="W SUSX"/>
+			<xs:enumeration value="WARWKS"/>
+			<xs:enumeration value="WILTS"/>
+			<xs:enumeration value="WOR"/>
+			<xs:enumeration value="WSTMID"/>
+			<xs:enumeration value="WYORKS"/>
+			<xs:enumeration value="K"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="AS"/>
+			<xs:enumeration value="DD"/>
+			<xs:enumeration value="DL"/>
+			<xs:enumeration value="DN"/>
+			<xs:enumeration value="GA"/>
+			<xs:enumeration value="GJ"/>
+			<xs:enumeration value="HP"/>
+			<xs:enumeration value="HR"/>
+			<xs:enumeration value="JH"/>
+			<xs:enumeration value="JK"/>
+			<xs:enumeration value="KA"/>
+			<xs:enumeration value="KL"/>
+			<xs:enumeration value="LA"/>
+			<xs:enumeration value="MH"/>
+			<xs:enumeration value="MN"/>
+			<xs:enumeration value="MP"/>
+			<xs:enumeration value="NG"/>
+			<xs:enumeration value="PY"/>
+			<xs:enumeration value="TN"/>
+			<xs:enumeration value="TR"/>
+			<xs:enumeration value="UP"/>
+			<xs:enumeration value="UT"/>
+			<xs:enumeration value="ANTRIM"/>
+			<xs:enumeration value="ARMAGH"/>
+			<xs:enumeration value="CARLOW"/>
+			<xs:enumeration value="CAVAN"/>
+			<xs:enumeration value="CLARE"/>
+			<xs:enumeration value="CORK"/>
+			<xs:enumeration value="DERRY"/>
+			<xs:enumeration value="DNEGAL"/>
+			<xs:enumeration value="DOWN"/>
+			<xs:enumeration value="DUBLIN"/>
+			<xs:enumeration value="FERMAN"/>
+			<xs:enumeration value="GALWAY"/>
+			<xs:enumeration value="KERRY"/>
+			<xs:enumeration value="KLDARE"/>
+			<xs:enumeration value="KLKENY"/>
+			<xs:enumeration value="LAOIS"/>
+			<xs:enumeration value="LIMRCK"/>
+			<xs:enumeration value="LNGFRD"/>
+			<xs:enumeration value="LOUTH"/>
+			<xs:enumeration value="LTRIM"/>
+			<xs:enumeration value="MAYO"/>
+			<xs:enumeration value="MEATH"/>
+			<xs:enumeration value="MONGHN"/>
+			<xs:enumeration value="OFFALY"/>
+			<xs:enumeration value="ROSCMN"/>
+			<xs:enumeration value="SLIGO"/>
+			<xs:enumeration value="TPPRRY"/>
+			<xs:enumeration value="TYRONE"/>
+			<xs:enumeration value="WCKLOW"/>
+			<xs:enumeration value="WSTMTH"/>
+			<xs:enumeration value="WTRFRD"/>
+			<xs:enumeration value="WXFORD"/>
+			<xs:enumeration value="AO"/>
+			<xs:enumeration value="AQ"/>
+			<xs:enumeration value="BG"/>
+			<xs:enumeration value="BN"/>
+			<xs:enumeration value="BO"/>
+			<xs:enumeration value="BZ"/>
+			<xs:enumeration value="CL"/>
+			<xs:enumeration value="CN"/>
+			<xs:enumeration value="CZ"/>
+			<xs:enumeration value="EN"/>
+			<xs:enumeration value="FE"/>
+			<xs:enumeration value="FG"/>
+			<xs:enumeration value="FI"/>
+			<xs:enumeration value="IM"/>
+			<xs:enumeration value="IS"/>
+			<xs:enumeration value="KR"/>
+			<xs:enumeration value="LC"/>
+			<xs:enumeration value="LT"/>
+			<xs:enumeration value="MC"/>
+			<xs:enumeration value="ME"/>
+			<xs:enumeration value="MO"/>
+			<xs:enumeration value="NO"/>
+			<xs:enumeration value="PC"/>
+			<xs:enumeration value="PD"/>
+			<xs:enumeration value="PG"/>
+			<xs:enumeration value="PN"/>
+			<xs:enumeration value="PS"/>
+			<xs:enumeration value="PT"/>
+			<xs:enumeration value="PV"/>
+			<xs:enumeration value="PZ"/>
+			<xs:enumeration value="RA"/>
+			<xs:enumeration value="RC"/>
+			<xs:enumeration value="RE"/>
+			<xs:enumeration value="RG"/>
+			<xs:enumeration value="RI"/>
+			<xs:enumeration value="SI"/>
+			<xs:enumeration value="SR"/>
+			<xs:enumeration value="SV"/>
+			<xs:enumeration value="TP"/>
+			<xs:enumeration value="TS"/>
+			<xs:enumeration value="TV"/>
+			<xs:enumeration value="UD"/>
+			<xs:enumeration value="VC"/>
+			<xs:enumeration value="VE"/>
+			<xs:enumeration value="VR"/>
+			<xs:enumeration value="VT"/>
+			<xs:enumeration value="VV"/>
+			<xs:enumeration value="AGS"/>
+			<xs:enumeration value="BCN"/>
+			<xs:enumeration value="BCS"/>
+			<xs:enumeration value="CAMP"/>
+			<xs:enumeration value="CHIH"/>
+			<xs:enumeration value="CHPS"/>
+			<xs:enumeration value="COAH"/>
+			<xs:enumeration value="COLI"/>
+			<xs:enumeration value="DGO"/>
+			<xs:enumeration value="EMEX"/>
+			<xs:enumeration value="GRO"/>
+			<xs:enumeration value="GTO"/>
+			<xs:enumeration value="HGO"/>
+			<xs:enumeration value="JAL"/>
+			<xs:enumeration value="MICH"/>
+			<xs:enumeration value="MOR"/>
+			<xs:enumeration value="NAY"/>
+			<xs:enumeration value="OAX"/>
+			<xs:enumeration value="PUE"/>
+			<xs:enumeration value="QRO"/>
+			<xs:enumeration value="QROO"/>
+			<xs:enumeration value="SIN"/>
+			<xs:enumeration value="SLP"/>
+			<xs:enumeration value="SON"/>
+			<xs:enumeration value="TAB"/>
+			<xs:enumeration value="TAMP"/>
+			<xs:enumeration value="TLAX"/>
+			<xs:enumeration value="VER"/>
+			<xs:enumeration value="YUC"/>
+			<xs:enumeration value="ZAC"/>
+			<xs:enumeration value="KD"/>
+			<xs:enumeration value="KT"/>
+			<xs:enumeration value="LB"/>
+			<xs:enumeration value="PH"/>
+			<xs:enumeration value="PL"/>
+			<xs:enumeration value="SB"/>
+			<xs:enumeration value="WP"/>
+			<xs:enumeration value="96"/>
+			<xs:enumeration value="98"/>
+			<xs:enumeration value="104"/>
+			<xs:enumeration value="105"/>
+			<xs:enumeration value="106"/>
+			<xs:enumeration value="107"/>
+			<xs:enumeration value="108"/>
+			<xs:enumeration value="109"/>
+			<xs:enumeration value="110"/>
+			<xs:enumeration value="111"/>
+			<xs:enumeration value="112"/>
+			<xs:enumeration value="113"/>
+			<xs:enumeration value="114"/>
+			<xs:enumeration value="115"/>
+			<xs:enumeration value="116"/>
+			<xs:enumeration value="117"/>
+			<xs:enumeration value="118"/>
+			<xs:enumeration value="119"/>
+			<xs:enumeration value="120"/>
+			<xs:enumeration value="121"/>
+			<xs:enumeration value="122"/>
+			<xs:enumeration value="123"/>
+			<xs:enumeration value="124"/>
+			<xs:enumeration value="125"/>
+			<xs:enumeration value="126"/>
+			<xs:enumeration value="127"/>
+			<xs:enumeration value="128"/>
+			<xs:enumeration value="129"/>
+			<xs:enumeration value="130"/>
+			<xs:enumeration value="131"/>
+			<xs:enumeration value="132"/>
+			<xs:enumeration value="133"/>
+			<xs:enumeration value="134"/>
+			<xs:enumeration value="135"/>
+			<xs:enumeration value="136"/>
+			<xs:enumeration value="137"/>
+			<xs:enumeration value="138"/>
+			<xs:enumeration value="140"/>
+			<xs:enumeration value="141"/>
+			<xs:enumeration value="142"/>
+			<xs:enumeration value="143"/>
+			<xs:enumeration value="144"/>
+			<xs:enumeration value="147"/>
+			<xs:enumeration value="148"/>
+			<xs:enumeration value="149"/>
+			<xs:enumeration value="150"/>
+			<xs:enumeration value="151"/>
+			<xs:enumeration value="152"/>
+			<xs:enumeration value="153"/>
+			<xs:enumeration value="154"/>
+			<xs:enumeration value="156"/>
+			<xs:enumeration value="157"/>
+			<xs:enumeration value="158"/>
+			<xs:enumeration value="159"/>
+			<xs:enumeration value="160"/>
+			<xs:enumeration value="161"/>
+			<xs:enumeration value="162"/>
+			<xs:enumeration value="163"/>
+			<xs:enumeration value="164"/>
+			<xs:enumeration value="165"/>
+			<xs:enumeration value="166"/>
+			<xs:enumeration value="168"/>
+			<xs:enumeration value="169"/>
+			<xs:enumeration value="170"/>
+			<xs:enumeration value="171"/>
+			<xs:enumeration value="173"/>
+			<xs:enumeration value="174"/>
+			<xs:enumeration value="175"/>
+			<xs:enumeration value="176"/>
+			<xs:enumeration value="177"/>
+			<xs:enumeration value="178"/>
+			<xs:enumeration value="179"/>
+			<xs:enumeration value="180"/>
+			<xs:enumeration value="181"/>
+			<xs:enumeration value="183"/>
+			<xs:enumeration value="184"/>
+			<xs:enumeration value="186"/>
+			<xs:enumeration value="188"/>
+			<xs:enumeration value="189"/>
+			<xs:enumeration value="190"/>
+			<xs:enumeration value="191"/>
+			<xs:enumeration value="192"/>
+			<xs:enumeration value="193"/>
+			<xs:enumeration value="194"/>
+			<xs:enumeration value="195"/>
+			<xs:enumeration value="196"/>
+			<xs:enumeration value="197"/>
+			<xs:enumeration value="198"/>
+			<xs:enumeration value="199"/>
+			<xs:enumeration value="200"/>
+			<xs:enumeration value="202"/>
+			<xs:enumeration value="203"/>
+			<xs:enumeration value="206"/>
+			<xs:enumeration value="207"/>
+			<xs:enumeration value="209"/>
+			<xs:enumeration value="211"/>
+			<xs:enumeration value="212"/>
+			<xs:enumeration value="213"/>
+			<xs:enumeration value="214"/>
+			<xs:enumeration value="216"/>
+			<xs:enumeration value="218"/>
+			<xs:enumeration value="219"/>
+			<xs:enumeration value="220"/>
+			<xs:enumeration value="221"/>
+			<xs:enumeration value="222"/>
+			<xs:enumeration value="225"/>
+			<xs:enumeration value="226"/>
+			<xs:enumeration value="227"/>
+			<xs:enumeration value="228"/>
+			<xs:enumeration value="229"/>
+			<xs:enumeration value="230"/>
+			<xs:enumeration value="231"/>
+			<xs:enumeration value="232"/>
+			<xs:enumeration value="233"/>
+			<xs:enumeration value="236"/>
+			<xs:enumeration value="237"/>
+			<xs:enumeration value="238"/>
+			<xs:enumeration value="239"/>
+			<xs:enumeration value="240"/>
+			<xs:enumeration value="241"/>
+			<xs:enumeration value="243"/>
+			<xs:enumeration value="244"/>
+			<xs:enumeration value="245"/>
+			<xs:enumeration value="246"/>
+			<xs:enumeration value="247"/>
+			<xs:enumeration value="248"/>
+			<xs:enumeration value="251"/>
+			<xs:enumeration value="252"/>
+			<xs:enumeration value="253"/>
+			<xs:enumeration value="255"/>
+			<xs:enumeration value="256"/>
+			<xs:enumeration value="257"/>
+			<xs:enumeration value="258"/>
+			<xs:enumeration value="260"/>
+			<xs:enumeration value="261"/>
+			<xs:enumeration value="262"/>
+			<xs:enumeration value="263"/>
+			<xs:enumeration value="264"/>
+			<xs:enumeration value="265"/>
+			<xs:enumeration value="266"/>
+			<xs:enumeration value="267"/>
+			<xs:enumeration value="268"/>
+			<xs:enumeration value="269"/>
+			<xs:enumeration value="273"/>
+			<xs:enumeration value="274"/>
+			<xs:enumeration value="275"/>
+			<xs:enumeration value="276"/>
+			<xs:enumeration value="277"/>
+			<xs:enumeration value="278"/>
+			<xs:enumeration value="279"/>
+			<xs:enumeration value="280"/>
+			<xs:enumeration value="281"/>
+			<xs:enumeration value="282"/>
+			<xs:enumeration value="283"/>
+			<xs:enumeration value="285"/>
+			<xs:enumeration value="286"/>
+			<xs:enumeration value="289"/>
+			<xs:enumeration value="291"/>
+			<xs:enumeration value="292"/>
+			<xs:enumeration value="293"/>
+			<xs:enumeration value="294"/>
+			<xs:enumeration value="295"/>
+			<xs:enumeration value="296"/>
+			<xs:enumeration value="297"/>
+			<xs:enumeration value="298"/>
+			<xs:enumeration value="299"/>
+			<xs:enumeration value="301"/>
+			<xs:enumeration value="302"/>
+			<xs:enumeration value="303"/>
+			<xs:enumeration value="304"/>
+			<xs:enumeration value="305"/>
+			<xs:enumeration value="306"/>
+			<xs:enumeration value="307"/>
+			<xs:enumeration value="308"/>
+			<xs:enumeration value="310"/>
+			<xs:enumeration value="311"/>
+			<xs:enumeration value="312"/>
+			<xs:enumeration value="313"/>
+			<xs:enumeration value="314"/>
+			<xs:enumeration value="315"/>
+			<xs:enumeration value="316"/>
+			<xs:enumeration value="317"/>
+			<xs:enumeration value="318"/>
+			<xs:enumeration value="321"/>
+			<xs:enumeration value="325"/>
+			<xs:enumeration value="326"/>
+			<xs:enumeration value="327"/>
+			<xs:enumeration value="329"/>
+			<xs:enumeration value="330"/>
+			<xs:enumeration value="331"/>
+			<xs:enumeration value="332"/>
+			<xs:enumeration value="333"/>
+			<xs:enumeration value="334"/>
+			<xs:enumeration value="335"/>
+			<xs:enumeration value="339"/>
+			<xs:enumeration value="340"/>
+			<xs:enumeration value="342"/>
+			<xs:enumeration value="344"/>
+			<xs:enumeration value="345"/>
+			<xs:enumeration value="347"/>
+			<xs:enumeration value="351"/>
+			<xs:enumeration value="352"/>
+			<xs:enumeration value="353"/>
+			<xs:enumeration value="355"/>
+			<xs:enumeration value="356"/>
+			<xs:enumeration value="357"/>
+			<xs:enumeration value="358"/>
+			<xs:enumeration value="360"/>
+			<xs:enumeration value="361"/>
+			<xs:enumeration value="362"/>
+			<xs:enumeration value="363"/>
+			<xs:enumeration value="364"/>
+			<xs:enumeration value="365"/>
+			<xs:enumeration value="366"/>
+			<xs:enumeration value="370"/>
+			<xs:enumeration value="372"/>
+			<xs:enumeration value="373"/>
+			<xs:enumeration value="375"/>
+			<xs:enumeration value="376"/>
+			<xs:enumeration value="377"/>
+			<xs:enumeration value="381"/>
+			<xs:enumeration value="383"/>
+			<xs:enumeration value="384"/>
+			<xs:enumeration value="385"/>
+			<xs:enumeration value="388"/>
+			<xs:enumeration value="390"/>
+			<xs:enumeration value="392"/>
+			<xs:enumeration value="393"/>
+			<xs:enumeration value="394"/>
+			<xs:enumeration value="395"/>
+			<xs:enumeration value="396"/>
+			<xs:enumeration value="397"/>
+			<xs:enumeration value="398"/>
+			<xs:enumeration value="399"/>
+			<xs:enumeration value="400"/>
+			<xs:enumeration value="402"/>
+			<xs:enumeration value="405"/>
+			<xs:enumeration value="406"/>
+			<xs:enumeration value="412"/>
+			<xs:enumeration value="415"/>
+			<xs:enumeration value="416"/>
+			<xs:enumeration value="417"/>
+			<xs:enumeration value="418"/>
+			<xs:enumeration value="420"/>
+			<xs:enumeration value="424"/>
+			<xs:enumeration value="425"/>
+			<xs:enumeration value="426"/>
+			<xs:enumeration value="429"/>
+			<xs:enumeration value="431"/>
+			<xs:enumeration value="432"/>
+			<xs:enumeration value="437"/>
+			<xs:enumeration value="439"/>
+			<xs:enumeration value="441"/>
+			<xs:enumeration value="444"/>
+			<xs:enumeration value="448"/>
+			<xs:enumeration value="450"/>
+			<xs:enumeration value="451"/>
+			<xs:enumeration value="453"/>
+			<xs:enumeration value="454"/>
+			<xs:enumeration value="457"/>
+			<xs:enumeration value="458"/>
+			<xs:enumeration value="459"/>
+			<xs:enumeration value="462"/>
+			<xs:enumeration value="463"/>
+			<xs:enumeration value="466"/>
+			<xs:enumeration value="473"/>
+			<xs:enumeration value="476"/>
+			<xs:enumeration value="478"/>
+			<xs:enumeration value="479"/>
+			<xs:enumeration value="480"/>
+			<xs:enumeration value="482"/>
+			<xs:enumeration value="483"/>
+			<xs:enumeration value="484"/>
+			<xs:enumeration value="489"/>
+			<xs:enumeration value="491"/>
+			<xs:enumeration value="492"/>
+			<xs:enumeration value="493"/>
+			<xs:enumeration value="495"/>
+			<xs:enumeration value="497"/>
+			<xs:enumeration value="498"/>
+			<xs:enumeration value="499"/>
+			<xs:enumeration value="501"/>
+			<xs:enumeration value="502"/>
+			<xs:enumeration value="503"/>
+			<xs:enumeration value="504"/>
+			<xs:enumeration value="505"/>
+			<xs:enumeration value="511"/>
+			<xs:enumeration value="512"/>
+			<xs:enumeration value="513"/>
+			<xs:enumeration value="517"/>
+			<xs:enumeration value="518"/>
+			<xs:enumeration value="519"/>
+			<xs:enumeration value="523"/>
+			<xs:enumeration value="526"/>
+			<xs:enumeration value="529"/>
+			<xs:enumeration value="530"/>
+			<xs:enumeration value="531"/>
+			<xs:enumeration value="532"/>
+			<xs:enumeration value="534"/>
+			<xs:enumeration value="537"/>
+			<xs:enumeration value="542"/>
+			<xs:enumeration value="545"/>
+			<xs:enumeration value="546"/>
+			<xs:enumeration value="547"/>
+			<xs:enumeration value="548"/>
+			<xs:enumeration value="552"/>
+			<xs:enumeration value="553"/>
+			<xs:enumeration value="555"/>
+			<xs:enumeration value="556"/>
+			<xs:enumeration value="558"/>
+			<xs:enumeration value="559"/>
+			<xs:enumeration value="562"/>
+			<xs:enumeration value="563"/>
+			<xs:enumeration value="565"/>
+			<xs:enumeration value="567"/>
+			<xs:enumeration value="568"/>
+			<xs:enumeration value="569"/>
+			<xs:enumeration value="571"/>
+			<xs:enumeration value="575"/>
+			<xs:enumeration value="576"/>
+			<xs:enumeration value="577"/>
+			<xs:enumeration value="579"/>
+			<xs:enumeration value="580"/>
+			<xs:enumeration value="584"/>
+			<xs:enumeration value="585"/>
+			<xs:enumeration value="588"/>
+			<xs:enumeration value="589"/>
+			<xs:enumeration value="590"/>
+			<xs:enumeration value="594"/>
+			<xs:enumeration value="595"/>
+			<xs:enumeration value="597"/>
+			<xs:enumeration value="599"/>
+			<xs:enumeration value="600"/>
+			<xs:enumeration value="602"/>
+			<xs:enumeration value="603"/>
+			<xs:enumeration value="604"/>
+			<xs:enumeration value="606"/>
+			<xs:enumeration value="607"/>
+			<xs:enumeration value="608"/>
+			<xs:enumeration value="610"/>
+			<xs:enumeration value="611"/>
+			<xs:enumeration value="612"/>
+			<xs:enumeration value="613"/>
+			<xs:enumeration value="614"/>
+			<xs:enumeration value="617"/>
+			<xs:enumeration value="619"/>
+			<xs:enumeration value="620"/>
+			<xs:enumeration value="622"/>
+			<xs:enumeration value="623"/>
+			<xs:enumeration value="624"/>
+			<xs:enumeration value="625"/>
+			<xs:enumeration value="626"/>
+			<xs:enumeration value="627"/>
+			<xs:enumeration value="628"/>
+			<xs:enumeration value="629"/>
+			<xs:enumeration value="630"/>
+			<xs:enumeration value="632"/>
+			<xs:enumeration value="637"/>
+			<xs:enumeration value="638"/>
+			<xs:enumeration value="642"/>
+			<xs:enumeration value="643"/>
+			<xs:enumeration value="644"/>
+			<xs:enumeration value="645"/>
+			<xs:enumeration value="648"/>
+			<xs:enumeration value="649"/>
+			<xs:enumeration value="650"/>
+			<xs:enumeration value="653"/>
+			<xs:enumeration value="654"/>
+			<xs:enumeration value="656"/>
+			<xs:enumeration value="657"/>
+			<xs:enumeration value="660"/>
+			<xs:enumeration value="662"/>
+			<xs:enumeration value="664"/>
+			<xs:enumeration value="668"/>
+			<xs:enumeration value="675"/>
+			<xs:enumeration value="677"/>
+			<xs:enumeration value="678"/>
+			<xs:enumeration value="682"/>
+			<xs:enumeration value="683"/>
+			<xs:enumeration value="686"/>
+			<xs:enumeration value="687"/>
+			<xs:enumeration value="688"/>
+			<xs:enumeration value="689"/>
+			<xs:enumeration value="692"/>
+			<xs:enumeration value="693"/>
+			<xs:enumeration value="694"/>
+			<xs:enumeration value="703"/>
+			<xs:enumeration value="704"/>
+			<xs:enumeration value="707"/>
+			<xs:enumeration value="710"/>
+			<xs:enumeration value="712"/>
+			<xs:enumeration value="713"/>
+			<xs:enumeration value="715"/>
+			<xs:enumeration value="716"/>
+			<xs:enumeration value="717"/>
+			<xs:enumeration value="718"/>
+			<xs:enumeration value="720"/>
+			<xs:enumeration value="725"/>
+			<xs:enumeration value="726"/>
+			<xs:enumeration value="727"/>
+			<xs:enumeration value="732"/>
+			<xs:enumeration value="733"/>
+			<xs:enumeration value="736"/>
+			<xs:enumeration value="737"/>
+			<xs:enumeration value="738"/>
+			<xs:enumeration value="739"/>
+			<xs:enumeration value="741"/>
+			<xs:enumeration value="743"/>
+			<xs:enumeration value="744"/>
+			<xs:enumeration value="745"/>
+			<xs:enumeration value="746"/>
+			<xs:enumeration value="748"/>
+			<xs:enumeration value="749"/>
+			<xs:enumeration value="751"/>
+			<xs:enumeration value="752"/>
+			<xs:enumeration value="753"/>
+			<xs:enumeration value="754"/>
+			<xs:enumeration value="755"/>
+			<xs:enumeration value="756"/>
+			<xs:enumeration value="757"/>
+			<xs:enumeration value="758"/>
+			<xs:enumeration value="759"/>
+			<xs:enumeration value="760"/>
+			<xs:enumeration value="762"/>
+			<xs:enumeration value="763"/>
+			<xs:enumeration value="764"/>
+			<xs:enumeration value="765"/>
+			<xs:enumeration value="766"/>
+			<xs:enumeration value="767"/>
+			<xs:enumeration value="768"/>
+			<xs:enumeration value="769"/>
+			<xs:enumeration value="770"/>
+			<xs:enumeration value="772"/>
+			<xs:enumeration value="776"/>
+			<xs:enumeration value="777"/>
+			<xs:enumeration value="778"/>
+			<xs:enumeration value="779"/>
+			<xs:enumeration value="781"/>
+			<xs:enumeration value="782"/>
+			<xs:enumeration value="784"/>
+			<xs:enumeration value="785"/>
+			<xs:enumeration value="786"/>
+			<xs:enumeration value="787"/>
+			<xs:enumeration value="788"/>
+			<xs:enumeration value="789"/>
+			<xs:enumeration value="791"/>
+			<xs:enumeration value="793"/>
+			<xs:enumeration value="794"/>
+			<xs:enumeration value="795"/>
+			<xs:enumeration value="796"/>
+			<xs:enumeration value="797"/>
+			<xs:enumeration value="798"/>
+			<xs:enumeration value="799"/>
+			<xs:enumeration value="800"/>
+			<xs:enumeration value="801"/>
+			<xs:enumeration value="802"/>
+			<xs:enumeration value="803"/>
+			<xs:enumeration value="804"/>
+			<xs:enumeration value="805"/>
+			<xs:enumeration value="806"/>
+			<xs:enumeration value="807"/>
+			<xs:enumeration value="808"/>
+			<xs:enumeration value="809"/>
+			<xs:enumeration value="810"/>
+			<xs:enumeration value="811"/>
+			<xs:enumeration value="812"/>
+			<xs:enumeration value="814"/>
+			<xs:enumeration value="815"/>
+			<xs:enumeration value="816"/>
+			<xs:enumeration value="817"/>
+			<xs:enumeration value="818"/>
+			<xs:enumeration value="820"/>
+			<xs:enumeration value="823"/>
+			<xs:enumeration value="824"/>
+			<xs:enumeration value="825"/>
+			<xs:enumeration value="826"/>
+			<xs:enumeration value="828"/>
+			<xs:enumeration value="829"/>
+			<xs:enumeration value="830"/>
+			<xs:enumeration value="831"/>
+			<xs:enumeration value="832"/>
+			<xs:enumeration value="833"/>
+			<xs:enumeration value="834"/>
+			<xs:enumeration value="835"/>
+			<xs:enumeration value="836"/>
+			<xs:enumeration value="837"/>
+			<xs:enumeration value="838"/>
+			<xs:enumeration value="839"/>
+			<xs:enumeration value="840"/>
+			<xs:enumeration value="841"/>
+			<xs:enumeration value="844"/>
+			<xs:enumeration value="845"/>
+			<xs:enumeration value="846"/>
+			<xs:enumeration value="847"/>
+			<xs:enumeration value="848"/>
+			<xs:enumeration value="849"/>
+			<xs:enumeration value="850"/>
+			<xs:enumeration value="851"/>
+			<xs:enumeration value="852"/>
+			<xs:enumeration value="853"/>
+			<xs:enumeration value="854"/>
+			<xs:enumeration value="855"/>
+			<xs:enumeration value="856"/>
+			<xs:enumeration value="857"/>
+			<xs:enumeration value="858"/>
+			<xs:enumeration value="860"/>
+			<xs:enumeration value="861"/>
+			<xs:enumeration value="862"/>
+			<xs:enumeration value="863"/>
+			<xs:enumeration value="864"/>
+			<xs:enumeration value="865"/>
+			<xs:enumeration value="866"/>
+			<xs:enumeration value="867"/>
+			<xs:enumeration value="869"/>
+			<xs:enumeration value="870"/>
+			<xs:enumeration value="871"/>
+			<xs:enumeration value="872"/>
+			<xs:enumeration value="873"/>
+			<xs:enumeration value="874"/>
+			<xs:enumeration value="875"/>
+			<xs:enumeration value="878"/>
+			<xs:enumeration value="879"/>
+			<xs:enumeration value="880"/>
+			<xs:enumeration value="881"/>
+			<xs:enumeration value="882"/>
+			<xs:enumeration value="885"/>
+			<xs:enumeration value="888"/>
+			<xs:enumeration value="889"/>
+			<xs:enumeration value="890"/>
+			<xs:enumeration value="893"/>
+			<xs:enumeration value="897"/>
+			<xs:enumeration value="898"/>
+			<xs:enumeration value="899"/>
+			<xs:enumeration value="902"/>
+			<xs:enumeration value="905"/>
+			<xs:enumeration value="906"/>
+			<xs:enumeration value="907"/>
+			<xs:enumeration value="912"/>
+			<xs:enumeration value="913"/>
+			<xs:enumeration value="914"/>
+			<xs:enumeration value="917"/>
+			<xs:enumeration value="918"/>
+			<xs:enumeration value="920"/>
+			<xs:enumeration value="923"/>
+			<xs:enumeration value="925"/>
+			<xs:enumeration value="928"/>
+			<xs:enumeration value="929"/>
+			<xs:enumeration value="933"/>
+			<xs:enumeration value="934"/>
+			<xs:enumeration value="935"/>
+			<xs:enumeration value="936"/>
+			<xs:enumeration value="938"/>
+			<xs:enumeration value="941"/>
+			<xs:enumeration value="944"/>
+			<xs:enumeration value="946"/>
+			<xs:enumeration value="951"/>
+			<xs:enumeration value="957"/>
+			<xs:enumeration value="962"/>
+			<xs:enumeration value="964"/>
+			<xs:enumeration value="965"/>
+			<xs:enumeration value="968"/>
+			<xs:enumeration value="976"/>
+			<xs:enumeration value="977"/>
+			<xs:enumeration value="981"/>
+			<xs:enumeration value="983"/>
+			<xs:enumeration value="990"/>
+			<xs:enumeration value="993"/>
+			<xs:enumeration value="994"/>
+			<xs:enumeration value="995"/>
+			<xs:enumeration value="996"/>
+			<xs:enumeration value="1651"/>
+			<xs:enumeration value="1661"/>
+			<xs:enumeration value="1663"/>
+			<xs:enumeration value="1666"/>
+			<xs:enumeration value="1669"/>
+			<xs:enumeration value="1670"/>
+			<xs:enumeration value="1671"/>
+			<xs:enumeration value="1672"/>
+			<xs:enumeration value="1673"/>
+			<xs:enumeration value="1679"/>
+			<xs:enumeration value="1684"/>
+			<xs:enumeration value="1685"/>
+			<xs:enumeration value="1691"/>
+			<xs:enumeration value="1937"/>
+			<xs:enumeration value="1987"/>
+			<xs:enumeration value="8730"/>
+			<xs:enumeration value="TEST"/>
+			<xs:enumeration value="AA"/>
+			<xs:enumeration value="AE"/>
+			<xs:enumeration value="AK"/>
+			<xs:enumeration value="AZ"/>
+			<xs:enumeration value="DC"/>
+			<xs:enumeration value="DE"/>
+			<xs:enumeration value="FL"/>
+			<xs:enumeration value="HI"/>
+			<xs:enumeration value="IA"/>
+			<xs:enumeration value="ID"/>
+			<xs:enumeration value="IL"/>
+			<xs:enumeration value="IN"/>
+			<xs:enumeration value="KS"/>
+			<xs:enumeration value="KY"/>
+			<xs:enumeration value="MD"/>
+			<xs:enumeration value="NC"/>
+			<xs:enumeration value="ND"/>
+			<xs:enumeration value="NH"/>
+			<xs:enumeration value="NJ"/>
+			<xs:enumeration value="NM"/>
+			<xs:enumeration value="NV"/>
+			<xs:enumeration value="NY"/>
+			<xs:enumeration value="OH"/>
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="SD"/>
+			<xs:enumeration value="TX"/>
+			<xs:enumeration value="WI"/>
+			<xs:enumeration value="WY"/>
+			<xs:enumeration value="DA"/>
+			<xs:enumeration value="FA"/>
+			<xs:enumeration value="SU"/>
+			<xs:enumeration value="YA"/>
+			<xs:enumeration value="ZU"/>
+			<xs:enumeration value="BD"/>
+			<xs:enumeration value="BG"/>
+			<xs:enumeration value="BL"/>
+			<xs:enumeration value="BK"/>
+			<xs:enumeration value="BM"/>
+			<xs:enumeration value="DK"/>
+			<xs:enumeration value="FH"/>
+			<xs:enumeration value="FB"/>
+			<xs:enumeration value="GZ"/>
+			<xs:enumeration value="GR"/>
+			<xs:enumeration value="HM"/>
+			<xs:enumeration value="HR"/>
+			<xs:enumeration value="JW"/>
+			<xs:enumeration value="KB"/>
+			<xs:enumeration value="KD"/>
+			<xs:enumeration value="KP"/>
+			<xs:enumeration value="KT"/>
+			<xs:enumeration value="KR"/>
+			<xs:enumeration value="KZ"/>
+			<xs:enumeration value="LA"/>
+			<xs:enumeration value="LW"/>
+			<xs:enumeration value="NG"/>
+			<xs:enumeration value="NM"/>
+			<xs:enumeration value="NR"/>
+			<xs:enumeration value="OZ"/>
+			<xs:enumeration value="PT"/>
+			<xs:enumeration value="PK"/>
+			<xs:enumeration value="PJ"/>
+			<xs:enumeration value="PV"/>
+			<xs:enumeration value="SM"/>
+			<xs:enumeration value="SP"/>
+			<xs:enumeration value="TK"/>
+			<xs:enumeration value="VR"/>
+			<xs:enumeration value="ZB"/>
+			<xs:enumeration value="BO"/>
+			<xs:enumeration value="BI"/>
+			<xs:enumeration value="CB"/>
+			<xs:enumeration value="CC"/>
+			<xs:enumeration value="CN"/>
+			<xs:enumeration value="CS"/>
+			<xs:enumeration value="CU"/>
+			<xs:enumeration value="HL"/>
+			<xs:enumeration value="LU"/>
+			<xs:enumeration value="LN"/>
+			<xs:enumeration value="LS"/>
+			<xs:enumeration value="ML"/>
+			<xs:enumeration value="MX"/>
+			<xs:enumeration value="NA"/>
+			<xs:enumeration value="UI"/>
+			<xs:enumeration value="ZA"/>
+			<xs:enumeration value="XR"/>
+			<xs:enumeration value="AG"/>
+			<xs:enumeration value="AR"/>
+			<xs:enumeration value="AV"/>
+			<xs:enumeration value="ER"/>
+			<xs:enumeration value="LO"/>
+			<xs:enumeration value="SH"/>
+			<xs:enumeration value="SU"/>
+			<xs:enumeration value="TV"/>
+			<xs:enumeration value="VD"/>
+			<xs:enumeration value="AM"/>
+			<xs:enumeration value="AS"/>
+			<xs:enumeration value="AC"/>
+			<xs:enumeration value="AF"/>
+			<xs:enumeration value="AU"/>
+			<xs:enumeration value="AB"/>
+			<xs:enumeration value="AA"/>
+			<xs:enumeration value="BB"/>
+			<xs:enumeration value="BA"/>
+			<xs:enumeration value="BR"/>
+			<xs:enumeration value="BQ"/>
+			<xs:enumeration value="BS"/>
+			<xs:enumeration value="DS"/>
+			<xs:enumeration value="DV"/>
+			<xs:enumeration value="FU"/>
+			<xs:enumeration value="QA"/>
+			<xs:enumeration value="GD"/>
+			<xs:enumeration value="QX"/>
+			<xs:enumeration value="GA"/>
+			<xs:enumeration value="QZ"/>
+			<xs:enumeration value="QO"/>
+			<xs:enumeration value="GY"/>
+			<xs:enumeration value="QB"/>
+			<xs:enumeration value="QD"/>
+			<xs:enumeration value="QR"/>
+			<xs:enumeration value="HA"/>
+			<xs:enumeration value="IM"/>
+			<xs:enumeration value="IS"/>
+			<xs:enumeration value="CL"/>
+			<xs:enumeration value="CF"/>
+			<xs:enumeration value="KA"/>
+			<xs:enumeration value="XZ"/>
+			<xs:enumeration value="XA"/>
+			<xs:enumeration value="XC"/>
+			<xs:enumeration value="XD"/>
+			<xs:enumeration value="XI"/>
+			<xs:enumeration value="KU"/>
+			<xs:enumeration value="LC"/>
+			<xs:enumeration value="LE"/>
+			<xs:enumeration value="MA"/>
+			<xs:enumeration value="MI"/>
+			<xs:enumeration value="NX"/>
+			<xs:enumeration value="NE"/>
+			<xs:enumeration value="OG"/>
+			<xs:enumeration value="OR"/>
+			<xs:enumeration value="ST"/>
+			<xs:enumeration value="SB"/>
+			<xs:enumeration value="SL"/>
+			<xs:enumeration value="SX"/>
+			<xs:enumeration value="SD"/>
+			<xs:enumeration value="SI"/>
+			<xs:enumeration value="SK"/>
+			<xs:enumeration value="SA"/>
+			<xs:enumeration value="SR"/>
+			<xs:enumeration value="SS"/>
+			<xs:enumeration value="SY"/>
+			<xs:enumeration value="SQ"/>
+			<xs:enumeration value="TA"/>
+			<xs:enumeration value="TO"/>
+			<xs:enumeration value="UC"/>
+			<xs:enumeration value="YR"/>
+			<xs:enumeration value="YV"/>
+			<xs:enumeration value="YE"/>
+			<xs:enumeration value="ZQ"/>
+			<xs:enumeration value="ZG"/>
+			<xs:enumeration value="ZR"/>
+			<xs:enumeration value="HD"/>
+			<xs:enumeration value="MN"/>
+			<xs:enumeration value="MG"/>
+			<xs:enumeration value="MW"/>
+			<xs:enumeration value="MS"/>
+			<xs:enumeration value="MQ"/>
+			<xs:enumeration value="RF"/>
+			<xs:enumeration value="JH"/>
+			<xs:enumeration value="MH"/>
+			<xs:enumeration value="MJ"/>
+			<xs:enumeration value="FA"/>
+			<xs:enumeration value="KY"/>
+			<xs:enumeration value="LI"/>
+			<xs:enumeration value="NI"/>
+			<xs:enumeration value="PA"/>
+			<xs:enumeration value="DQ"/>
+			<xs:enumeration value="BH"/>
+			<xs:enumeration value="FY"/>
+			<xs:enumeration value="GH"/>
+			<xs:enumeration value="IK"/>
+			<xs:enumeration value="JZ"/>
+			<xs:enumeration value="MF"/>
+			<xs:enumeration value="QH"/>
+			<xs:enumeration value="QL"/>
+			<xs:enumeration value="UQ"/>
+			<xs:enumeration value="WJ"/>
+			<xs:enumeration value="SW"/>
+			<xs:enumeration value="AN"/>
+			<xs:enumeration value="AT"/>
+			<xs:enumeration value="BN"/>
+			<xs:enumeration value="DT"/>
+			<xs:enumeration value="JS"/>
+			<xs:enumeration value="KS"/>
+			<xs:enumeration value="MT"/>
+			<xs:enumeration value="QN"/>
+			<xs:enumeration value="SJ"/>
+			<xs:enumeration value="AL"/>
+			<xs:enumeration value="CM"/>
+			<xs:enumeration value="EA"/>
+			<xs:enumeration value="ES"/>
+			<xs:enumeration value="GI"/>
+			<xs:enumeration value="GO"/>
+			<xs:enumeration value="HG"/>
+			<xs:enumeration value="IL"/>
+			<xs:enumeration value="KE"/>
+			<xs:enumeration value="MK"/>
+			<xs:enumeration value="QM"/>
+			<xs:enumeration value="KV"/>
+			<xs:enumeration value="KJ"/>
+			<xs:enumeration value="TE"/>
+			<xs:enumeration value="WA"/>
+			<xs:enumeration value="YA"/>
+			<xs:enumeration value="MU"/>
+			<xs:enumeration value="TS"/>
+			<xs:enumeration value="DA"/>
+			<xs:enumeration value="DI"/>
+			<xs:enumeration value="AJ"/>
+			<xs:enumeration value="AQ"/>
+			<xs:enumeration value="IR"/>
+			<xs:enumeration value="JA"/>
+			<xs:enumeration value="MD"/>
+			<xs:enumeration value="AZ"/>
+			<xs:enumeration value="CE"/>
+			<xs:enumeration value="CO"/>
+			<xs:enumeration value="NY"/>
+			<xs:enumeration value="RV"/>
+			<xs:enumeration value="WE"/>
+			<xs:enumeration value="AH"/>
+			<xs:enumeration value="HW"/>
+			<xs:enumeration value="JL"/>
+			<xs:enumeration value="NL"/>
+			<xs:enumeration value="AD"/>
+			<xs:enumeration value="AK"/>
+			<xs:enumeration value="BY"/>
+			<xs:enumeration value="BE"/>
+			<xs:enumeration value="CR"/>
+			<xs:enumeration value="DE"/>
+			<xs:enumeration value="EB"/>
+			<xs:enumeration value="ED"/>
+			<xs:enumeration value="EK"/>
+			<xs:enumeration value="EN"/>
+			<xs:enumeration value="FC"/>
+			<xs:enumeration value="JI"/>
+			<xs:enumeration value="KN"/>
+			<xs:enumeration value="KO"/>
+			<xs:enumeration value="KW"/>
+			<xs:enumeration value="ON"/>
+			<xs:enumeration value="OS"/>
+			<xs:enumeration value="OY"/>
+			<xs:enumeration value="PL"/>
+			<xs:enumeration value="RI"/>
+			<xs:enumeration value="SO"/>
+			<xs:enumeration value="YO"/>
+			<xs:enumeration value="DH"/>
+			<xs:enumeration value="BU"/>
+			<xs:enumeration value="WU"/>
+			<xs:enumeration value="JK"/>
+			<xs:enumeration value="NW"/>
+			<xs:enumeration value="PB"/>
+			<xs:enumeration value="DY"/>
+			<xs:enumeration value="RY"/>
+			<xs:enumeration value="HS"/>
+			<xs:enumeration value="JF"/>
+			<xs:enumeration value="QS"/>
+			<xs:enumeration value="NJ"/>
+			<xs:enumeration value="TB"/>
+			<xs:enumeration value="KH"/>
+			<xs:enumeration value="ND"/>
+			<xs:enumeration value="NO"/>
+			<xs:enumeration value="RS"/>
+			<xs:enumeration value="RN"/>
+			<xs:enumeration value="WD"/>
+			<xs:enumeration value="WN"/>
+			<xs:enumeration value="RA"/>
+			<xs:enumeration value="DR"/>
+			<xs:enumeration value="HI"/>
+			<xs:enumeration value="ID"/>
+			<xs:enumeration value="QU"/>
+			<xs:enumeration value="RD"/>
+			<xs:enumeration value="AY"/>
+			<xs:enumeration value="BC"/>
+			<xs:enumeration value="BT"/>
+			<xs:enumeration value="CK"/>
+			<xs:enumeration value="CI"/>
+			<xs:enumeration value="DN"/>
+			<xs:enumeration value="DU"/>
+			<xs:enumeration value="EG"/>
+			<xs:enumeration value="EM"/>
+			<xs:enumeration value="GU"/>
+			<xs:enumeration value="HK"/>
+			<xs:enumeration value="HT"/>
+			<xs:enumeration value="IG"/>
+			<xs:enumeration value="IP"/>
+			<xs:enumeration value="IB"/>
+			<xs:enumeration value="IZ"/>
+			<xs:enumeration value="KM"/>
+			<xs:enumeration value="KI"/>
+			<xs:enumeration value="KK"/>
+			<xs:enumeration value="KL"/>
+			<xs:enumeration value="KC"/>
+			<xs:enumeration value="MR"/>
+			<xs:enumeration value="IC"/>
+			<xs:enumeration value="NV"/>
+			<xs:enumeration value="SV"/>
+			<xs:enumeration value="TG"/>
+			<xs:enumeration value="TT"/>
+			<xs:enumeration value="TC"/>
+			<xs:enumeration value="US"/>
+			<xs:enumeration value="VA"/>
+			<xs:enumeration value="YL"/>
+			<xs:enumeration value="YZ"/>
+			<xs:enumeration value="ZO"/>
+			<xs:enumeration value="DO"/>
+			<xs:enumeration value="MY"/>
+			<xs:enumeration value="MB"/>
+			<xs:enumeration value="MO"/>
+			<xs:enumeration value="PN"/>
+			<xs:enumeration value="PS"/>
+			<xs:enumeration value="PW"/>
+			<xs:enumeration value="RK"/>
+			<xs:enumeration value="TN"/>
+			<xs:enumeration value="ZN"/>
+			<xs:enumeration value="ZS"/>
+			<xs:enumeration value="ZW"/>
+			<xs:enumeration value="AI"/>
+			<xs:enumeration value="KQ"/>
+			<xs:enumeration value="AW"/>
+			<xs:enumeration value="BW"/>
+			<xs:enumeration value="BJ"/>
+			<xs:enumeration value="GL"/>
+			<xs:enumeration value="HO"/>
+			<xs:enumeration value="IN"/>
+			<xs:enumeration value="RO"/>
+			<xs:enumeration value="KX"/>
+			<xs:enumeration value="UU"/>
+			<xs:enumeration value="KG"/>
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="KF"/>
+			<xs:enumeration value="LY"/>
+			<xs:enumeration value="MC"/>
+			<xs:enumeration value="ME"/>
+			<xs:enumeration value="RR"/>
+			<xs:enumeration value="TY"/>
+			<xs:enumeration value="NP"/>
+			<xs:enumeration value="NK"/>
+			<xs:enumeration value="NT"/>
+			<xs:enumeration value="PD"/>
+			<xs:enumeration value="SE"/>
+			<xs:enumeration value="TR"/>
+			<xs:enumeration value="YU"/>
+			<xs:enumeration value="DL"/>
+			<xs:enumeration value="HU"/>
+			<xs:enumeration value="HJ"/>
+			<xs:enumeration value="RM"/>
+			<xs:enumeration value="EC"/>
+			<xs:enumeration value="FS"/>
+			<xs:enumeration value="GT"/>
+			<xs:enumeration value="MP"/>
+			<xs:enumeration value="NC"/>
+			<xs:enumeration value="WC"/>  -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SortType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASC"/>
+			<xs:enumeration value="DESC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OperationType">
+		<xs:annotation>
+			<xs:documentation>Type of Operation allowed for an order
+				                  1-Modify
+				                  2-Cancel
+				                  3-Upgrade
+				                  4-Terminate
+				                  5-Revive
+				                  6-Fix
+				</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="ZipType">
+		<xs:annotation>
+			<xs:documentation>A US ZIP code or Canadian postal code.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AddressValueType">
+		<xs:sequence>
+			<xs:element name="BarCodeDigits" type="xs:string" minOccurs="0"/>
+			<xs:element name="DPVCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="DPVDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="DPVNotes" type="xs:string" minOccurs="0"/>
+			<xs:element name="DPVNotesDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="CorrectionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CorrectionDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="EACFValidationStatus" type="xs:int" minOccurs="0"/>
+			<xs:element name="EACFValidationStatusMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="EACFErrorCode" type="xs:int" minOccurs="0"/>
+			<xs:element name="EACFErrorMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="FullAddressCorrectedFlag" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="PartialAddressCorrectedFlag" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AddressValidatedFlag" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="Status" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ErrorCode" type="xs:int" minOccurs="0"/>
+			<xs:element name="ErrorMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="GeoAddress" type="cct:GeoAddressType" minOccurs="0"/>
+			<xs:element name="CorrectedAddress" type="cct:BasicAddressType"/>
+			<xs:element name="IsForcedAddress" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AddressType" type="xs:string" minOccurs="0"/>
+			<xs:element name="RBDI" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>RBDI stands for Residential and Business Delivery Indicator. Possible Values are Residential, Business, POBox, Unknown.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeoAddressType">
+		<xs:sequence>
+			<xs:element name="Latitude" type="xs:float"/>
+			<xs:element name="Longitude" type="xs:float"/>
+			<xs:element name="MatchType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="DealExtraParametersType">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Defines format for the extra service deal paramaeters. </xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="ExtraParameters" type="cct:ExtraParameterType" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Extra Parameters defined by the service for this service deal.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ExtraParameterType">
+		<xs:annotation>
+			<xs:documentation>Format for the extra service deal paramaeter. Each parameter will be collected by SM during ordering. Note that parameters will be submitted as string values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BasicExtraParameter" type="cct:BasicExtraParameterType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Basic name value pairs that SM will use to submit the value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TableExtraParameter" type="cct:TableExtraParameterType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Tabular structure that SM will use to submit the value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TableExtraParameterType">
+		<xs:annotation>
+			<xs:documentation>Format for the tabular extra service deal paramaeter. Each parameter will be collected by SM during ordering. Note that parameters will be submitted as string values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TableType" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Parameter name that SM will use to submit the table value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParameterCount" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Number of parameter sets that will be collected during ordering. These parameters will be the number of columns in the table. Services need to ensure that the table will have an acceptable look and feel.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MandatoryParameterCount" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>The number of parameter sets that has to be collected.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TableParameters" type="cct:BasicExtraParameterType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>The parameters that will be collected in this table. Each parameter will be a row in the resulting table.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IsCommonTableParam" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BasicExtraParameterType">
+		<xs:annotation>
+			<xs:documentation>Format for the basic extra service deal paramaeter. Each parameter will be collected by SM during ordering. Note that parameters will be submitted as string values. ParameterName is the value that will be used to submit the extra fields during ordering. Parameter Names should be prefixed with the service Id to ensure uniqueness across services. Services should also make sure that parameter names are unique within the same service deal parameter set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParameterName" type="cct:ExtraParameterNameType"/>
+			<xs:element name="DisplayName" type="cct:ExtraParameterDisplayNameType"/>
+			<xs:element name="DisplayHint" type="cct:ExtraParameterDisplayHintType" minOccurs="0"/>
+			<xs:element name="IsMandatory" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>Is this parameter a mandatory parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MinSize" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Minimum size of the parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaxSize" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Maximum size of the parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DefaultValue" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Default value for the parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UserInterfaceElement" type="cct:ExtraParameterUserInterfaceType"/>
+			<xs:element name="SelectionValues" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Values that can be selected for the parameter. This field will only be used if UserInterfaceElement is DropDownBox. In such a case services are responsible to provide the values.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ValidateAgainst" type="cct:ValidationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>List of Validation classes/methods, against with the value of the current field would be validated. Generaly applicable where UserinterfaceElement is TextBox.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SelectionValueQuery" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Valid only if UserinterfaceElement is DropDownBox. Database query to return the possible values.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DependentParameterName" type="cct:ExtraParameterNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Valid only if UserinterfaceElement is DropDownBox. Value of the DependentParameterName, determines the SelectionValues of the current parameter. e.g. Value of  'DSL NAP Type' determines the selection values of 'DSL NAP Sub-type'.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SelectBoxOptions" type="cct:SelectBoxType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommonValueType">
+		<xs:attribute name="SharedWith" type="cct:ExtraParameterNameType"/>
+		<xs:attribute name="Value" type="xs:string"/>
+	</xs:complexType>
+	<xs:simpleType name="ExtraParameterNameType">
+		<xs:annotation>
+			<xs:documentation>Parameter name that SM will use to submit the value.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExtraParameterUserInterfaceType">
+		<xs:annotation>
+			<xs:documentation>The HTML form element that will be used to collect the value of this parameter.Can have values:TextBox, TextArea,  DropdownBox , Password</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="7"/>
+			<xs:maxLength value="11"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PersonNameType">
+		<xs:sequence>
+			<xs:element name="FirstName" type="cct:FirstNameType"/>
+			<xs:element name="LastName" type="cct:LastNameType"/>
+			<xs:element name="Middle" type="cct:MiddleNameType" minOccurs="0"/>
+			<xs:element name="LastNameSuffix" type="cct:LastNameSuffix" minOccurs="0"/>
+			<xs:element name="Salutation" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="75"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FirstNameType">
+		<xs:annotation>
+			<xs:documentation>The first name of a person.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LastNameType">
+		<xs:annotation>
+			<xs:documentation>The last name of a person.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MiddleNameType">
+		<xs:annotation>
+			<xs:documentation>The middle name of a person.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LastNameSuffix">
+		<xs:annotation>
+			<xs:documentation>The Last name suffix of a person.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SSNType">
+		<xs:annotation>
+			<xs:documentation>Represents the SSN in all API messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="4"/>
+			<xs:maxLength value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CreditReportType">
+		<xs:sequence>
+			<xs:element name="ReportID" type="xs:long" minOccurs="0"/>
+			<xs:element name="ReportByteArray" type="xs:string"/>
+			<xs:element name="Narrative" type="xs:string" minOccurs="0"/>
+			<xs:element name="ReturnCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreditScore" type="xs:int" minOccurs="0"/>
+			<xs:element name="RejectTypeCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="RejectTypeMessage" type="xs:string" minOccurs="0"/>
+			<xs:element name="HitCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AddressDiscrepancyCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="FraudVictimCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="SafeScanCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CERRCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CERRValidityCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CERRProcessingCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="CERRFormatCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="IsCERRValidityError" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IsCERRProcessingError" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IsCERRFormatError" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IsNewEquifaxRequest" type="xs:boolean"/>
+			<xs:element name="EquifaxCustomerRefNumber" type="xs:long" minOccurs="0"/>
+			<xs:element name="EquifaxRequestDt" type="xs:dateTime">
+				<xs:annotation>
+					<xs:documentation>Equifax Request Date is in UTC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="OrderNumberType">
+		<xs:annotation>
+			<xs:documentation>A number that uniquely identifies an order.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="15"/>
+			<xs:pattern value="[0-9]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StringType">
+		<xs:annotation>
+			<xs:documentation>Defines String.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Customer Prefix Type -->
+	<xs:complexType name="CustomerPrefixType">
+		<xs:sequence>
+			<xs:element name="CustomerPrefix" maxOccurs="unbounded">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="2"/>
+						<xs:maxLength value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SANType">
+		<xs:annotation>
+			<xs:documentation> Site Account Number used to uniquely identify a
+						site or appliance in DSS.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OIDType">
+		<xs:annotation>
+			<xs:documentation> OpenID/LiveID of user</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ESNType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="24"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PINType">
+		<xs:annotation>
+			<xs:documentation>Represents the PIN in all PARTNER messages
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4"/>
+			<xs:pattern value="\d{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BillingServiceIDType">
+		<xs:annotation>
+			<xs:documentation>A string that uniquely identifies the service in the billing system.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="256"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CompanyNameType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="200"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PhoneType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="21"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="USPhoneType">
+		<xs:annotation>
+			<xs:documentation>Represents the Phone number in all the PARTNER
+					messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AreaCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{3}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Prefix">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{3}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Exchange">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:pattern value="\d{4}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="EmailType">
+		<xs:annotation>
+			<xs:documentation>Represents the email address in all PARTNER
+					messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1024"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CreditCardDetailType">
+		<xs:sequence>
+			<xs:element name="CreditCard" type="cct:CreditCardType"/>
+			<xs:element name="CCAuthAmount" type="xs:double" minOccurs="0"/>
+			<xs:element name="CCAuthAmtReleaseDate" type="xs:dateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Date is in UTC</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreditCardType">
+		<xs:sequence>
+			<xs:element name="CreditCardName" type="cct:PersonNameType" minOccurs="0"/>
+			<xs:element name="CVV" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="3"/>
+						<xs:maxLength value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IsCCValidated" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="CreditCardNumber">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="16"/>
+						<xs:pattern value="[0-9]*"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LastFourDigits" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExpirationMonth">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="1"/>
+						<xs:maxInclusive value="12"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExpirationYear">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="00"/>
+						<xs:maxInclusive value="99"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CreditCardType">
+				<xs:annotation>
+					<xs:documentation>
+								Possible values:
+								Visa
+								MasterCard
+								AmericanExpress
+								Discover
+			 				</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ShortAddressValueType">
+		<xs:sequence>
+			<xs:element name="DPBCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="DPVCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="DPVNotes" type="xs:string" minOccurs="0"/>
+			<xs:element name="CorrectionCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="ErrorDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="EACFStatus" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AgentIDType">
+		<xs:annotation>
+			<xs:documentation>Represents the Agent ID in all PARTNER messages
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SubscriptionIDType">
+		<xs:annotation>
+			<xs:documentation>Indicates the subscription id</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:minInclusive value="0"/>
+			<xs:totalDigits value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ServiceNameType">
+		<xs:annotation>
+			<xs:documentation>The name of the service registering the service
+						deal </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="256"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="ContainerObjType">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="BasicObj" type="cct:BasicObjType" minOccurs="0"/>
+				<xs:element name="TableObj" type="cct:TableObjType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="Type" type="xs:string" use="optional" default="MMVInterface"/>
+			<xs:attribute name="Name" type="xs:string" use="optional" default="SiteId"/>
+			<xs:attribute name="Nmd" type="xs:string" use="optional" default="Nmd"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="BasicObjType">
+		<xs:sequence>
+			<xs:element name="Prop" type="cct:PropType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PropType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="Name" type="xs:string" use="required"/>
+				<xs:attribute name="Val" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="RowType">
+		<xs:sequence>
+			<xs:element name="Prop" type="cct:PropType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="IndexName" type="xs:string" use="required"/>
+		<xs:attribute name="IndexValue" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="TableObjType">
+		<xs:sequence>
+			<xs:element name="Row" type="cct:RowType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="Type" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:simpleType name="AdapterIdType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="RecurringBillingDealType">
+		<xs:sequence>
+			<xs:element name="BillingDealServiceID" type="xs:string"/>
+			<xs:element name="RecurringDealDetails" type="cct:RecurringDealDetailsType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RecurringDealDetailsType">
+		<xs:sequence>
+			<xs:element name="BillingDealName" type="cct:BillingDealNameType"/>
+			<xs:element name="BillingInstanceID" type="cct:BillingInstanceIDType"/>
+			<xs:element name="Subscription" type="cct:SubscriptionType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="CustomerCategoryCodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CLASS_A"/>
+			<xs:enumeration value="CLASS_B"/>
+			<xs:enumeration value="SOURCE"/>
+			<xs:enumeration value="LEASING_COMPANY"/>
+			<xs:enumeration value="ALL_CATEGORY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomerTypeCodeType">
+		<xs:annotation>
+			<xs:documentation>ENTERPRISE = 1; FRANCHISER = 2; SERVICE_PROVIDER = 3; VAR = 4;ALL_TYPES = 5;'ALL_TYPES' is never set but only used to classify when 'ALL TYPES' customer is selected for search/modify per SM SPR 13097</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:complexType name="ErrorFlagsType">
+		<xs:sequence>
+			<xs:element name="EquifaxCreditScoringError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="VertexAddressVerificationError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="VertexTaxCalculationError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="ULMUserIDCheckError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="ServiceParameterCheckError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="CreditCardCheckError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="EquifaxSafeScanError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="EquifaxFraudVictimError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="PreOrderError" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="UpfrontChargePending" type="cct:PermissionFlagType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomerPermissionsType">
+		<xs:annotation>
+			<xs:documentation>A set of permission flags. These permission flags are used by SM while processing the response from equifax for credit report.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OwnerPermission" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="LandlordPermission" type="cct:PermissionFlagType" minOccurs="0"/>
+			<xs:element name="VermontFlag" type="cct:PermissionFlagType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag signifies explicit permission to access the credit report from a customer who is a Vermont resident.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataConfirmed" type="cct:PermissionFlagType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag signifies that CSR is satisfied with the authenticity of the data and explicitely confirmes it.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoHitOverride" type="cct:PermissionFlagType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This parameter is collected by Ordering Agent from Customer to ovveride the No Hit scenario in case of credit evaluation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PermissionFlagType">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="MANType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="25"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="SpecialOfferDetailType">
+		<xs:sequence>
+			<xs:element name="SpecialOffersList" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>SpecialOffersList will be a comma separated list of SpecialOfferIDs</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SpecialOfferType" type="xs:string"/>
+			<xs:element name="ReqPrequalOnAddressChange" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SpecialOffersListType">
+		<xs:sequence>
+			<xs:element name="SpecialOfferID" type="xs:int" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ReservedFieldsType">
+		<xs:sequence>
+			<xs:element name="Reserved1" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved2" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved3" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved4" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved5" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved6" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved7" type="xs:string" minOccurs="0"/>
+			<xs:element name="Reserved8" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BusinessModelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Consumer"/>
+			<xs:enumeration value="ConsumerVAR"/>
+			<xs:enumeration value="ConsumerSP"/>
+			<xs:enumeration value="EnterpriseSP"/>
+			<xs:enumeration value="Government Organization"/>
+			<xs:enumeration value="SMEBI"/>
+			<xs:enumeration value="SMED"/>
+			<xs:enumeration value="Corporate"/>
+			<xs:enumeration value="Franchisee"/>
+			<xs:enumeration value="SAGE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AdapterIDType">
+		<xs:annotation>
+			<xs:documentation>ID that identifies the adapter which is sending the request to DSS</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CancellationReasonCodeType">
+		<xs:annotation>
+			<xs:documentation>Cancellation Reason Code ( 3 letters max) </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NotesType">
+		<xs:annotation>
+			<xs:documentation>Represents the Notes in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ProductDetailsType">
+		<xs:sequence>
+			<xs:element name="ProgramCode" type="cct:ProgramCodeType"/>
+			<xs:element name="ProgramID" type="xs:int"/>
+			<xs:element name="PackageName" type="cct:PackageNameType"/>
+			<xs:element name="PackageID" type="cct:PackageIDType"/>
+			<xs:element name="GLSegment" type="cct:GLSegmentIDType"/>
+			<xs:element name="PackageType" type="xs:int"/>
+			<xs:element name="OrderType" type="xs:string" minOccurs="0"/>
+			<xs:element name="PackageStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1- Active , 2- Inactive, 3-Phased-Out</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Plan" type="cct:PlanDetailsType" maxOccurs="unbounded"/>
+			<xs:element name="ContractID" type="xs:string" minOccurs="0"/>
+			<xs:element name="WhenToChargeRule" type="xs:string" minOccurs="0"/>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="ProgramName" type="cct:ProgramNameType" minOccurs="0"/>
+			<xs:element name="ProgramDesc" type="cct:ProgramDescType" minOccurs="0"/>
+			<xs:element name="PackageDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="ProgramStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1- Active , 2- Inactive, 3-Phased-Out</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerProgramStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>0-Inactive,1-Active,2-Deleted</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CustomerProgramPackageStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>0-Inactive,1-Active,2-Phased Out,3-Deleted</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="SequenceNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="TermsConditions" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PlanDetailsType">
+		<xs:sequence>
+			<xs:element name="PlanName" type="cct:PlanNameType"/>
+			<xs:element name="PlanID" type="cct:PlanIDType"/>
+			<xs:element name="PlanType">
+				<xs:annotation>
+					<xs:documentation> 1 - Base Plan                      2 - Option Plan</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ServiceOfferingDetails" type="cct:SODetailsType" maxOccurs="unbounded"/>
+			<xs:element name="PlanStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1- Active , 2- Inactive, 3-Phased-Out</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="PlanDesc" type="cct:PlanDescType" minOccurs="0"/>
+			<xs:element name="PlanHardware" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="SequenceNumber" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SODetailsType">
+		<xs:sequence>
+			<xs:element name="ServiceOfferingID" type="cct:ServiceOfferingIDType" minOccurs="0"/>
+			<xs:element name="ServiceOfferingName" type="cct:ServiceOfferingNameType"/>
+			<xs:element name="IsLeasedSO" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:boolean"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ServiceName" type="cct:ServiceNameType" minOccurs="0"/>
+			<xs:element name="ServiceDealName" type="cct:ServiceDealNameType" minOccurs="0"/>
+			<xs:element name="BillingDealName" type="cct:BillingDealNameType" minOccurs="0"/>
+			<xs:element name="ServiceDealType" type="xs:string" minOccurs="0"/>
+			<xs:element name="InstallAction" type="xs:int" minOccurs="0"/>
+			<xs:element name="AssociatedServiceName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DealExtraParameters" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:DealExtraParametersType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BillingDealDetails" type="cct:BillingDealDetailsType" minOccurs="0"/>
+			<xs:element name="Subscription" type="cct:SubscriptionType" minOccurs="0"/>
+			<xs:element name="ServiceOfferingStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1- Active , 2- Inactive, 3-Phased-Out</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SOChargeType" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1 - OrderAccepted               3 - Install Repair complete
+4 - Service Activation complete</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="ServiceOfferingDesc" type="cct:ServiceOfferingDescType" minOccurs="0"/>
+			<xs:element name="ServiceOfferingHintText" type="cct:ServiceOfferingHintTextType" minOccurs="0"/>
+			<xs:element name="IsSubscription" type="xs:int" minOccurs="0"/>
+			<xs:element name="TermsInitialPeriod" type="xs:int" minOccurs="0"/>
+			<xs:element name="IsDefault" type="xs:boolean" default="false" minOccurs="0"/>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="SequenceNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="IsBundle" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="BundleCategory" type="xs:integer" minOccurs="0"/>
+			<xs:element name="TransactionInformation" type="cct:TransactionInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This information is only for response messages.If provided in the request, it is ignored and automatically filled by the system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BundleServiceOfferingsDetails" type="cct:BundleSODetailsType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ServiceGrade" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchaseOrderNumber" type="cct:PurchaseOrderNumberType" minOccurs="0"/>
+			<xs:element name="IsSponsored" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If this flag is set to true, BillTo will have the Sponsorer ID. This is made optional to support backward compatibility. Response shall always contain this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BillTo" type="cct:CustomerIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Conditional: This is the unique customer identifier (in OMAR) to be billed for a given SO charge.Mandatory if customer is billed out of OMAR. For consumer type customers this field shall have the Customer ID of the sponsoring customer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubscriptionType">
+		<xs:sequence>
+			<xs:element name="SubscriptionID" type="cct:SubscriptionIDType" minOccurs="0"/>
+			<xs:element name="SubscriptionStatusCode" type="xs:int" minOccurs="0"/>
+			<xs:element name="SAN" type="cct:SANType" minOccurs="0"/>
+			<xs:element name="InitialPrice" type="xs:double" minOccurs="0"/>
+			<xs:element name="InitialTax" type="xs:double" minOccurs="0"/>
+			<xs:element name="RecurringMonthlyPrice" type="xs:double" minOccurs="0"/>
+			<xs:element name="RecurringMonthlyTax" type="xs:double" minOccurs="0"/>
+			<xs:element name="InstallmentMonthlyPrice" type="xs:double" minOccurs="0"/>
+			<xs:element name="InstallmentMonthlyTax" type="xs:double" minOccurs="0"/>
+			<xs:element name="IsServiceValidationNeeded" type="xs:boolean"/>
+			<xs:element name="ExtraParameter" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:ContainerObjType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BillingExtraParameter" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:ContainerObjType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BillingInstanceID" type="xs:string" minOccurs="0"/>
+			<!--SP#43630 Added SubscriptionStatusName for Portal Only-->
+			<xs:element name="SubscriptionStatusName" type="xs:string" minOccurs="0"/>
+			<xs:element name="BundleSubscriptionID" type="cct:SubscriptionIDType" minOccurs="0"/>
+			<xs:element name="isError" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="CreateDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ProvisioningDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="doNotCancelOnTerminate" type="xs:int" minOccurs="0"/>
+			<xs:element name="overrideBillingDealNM" type="xs:string" minOccurs="0"/>
+			<xs:element name="ServiceRefNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="Quantity" type="xs:int" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BillingDealDetailsType">
+		<xs:sequence>
+			<xs:element name="BillingDealID">
+				<xs:simpleType>
+					<xs:restriction base="xs:long">
+						<xs:maxInclusive value="9999999999"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BillingServiceID" type="xs:string"/>
+			<xs:element name="BillingDealName" type="xs:string" minOccurs="0"/>
+			<xs:element name="BillingDealDesc" type="xs:string" minOccurs="0"/>
+			<xs:element name="BillingDealStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1- Active , 2- Inactive, 3-Phased-Out</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TransactionInformation" type="cct:TransactionInfoType" minOccurs="0"/>
+			<xs:element name="HasTieredPricing" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="OneTimePrice" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This Price is in Dollars</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FirstMonthPrice" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This Price is in Dollars</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RecurringPrice" type="xs:double" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This Price is in Dollars</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MarketingDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="BillingDealPricings" type="cct:BDPricingType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BDPricingType">
+		<xs:sequence>
+			<xs:element name="BillingProductID" type="cct:ProductIDType"/>
+			<xs:element name="PricingMode" type="xs:int"/>
+			<xs:element name="DollarAmount" type="xs:double"/>
+			<xs:element name="TaxCode" type="cct:TaxCodeType"/>
+			<xs:element name="Installments" type="xs:double"/>
+			<xs:element name="Unit" type="xs:string" minOccurs="0"/>
+			<xs:element name="BillingDealPricingID" type="xs:long" minOccurs="0"/>
+			<xs:element name="BillingDealID" type="xs:long" minOccurs="0"/>
+			<xs:element name="ChargeType" type="xs:string" minOccurs="0"/>
+			<xs:element name="IsOverridable" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CustomerContactInfo">
+		<xs:sequence>
+			<xs:element name="CustomerName" type="cct:PersonNameType"/>
+			<xs:element name="CustomerAddress" type="cct:AddressValueType"/>
+			<xs:element name="CustomerEmail" type="cct:EmailType" minOccurs="0"/>
+			<xs:element name="CustomerPhoneNumber" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="CustomerFaxNumber" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="CustomerInternationalPhone" type="cct:InternationalPhoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InstallContactInfo">
+		<xs:sequence>
+			<xs:element name="InstallContactName" type="cct:PersonNameType"/>
+			<xs:element name="InstallAddress" type="cct:AddressValueType"/>
+			<xs:element name="InstallContactEmail" type="cct:EmailType" minOccurs="0"/>
+			<xs:element name="InstallContactDayPhoneNumber" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="InstallContactNightPhoneNumber" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="InstallInternationalDayPhone" type="cct:InternationalPhoneType" minOccurs="0"/>
+			<xs:element name="InstallInternationalNightPhone" type="cct:InternationalPhoneType" minOccurs="0"/>
+			<xs:element name="InstallInternationalCellPhone" type="cct:InternationalPhoneType" minOccurs="0"/>				
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BillingContactInfo">
+		<xs:sequence>
+			<xs:element name="BillingContactName" type="cct:PersonNameType"/>
+			<xs:element name="BillingAddress" type="cct:AddressValueType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DateRangeType">
+		<xs:annotation>
+			<xs:documentation>Date should be in the format mm/dd/yyyy</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FromDate" type="xs:date"/>
+			<xs:element name="ToDate" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PurchaseMethodType">
+		<xs:annotation>
+			<xs:documentation>Identifies the method of purchase.  Possible values are   Purchase,    Lease  </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="5"/>
+			<xs:maxLength value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BillingMethodType">
+		<xs:annotation>
+			<xs:documentation>Can have values  CreditCard, Invoice
+	       Possible Values :
+		1. CreditCard for Credit/Debit Card 
+		2. Invoice
+		3. DirectDebit for ECheck/ACH 
+		4. Boleto
+	    </xs:documentation>
+	    </xs:annotation>
+	  <xs:restriction base="xs:string">
+		<xs:maxLength value="20"/>
+	 </xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BillingDealNameType">
+		<xs:annotation>
+			<xs:documentation>Name of the Billing Deal</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BillingInstanceIDType">
+		<xs:annotation>
+			<xs:documentation>if customer is billed out of DSS - instace ID is given by Infranet. If customer is billed out of OMAR - date (converted to YYYYMMDD format) which was used to query the price from CM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="OptionPlanDetailsType">
+		<xs:sequence>
+			<xs:element name="PlanName" type="cct:PlanNameType"/>
+			<xs:element name="ServiceOfferingName" type="cct:ServiceOfferingNameType"/>
+			<xs:element name="ExtraParameters" type="cct:ExtraFieldType" minOccurs="0"/>
+			<xs:element name="ContainerObj" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:ContainerObjType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PurchaseOrderNumber" type="cct:PurchaseOrderNumberType" minOccurs="0"/>
+			<xs:element name="IsSponsored" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If this flag is set to true, BillTo will have the Sponsorer ID. This is made optional to support backward compatibility. Response shall always contain this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BillTo" type="cct:CustomerIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Conditional: This is the unique customer identifier (in OMAR) to be billed for a given SO charge.Mandatory if customer is billed out of OMAR. For consumer type customers this field shall have the Customer ID of the sponsoring customer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaginationResponseType">
+		<xs:sequence>
+			<xs:element name="RecFetchStartIndex" type="xs:int" default="1"/>
+			<xs:element name="RecFetchEndIndex" type="xs:int" default="10"/>
+			<xs:element name="TotalNoOfRecordsReturned" type="xs:int"/>
+			<xs:element name="MaxNumberOfRecords" type="xs:int"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PaginationRequestType">
+		<xs:sequence>
+			<xs:element name="StartIndex" type="xs:int" default="1"/>
+			<xs:element name="EndIndex" type="xs:int" default="10"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TermsAndConditionsType">
+		<xs:sequence>
+			<xs:element name="TermsID" type="xs:int"/>
+			<xs:element name="TermsName" type="xs:string"/>
+			<xs:element name="TermsConditions" type="xs:string"/>
+			<xs:element name="TermsConditionsShort" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ContactInfoType">
+		<xs:sequence>
+			<xs:element name="Name" type="cct:PersonNameType" minOccurs="0"/>
+			<xs:element name="Email" type="cct:EmailType" minOccurs="0"/>
+			<xs:element name="PhoneNumber" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="FaxNumber" type="cct:PhoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SiteProvisioningStatusType">
+		<xs:annotation>
+			<xs:documentation>Type of Operation allowed for an order
+						  0-Pending
+						  1-Provisioned
+						  2-DSS Deleted
+						  3-Terminated					                  
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="BeamIDType">
+		<xs:annotation>
+			<xs:documentation>Identify the Beam Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SiteType">
+		<xs:annotation>
+			<xs:documentation>Type of Operation allowed for an order
+						  0-Ku
+						  1-Ka
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="CRMSiteType">
+		<xs:annotation>
+			<xs:documentation>CRM Site Type.For ex.
+							  Spaceway
+							  Broadband Remote
+							  Jupiter
+				</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="GLSegmentIDType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SalesChannelCodeType">
+		<xs:annotation>
+			<xs:documentation>E-Enterrprise , V-VAR</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ComanyTypeCodeType">
+		<xs:annotation>
+			<xs:documentation>
+				Customer
+				Internal
+				Customer - VAR
+				Customer - HughesNet
+				Customer - Shared
+				Customer - Dedicated
+				Pilot
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PolarizationType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BandType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SatelliteIDType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ApplicableTransportType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="OrderTransitionStateType">
+		<xs:sequence>
+			<xs:element name="DisplaySequence" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Position value of Order Status in display sequence</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DisplayName">
+				<xs:annotation>
+					<xs:documentation>Order Status Display Name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TransitionStatus" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>
+					0-Yet To be Traversed 
+					1-Traversed
+					2-Traversed but in error (Only one state would be in error)
+                                </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ExtraParameterDisplayNameType">
+		<xs:annotation>
+			<xs:documentation>Parameter name that SM will use to submit the value.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExtraParameterDisplayHintType">
+		<xs:annotation>
+			<xs:documentation>Hint or description that will be displayed when the parameter is being collected on UI.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ValidationType">
+		<xs:annotation>
+			<xs:documentation>List of Validation Classes or methods.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="ValidationClass">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OptionsType">
+		<xs:annotation>
+			<xs:documentation>A single option for the drop down containing DisplayName and Value</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OptionValue">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="OptionDisplayName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SelectBoxType">
+		<xs:annotation>
+			<xs:documentation>List of Options in the drop down.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="Options" type="cct:OptionsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransactionInfoType">
+		<xs:sequence>
+			<xs:element name="CreatedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="CreatedDt" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="ModifedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="ModifiedDt" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="ActivatedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="ActivatedDt" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="DeActivatedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="DeActivatedDt" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="PhasedOutBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="PhasedOutDt" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BundleSODetailsType">
+		<xs:sequence>
+			<xs:element name="ServiceOfferingID" type="cct:ServiceOfferingIDType" minOccurs="0"/>
+			<xs:element name="ServiceOfferingName" type="cct:ServiceOfferingNameType"/>
+			<xs:element name="IsLeasedSO" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:boolean"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ServiceName" type="cct:ServiceNameType" minOccurs="0"/>
+			<xs:element name="ServiceDealName" type="cct:ServiceDealNameType" minOccurs="0"/>
+			<xs:element name="BillingDealName" type="cct:BillingDealNameType" minOccurs="0"/>
+			<xs:element name="ServiceDealType" type="xs:string" minOccurs="0"/>
+			<xs:element name="InstallAction" type="xs:int" minOccurs="0"/>
+			<xs:element name="DealExtraParameters" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:DealExtraParametersType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BillingDealDetails" type="cct:BillingDealDetailsType" minOccurs="0"/>
+			<xs:element name="Subscription" type="cct:SubscriptionType" minOccurs="0"/>
+			<xs:element name="ServiceOfferingStatus" type="xs:int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1- Active , 2- Inactive, 3-Phased-Out</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SOChargeType" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>1 - OrderAccepted               3 - Install Repair complete     4 - Service Activation complete</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="ServiceOfferingDesc" type="cct:ServiceOfferingDescType" minOccurs="0"/>
+			<xs:element name="ServiceOfferingHintText" type="cct:ServiceOfferingHintTextType" minOccurs="0"/>
+			<xs:element name="IsSubscription" type="xs:int" minOccurs="0"/>
+			<xs:element name="TermsInitialPeriod" type="xs:int" minOccurs="0"/>
+			<xs:element name="IsDefault" type="xs:boolean" default="false" minOccurs="0"/>
+			<!--SPR#42827 Only for Portal. Not on HCDM side-->
+			<xs:element name="SequenceNumber" type="xs:int" minOccurs="0"/>
+			<xs:element name="IsBundle" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="TransactionInformation" type="cct:TransactionInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This information is only for response messages.If provided in the request, it is ignored and automatically filled by the system</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ServiceGrade" type="xs:string" minOccurs="0"/>
+			<xs:element name="PurchaseOrderNumber" type="cct:PurchaseOrderNumberType" minOccurs="0"/>
+			<xs:element name="IsSponsored" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>If this flag is set to true, BillTo will have the Sponsorer ID. This is made optional to support backward compatibility. Response shall always contain this field</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BillTo" type="cct:CustomerIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Conditional: This is the unique customer identifier (in OMAR) to be billed for a given SO charge.Mandatory if customer is billed out of OMAR. For consumer type customers this field shall have the Customer ID of the sponsoring customer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SpecialOfferType">
+		<xs:annotation>
+			<xs:documentation>Indicates the Special Offer Type. Possible values-
+			Stimulus
+    		        </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VendorType">
+		<xs:annotation>
+			<xs:documentation>External Vendor to be used for address validation.Possible Values are:
+			       ServiceObjects
+			       Melissa			       
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CSPMsgHeaderType">
+		<xs:annotation>
+			<xs:documentation>Common Mesaage Header type used in all CSP messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UserName" type="cct:UserIDType"/>
+			<xs:element name="ProcessInstanceID" type="cct:ProcessInstanceIDType" minOccurs="0"/>
+			<xs:element name="TransactionDateTime" type="cct:DateTimeType" minOccurs="0"/>
+			<xs:element name="TransactionCode" type="cct:CodeType" minOccurs="0"/>
+			<xs:element name="TransactionSequenceId" type="cct:TransactionSequenceIdType" minOccurs="0"/>
+			<xs:element name="CorrelationTransactionId" type="cct:CorrelationTransactionIdType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ProcessInstanceIDType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="SiteIdType">
+		<xs:annotation>
+			<xs:documentation> A simple type that defines a Site Id </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DateTimeType">
+		<xs:annotation>
+			<xs:documentation>Date and time string. This is of the format: mm/dd/yyyy hh:nn:ss</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="TransactionSequenceIdType">
+		<xs:annotation>
+			<xs:documentation>When generated by WebACS it is D000000000 i.e D followed by 9 digits</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="30"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CorrelationTransactionIdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="CodeType">
+		<xs:annotation>
+			<xs:documentation>Represents the Code Types in messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="BasicProfileInfoType">
+		<xs:annotation>
+			<xs:documentation>Common Mesaage Header type used in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="DisplayName" type="cct:BasicProfileFieldType" minOccurs="0"/>
+			<xs:element name="FamilyName" type="cct:BasicProfileFieldType" minOccurs="0"/>
+			<xs:element name="GivenName" type="cct:BasicProfileFieldType" minOccurs="0"/>
+			<xs:element name="Email" type="cct:EmailType" minOccurs="0"/>
+			<xs:element name="Gender" type="cct:GenderType" minOccurs="0"/>
+			<xs:element name="Address" type="cct:BasicProfileFieldType" minOccurs="0"/>
+			<xs:element name="Birthday" type="cct:BasicProfileFieldType" minOccurs="0"/>
+			<xs:element name="LastsuccessfulLoginTime" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OwnerIDType">
+		<xs:choice>
+			<xs:element name="SAN" type="cct:SANType"/>
+			<xs:element name="CID" type="cct:SANType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="SANCredentialsType">
+		<xs:annotation>
+			<xs:documentation>Credentials for DSS SAN</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SAN" type="cct:SANType"/>
+			<xs:element name="ESN" type="cct:ESNType" minOccurs="0"/>
+			<xs:element name="ContactPhone" type="cct:PhoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CIDCredentialsType">
+		<xs:annotation>
+			<xs:documentation>Credentials for DSS Class B customer</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CID" type="cct:SANType"/>
+			<xs:element name="BillingZipCode" type="cct:ZipType" minOccurs="0"/>
+			<xs:element name="ContactPhone" type="cct:PhoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BasicProfileFieldType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GenderType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Male"/>
+			<xs:enumeration value="Female"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProductIDType">
+		<xs:annotation>
+			<xs:documentation>  A simple type that defines the Product ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="25"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LandlinePhoneType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StreetNumberType">
+		<xs:annotation>
+			<xs:documentation>Street Number.
+					</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AntennaSizeType">
+		<xs:annotation>
+			<xs:documentation> A simple type that defines antennaSize.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="3.5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ODUPowerType">
+		<xs:annotation>
+			<xs:documentation>ODU Power in Watts</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="100.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AvailabilityType">
+		<xs:annotation>
+			<xs:documentation>Availability Levels in %</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="100.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ODUParameterType">
+		<xs:sequence>
+			<xs:element name="AntennaSize" type="cct:AntennaSizeType"/>
+			<xs:element name="RadioPower" type="cct:ODUPowerType"/>
+			<xs:element name="Availability" type="cct:AvailabilityType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- PartnerId Type -->
+	<xs:simpleType name="PartnerIdType">
+		<xs:annotation>
+			<xs:documentation>Represents the PartnerId in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- NAPProvisioningRecordIDType -->
+	<xs:simpleType name="NAPProvisioningRecordIDType">
+		<xs:annotation>
+			<xs:documentation> NAPProvisioningRecordIDType</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long"/>
+	</xs:simpleType>
+	<!-- ServiceOrderNumberType-->
+	<xs:simpleType name="ServiceOrderNumberType">
+		<xs:annotation>
+			<xs:documentation> Field Service Order Number (FSO Id)</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HNSLocationIDType">
+		<xs:annotation>
+			<xs:documentation>Indicates the HNS Location ID.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PurchaseOrderNumberType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TPSTransactionType">
+		<xs:annotation>
+			<xs:documentation>Indicates type of TPS Transaction. This field will hold values Provision Cancel Closed</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<!--	<xs:enumeration value="Provision"/>
+			<xs:enumeration value="Cancel"/>
+			<xs:enumeration value="Closed"/> -->
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InstallAMPM">
+		<xs:annotation>
+			<xs:documentation>Represents Installation/Service is requested in AM or PM</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="2"/>
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HANConfigurationFlagType">
+		<xs:annotation>
+			<xs:documentation>Denotes HAN Configuration flag value as YES or NO.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="HANTypeType">
+		<xs:annotation>
+			<xs:documentation>Denotes HAN Type value as Prime, Co-Prime and Backup.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="HANAssociatedSitesType">
+		<xs:annotation>
+			<xs:documentation>Denotes HAN Associated Sites.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="HANConfigurationType">
+		<xs:annotation>
+			<xs:documentation>HAN Configuration</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="HANConfigurationFlag" type="cct:HANConfigurationFlagType"/>
+			<xs:element name="HANType" type="cct:HANTypeType" minOccurs="0"/>
+			<xs:element name="HANAssociatedSites" type="cct:HANAssociatedSitesType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TradeReferenceType">
+		<xs:annotation>
+			<xs:documentation>Represents the Trade References</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Phone" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="Fax" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="InternationalPhone" type="cct:InternationalPhoneType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InvoiceInfoType">
+		<xs:sequence>
+			<xs:element name="BusinessType" type="xs:int" minOccurs="0"/>
+			<xs:element name="YearsInBusiness" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BusinessBankReference" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Branch" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BusinessBankAccountNumber" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="50"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Phone" type="cct:PhoneType" minOccurs="0"/>
+			<xs:element name="InternationalPhone" type="cct:InternationalPhoneType" minOccurs="0"/>
+			<xs:element name="FederalEmpId" type="xs:string" minOccurs="0"/>
+			<xs:element name="TradeReference" type="cct:TradeReferenceType" minOccurs="0" maxOccurs="3"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="LeasingInfoType">
+		<xs:sequence>
+			<xs:element name="LeaseCustomerId" type="cct:CustomerIDType"/>
+			<xs:element name="LeasingTerm" type="xs:double"/>
+			<xs:element name="LeasingInterestRate" type="xs:double"/>
+			<xs:element name="PrePaymentAmount" type="xs:double"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SiteNameType">
+		<xs:annotation>
+			<xs:documentation>Site name is a customer-provided description of the site location.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SecurityCode">
+		<xs:annotation>
+			<xs:documentation>This security passcode may be used at
+                the time of transport service service commissioning or activation.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Transponderkey">
+		<xs:annotation>
+			<xs:documentation>This field should have string as per possible TransponderKey values in DSS DB.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentCodeType">
+		<xs:annotation>
+			<xs:documentation>PaymentCode are the number of months in which the payment is to be collected. It is used during Issue Order Placement.
+    			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ServiceRefNumberType">
+		<xs:annotation>
+			<xs:documentation>This field will identify service reference number for a serivce level</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ServiceLevel" type="xs:int"/>
+			<xs:element name="ServiceRefNumber" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SubscriptionInfoType">
+		<xs:sequence>
+			<xs:element name="SubscriptionID" type="cct:SubscriptionIDType" minOccurs="0"/>
+			<xs:element name="SubscriptionStatusCode" type="xs:int" minOccurs="0"/>
+			<xs:element name="SAN" type="cct:SANType" minOccurs="0"/>
+			<xs:element name="ExtraParameter" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:ContainerObjType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="BillingExtraParameter" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="cct:ContainerObjType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ServiceDealName" type="cct:ServiceDealNameType" minOccurs="0"/>
+			<xs:element name="IsBundle" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="BundleSubscriptions" type="cct:SubscriptionInfoType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="doNotCancelOnTerminate" type="xs:int" minOccurs="0"/>
+			<xs:element name="overrideBillingDealNM" type="xs:string" minOccurs="0"/>
+			<xs:element name="ServiceOfferingID" type="cct:ServiceOfferingIDType" minOccurs="0"/>
+			<xs:element name="PlanID" type="cct:PlanIDType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Types Added for Brazil -->
+	<xs:complexType name="OrganizationInfoType">
+		<xs:sequence>
+			<xs:element name="TradeName" type="cct:TradeNameType" minOccurs="0"/>
+			<xs:element name="StateRegistry" type="cct:StateRegistryType" minOccurs="0"/>
+			<xs:element name="MunicipalRegistry" type="cct:MunicipalRegistryType" minOccurs="0"/>
+			<xs:element name="Activity" type="cct:ActivityType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="TradeNameType">
+		<xs:annotation>
+			<xs:documentation>TradeName</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StateRegistryType">
+		<xs:annotation>
+			<xs:documentation>StateRegistry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MunicipalRegistryType">
+		<xs:annotation>
+			<xs:documentation>MunicipalRegistry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActivityType">
+		<xs:annotation>
+			<xs:documentation>Activity</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="InternationalPhoneType">
+		<xs:sequence>
+			<xs:element name="AreaCode" type="cct:AreaCodeType" minOccurs="0"/>
+			<xs:element name="IntPhoneNo" type="cct:IntPhoneNumberType" minOccurs="0"/>
+			<xs:element name="Type" type="xs:string" minOccurs="0"/>
+			<xs:element name="Extension" type="cct:ExtensionType" minOccurs="0"/>
+			<xs:element name="ISDCode" type="cct:ISDCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AreaCodeType">
+		<xs:annotation>
+			<xs:documentation>AreaCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntPhoneNumberType">
+		<xs:annotation>
+			<xs:documentation>Number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BankAccountType">
+		<xs:sequence>
+			<xs:element name="AgencyNumber" type="cct:AgencyNumberType"/>
+			<xs:element name="BankCode" type="cct:BankCodeType"/>
+			<xs:element name="BankAccountNumber" type="cct:BankAccountNumberType"/>
+			<xs:element name="AgencyVerifierDigit" type="cct:AgencyVerifierDigitType" minOccurs="0"/>
+			<xs:element name="AccountNumberVerifierDigit" type="cct:AccountNumberVerifierDigitDigitType"/>
+			<xs:element name="NameOfOwner" type="cct:PersonNameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AgencyNumberType">
+		<xs:annotation>
+			<xs:documentation>AgencyNumber</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankCodeType">
+		<xs:annotation>
+			<xs:documentation>BankCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankAccountNumberType">
+		<xs:annotation>
+			<xs:documentation>BankAccountNumber</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgencyVerifierDigitType">
+		<xs:annotation>
+			<xs:documentation>AgencyVerifierDigit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountNumberVerifierDigitDigitType">
+		<xs:annotation>
+			<xs:documentation>AccountNumberVerifierDigitDigit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AcceptedCommunicationsType">
+		<xs:sequence>
+			<xs:element name="AcceptsSMS" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptsEmail" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptsPhoneCall" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptsLetter" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ProtocolIdType">
+		<xs:annotation>
+			<xs:documentation>Protocol ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CPFType">
+		<xs:annotation>
+			<xs:documentation>CPF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CNPJType">
+		<xs:annotation>
+			<xs:documentation>CNPJ</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="18"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HTBOrderOwnerType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentModeType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="GlobalPhoneType">
+		<xs:choice>
+			<xs:element name="PhoneNumber" type="cct:PhoneType"/>
+			<xs:element name="InternationalPhoneNumber" type="cct:InternationalPhoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="FederalTaxInfoType">
+		<xs:choice>
+			<xs:element name="CPF" type="cct:CPFType"/>
+			<xs:element name="CNPJ" type="cct:CNPJType"/>
+		</xs:choice>
+	</xs:complexType>
+		<xs:simpleType name="CaseIdType">
+		<xs:annotation>
+			<xs:documentation>Case ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExtensionType">
+			<xs:annotation>
+				<xs:documentation>Telephone extension</xs:documentation>
+			</xs:annotation>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="5"/>
+			</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ISDCodeType">
+			<xs:annotation>
+				<xs:documentation>ISDCode of the Country</xs:documentation>
+			</xs:annotation>
+			<xs:restriction base="xs:string">
+				<xs:maxLength value="5"/>
+			</xs:restriction>
+	</xs:simpleType>
+        <!-- Customer Company Type  (100 characters)-->
+	<xs:simpleType name="CustomerCompanyType">
+		<xs:annotation>
+			<xs:documentation>Customer Company Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

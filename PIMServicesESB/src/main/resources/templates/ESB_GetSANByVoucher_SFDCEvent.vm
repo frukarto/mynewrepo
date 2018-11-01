@@ -1,0 +1,15 @@
+<SFDCAPIEventRequest xmlns="http://soap.sforce.com/schemas/class/PartnersVoucher">
+            <req>
+                <TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+                <APIName>GetSANByVoucher</APIName>
+                <Parameters>
+                    <Key>SPPartnerID</Key>
+                    <Value>${exchange.properties.PartnerId}</Value>
+                </Parameters>
+                <Parameters>
+                    <Key>VoucherNumber</Key>
+                    <Value>${exchange.properties.VoucherNumber}</Value>
+                </Parameters>
+                             
+            </req>
+</SFDCAPIEventRequest>

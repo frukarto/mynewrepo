@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Raghu (Hughes Network Systems) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Sudhir Chandravanshi (FSS) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Aditya Chakraborty (HSS) -->
+<xs:schema xmlns:core="http://www.hns.com/iag/schemas/core" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.hns.com/iag/schemas/dssbilling" targetNamespace="http://www.hns.com/iag/schemas/dssbilling" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- xmlns:ulm="http://www.hns.com/iag/schemas/ulm"-->
+	<xs:import namespace="http://www.hns.com/iag/schemas/core" schemaLocation="./Core.xsd"/>
+	<xs:element name="GetAccountInfoMsg">
+		<xs:annotation>
+			<xs:documentation>Message is sent from SM to BS to get the account information of an user</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SAN" type="core:SANType"/>
+				<xs:element name="ChildWanted" type="xs:boolean"/>
+				<xs:element name="UserCredential" type="core:UserCredentialType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetAccountInfoResponseMsg">
+		<xs:annotation>
+			<xs:documentation>Message is sent from BS to SM as a response to GetAccountInfoMsg response</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="SAN" type="core:SANType"/>
+				<xs:element name="Name" type="core:PersonNameType"/>
+				<xs:element name="Company" type="core:CompanyType" minOccurs="0"/>
+				<xs:element name="JobTitle" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="90"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SiteAddress" type="core:AddressType"/>
+				<xs:element name="Email" type="core:EMailType" minOccurs="0"/>
+				<xs:element name="IsEmailAddressValid" type="core:BooleanType" minOccurs="0"/>
+				<xs:element name="WorkPhone" type="core:PhoneType" minOccurs="0"/>
+				<xs:element name="HomePhone" type="core:PhoneType" minOccurs="0"/>
+				<xs:element name="AccountBalance" type="xs:double" minOccurs="0"/>
+				<xs:element name="BillFrequency" type="xs:int" minOccurs="0"/>
+				<xs:element name="BillCurrency" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="USD"/>
+							<xs:enumeration value="Euro"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="BillDay" type="xs:int" minOccurs="0"/>
+				<xs:element name="CurrentBillCycleStart" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="CurrentBillCycleEnd" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="NextBillCycleStart" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="NextBillCycleEnd" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="LastChangeDate" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="CustomerLogin" type="core:BillingServiceLoginIDType" minOccurs="0"/>
+				<xs:element name="ServiceType" type="core:ServiceTypeType" minOccurs="0"/>
+				<xs:element name="AccountStatus" type="xs:int" minOccurs="0"/>
+				<xs:element name="DelinquencyStatus" type="core:CollectionsStateType" minOccurs="0"/>
+				<xs:element name="SerialNo" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="50"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ParentFlag" type="xs:int" minOccurs="0"/>
+				<xs:element name="LastChangeReason" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="256"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CurrentUsage" type="xs:double" minOccurs="0"/>
+				<xs:element name="BillType" type="core:BillTypeType"/>
+				<xs:element name="Plan" type="core:PlanNameType" minOccurs="0"/>
+				<xs:element name="BillingName" type="core:PersonNameType" minOccurs="0"/>
+				<xs:element name="BillingAddress" type="core:AddressType" minOccurs="0"/>
+				<xs:element name="IsBillingAddressValid" type="core:BooleanType" minOccurs="0"/>
+				<xs:element name="PlanCode" type="core:PlanCodeType" minOccurs="0"/>
+				<xs:element name="DealName" type="core:DealNameType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="CreditCard" type="core:CreditCardType" minOccurs="0"/>
+				<xs:element name="GLSegmentId" type="core:GLSegmentIdType" minOccurs="0"/>
+				<xs:element name="ServiceStatus" type="xs:int" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation> It describes the status of the transport service in Billing. Values are 1=Active, 2=Inactive, 3=Closed</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ServiceStatusChangeReason" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation> It describes the last transport service status change reason</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FederalTaxID" type="core:FederalTaxIDType" minOccurs="0"/>
+				<xs:element name="InvoiceOption" type="core:InvoiceOptionType" minOccurs="0"/>
+				<xs:element name="CustomerSiteID" type="core:CustomerSiteIDType" minOccurs="0"/>
+				<xs:element name="CustomerLocationID" type="core:CustomerLocationIDType" minOccurs="0"/>
+				<xs:element name="HNSLocationID" type="core:HNSLocationIDType" minOccurs="0"/>
+				<xs:element name="ServiceCloseDate" type="xs:dateTime" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation> It describes the  transport service close date</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!--Added for DSS 6.3 (Collections)-->
+				<!--Added for DSS 6.3 (Collections)-->
+				<!--Added for DSS 6.3 (Collections)-->
+				<xs:element name="NoOfUnusedFAPTokens" type="xs:int" minOccurs="0"/>
+				<xs:element name="ServiceCommitmentStatus" type="xs:int" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Value of 0 indicates No Commitment. Value greater than 0 indicates commitment</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<!--Added for Brazil-->
+				<xs:element name="BrazilInvoiceOption" type="xs:boolean" minOccurs="0"/>
+				<xs:element name="OrganizationInfo" type="core:OrganizationInfoType" minOccurs="0"/>
+				<xs:element name="InternationalDayPhone" type="core:InternationalPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalNightPhone" type="core:InternationalPhoneType" minOccurs="0"/>
+				<xs:element name="DueDayOfMonth" type="xs:integer" minOccurs="0"/>
+				<xs:element name="BankAccount" type="core:BankAccountType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

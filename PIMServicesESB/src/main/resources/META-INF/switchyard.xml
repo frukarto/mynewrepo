@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<switchyard xmlns="urn:switchyard-config:switchyard:1.0"
+            xmlns:bean="urn:switchyard-component-bean:config:1.0"          
+            xmlns:camel="urn:switchyard-component-camel:config:2.0"
+            xmlns:http="urn:switchyard-component-http:config:2.0"           
+            xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+            xmlns:soap="urn:switchyard-component-soap:config:2.0"
+            xmlns:swyd="urn:switchyard-config:switchyard:1.0"
+            xmlns:sy="urn:switchyard-config:switchyard:2.0"
+            xmlns:trfm="urn:switchyard-config:transform:1.0"
+            name="PIMServicesESB"
+            targetNamespace="urn:com.hughes.bits.fuse.esb:PIMServicesESB:1.0">
+   <sca:composite name="PIMServicesESB"
+                   targetNamespace="urn:com.hughes.bits.fuse.esb:PIMServicesESB:1.0">
+      <sca:service name="ManageSiteInfoProxy" promote="ManageSiteInfoProxy/ManageSiteInfoProxy">
+         <sca:interface.wsdl interface="wsdl/ManageSiteInfo.wsdl#wsdl.porttype(ManageSiteInfoService)"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper includes=".*" soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/ManageSiteInfo.wsdl</soap:wsdl>
+         </soap:binding.soap>
+      </sca:service>
+      <sca:service name="PIMGatewayProxy" promote="PIMGatewayProxy/PIMGatewayProxy">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="Authorization|remoteadr"/>
+            <http:contextPath>public/PIMGatewayProxy</http:contextPath>
+         </http:binding.http>
+      </sca:service>
+      <sca:service name="SF_CaseManagementAPIProxy"
+                    promote="SF_CaseManagementAPIProxy/SF_CaseManagementAPIProxy">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="Authorization|remoteadr|[Cc]ontent-[Tt]ype"/>
+            <http:messageComposer class="com.hughes.bits.fuse.PublicESB.composer.HTTPBindingErrorMapper"/>
+            <http:contextPath>publicAPI/PIM/External/SF_CaseManagementAPIService</http:contextPath>
+         </http:binding.http>
+      </sca:service>
+      <sca:service name="SFVoucherIntProxy" promote="SFVoucherIntProxy/SFVoucherIntProxy">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="Authorization|remoteadr|[Cc]ontent-[Tt]ype|[uU]ser[Nn]ame"/>
+            <http:messageComposer class="com.hughes.bits.fuse.PublicESB.composer.HTTPBindingErrorMapper"/>
+            <http:contextPath>internal/SFVoucherIntProxy</http:contextPath>
+         </http:binding.http>
+      </sca:service>
+      <sca:service name="SFPIMEXTProxy" promote="SFPIMEXTProxy/SFPIMEXTProxy">
+         <sca:interface.wsdl interface="wsdl/PartnerOrder.wsdl#wsdl.porttype(PartnersOrderPortType)"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/PartnerOrder.wsdl</soap:wsdl>
+            <soap:contextPath>/Internal</soap:contextPath>
+         </soap:binding.soap>
+      </sca:service>
+      <sca:service name="PartnerVSATAPIProxy" promote="PartnerVSATAPIProxy/PartnerVSATAPIProxy">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="[Cc]ontent-[Tt]ype"/>
+            <http:messageComposer class="com.hughes.bits.fuse.PublicESB.composer.HTTPBindingErrorMapper"/>
+            <http:contextPath>publicAPI/PIM/External/PartnerVSATAPIProxy</http:contextPath>
+         </http:binding.http>
+      </sca:service>
+      <sca:service name="InstallerPortalEXTProxy"
+                    promote="InstallerPortalEXTProxy/InstallerPortalEXTProxy">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="[Cc]ontent-[Tt]ype|Authorization|remoteadr|username|password"/>
+            <http:messageComposer class="com.hughes.bits.fuse.PublicESB.composer.HTTPBindingErrorMapper"/>
+            <http:contextPath>public/External/PIM/InstallerPortalEXTProxy</http:contextPath>
+         </http:binding.http>
+      </sca:service>
+      <sca:reference multiplicity="0..1" name="TransportFeasibilityService"
+                      promote="PIMGatewayProxy/TransportFeasibilityService">
+         <sca:interface.wsdl interface="wsdl/TransportFeasibilityService.wsdl#wsdl.porttype(TransportFeasibilityService)"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper includes=".*" soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/TransportFeasibilityService.wsdl</soap:wsdl>
+            <soap:endpointAddress>http://soawsserver:8080/public/http/TransportFeasibilityEXTBPELProxy/TransportFeasibilityService</soap:endpointAddress>		
+            <soap:timeout>${PIM.TransportFeasibilityProxy.timeout}</soap:timeout>
+            <soap:basic>
+               <soap:user>dssinternaluser</soap:user>
+               <soap:password>Test@123</soap:password>
+            </soap:basic>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="SLVTService" promote="PIMGatewayProxy/SLVTService">
+         <sca:interface.wsdl interface="wsdl/SLVT.wsdl#wsdl.porttype(SLVTService)"/>
+         <soap:binding.soap name="soap2">
+            <soap:contextMapper soapHeadersType="VALUE" includes="[Cc]ontent-[Tt]ype|[Ss]oap[Aa]ction|SessionHeader"/>
+            <soap:wsdl>wsdl/SLVT.wsdl</soap:wsdl>
+             <soap:endpointAddress>${PIM.SLVTProxy.endpoint}</soap:endpointAddress> 
+		     	 
+            <soap:timeout>${PIM.SLVTProxy.timeout}</soap:timeout>
+            <soap:basic>
+               <soap:user>dssinternaluser</soap:user>
+               <soap:password>Test@123</soap:password>
+            </soap:basic>  
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="PartnersOrderPortType"
+                      promote="SFPIMEXTProxy/PartnersOrderPortType">
+         <sca:interface.wsdl interface="wsdl/PartnerOrder.wsdl#wsdl.porttype(PartnersOrderPortType)"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper includes="[Cc]ontent-[Tt]ype|[Ss]oap[Aa]ction|SessionHeader"
+                                soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/PartnerOrder.wsdl</soap:wsdl>
+            <soap:endpointAddress>${SFPIMEXTProxy.proxy.endpoint}</soap:endpointAddress>
+            <soap:timeout>${SFPIMEXTProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="MsgControllerBillingService"
+                      promote="PIMGatewayProxy/MsgControllerBillingService">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper soapHeadersType="VALUE"/>
+            <soap:wsdl>wsdl/MsgControllerService.wsdl</soap:wsdl>
+            <soap:endpointAddress>${MsgControllerBMRProxy.proxy.endpoint}</soap:endpointAddress>
+            <soap:timeout>${MsgControllerBMRProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="PIMESBService"
+                      promote="PIMGatewayProxy/PIMESBService">
+         <sca:interface.wsdl interface="wsdl/PIMESBProxy.wsdl#wsdl.porttype(PIMESBProxy)"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper includes=".*" soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/PIMESBProxy.wsdl</soap:wsdl>
+            <soap:endpointAddress>http://soawsserver:8080/PIMESBProxy/PIMESBProxy</soap:endpointAddress>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="DebugLogService"
+                      promote="PIMGatewayProxy/DebugLogService">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <sca:binding.sca name="sca2" swyd:target="DebugLogProxy"
+                           swyd:targetNamespace="urn:com.hughes.bits.fuse.esb:HelperServicesESB:1.0"/>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="ManageSiteInfoService"
+                      promote="PIMGatewayProxy/ManageSiteInfoService">
+         <sca:interface.wsdl interface="wsdl/ManageSiteInfo.wsdl#wsdl.porttype(ManageSiteInfoService)"/>
+         <soap:binding.soap>
+            <soap:contextMapper soapHeadersType="VALUE" includes="[Cc]ontent-[Tt]ype|[Ss]oap[Aa]ction|SessionHeader"/>
+            <soap:wsdl>wsdl/ManageSiteInfo.wsdl</soap:wsdl>
+        <soap:endpointAddress>http://cspwsserver:8080/CSP_ManageSiteInfo/ManageSiteInfoService</soap:endpointAddress>
+			
+            <soap:timeout>${ManageSiteInfoProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="BillingEXTProxyService"
+                      promote="PIMGatewayProxy/BillingEXTProxyService">
+         <sca:interface.wsdl interface="wsdl/BillingEXTProxy.wsdl#wsdl.porttype(BillingEXTProxyPortType)"/>
+         <soap:binding.soap name="soap2">
+            <soap:contextMapper soapHeadersType="VALUE" includes="[Cc]ontent-[Tt]ype|[Ss]oap[Aa]ction|SessionHeader"/>
+            <soap:wsdl>wsdl/BillingEXTProxy.wsdl</soap:wsdl>
+            <soap:endpointAddress>http://soawsserver:8080/GetAccountInfoESB/ebws/Validate/GetAccountInfoDSSBPELWSProxy</soap:endpointAddress>			
+            <soap:timeout>${BillingEXTProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="ManageSiteInfoService"
+                      promote="ManageSiteInfoProxy/ManageSiteInfoService">
+         <sca:interface.wsdl interface="wsdl/ManageSiteInfo.wsdl#wsdl.porttype(ManageSiteInfoService)"/>
+         <soap:binding.soap>
+            <soap:contextMapper soapHeadersType="VALUE"/>
+            <soap:wsdl>wsdl/ManageSiteInfo.wsdl</soap:wsdl>
+            <soap:endpointAddress>http://cspwsserver:8080/CSP_ManageSiteInfo/ManageSiteInfoService</soap:endpointAddress>
+            <soap:timeout>${ManageSiteInfoProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="SF_CaseManagementAPIService"
+                      promote="SF_CaseManagementAPIProxy/SF_CaseManagementAPIService">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="[Ss][Oo][Aa][Pp][Aa]ction|[Cc]ontent-[Tt]ype|Authorization"/>
+            <http:address>${SF_CaseManagementAPIProxy.proxy.endpoint}</http:address>
+            <http:method>POST</http:method>
+            <http:contentType>application/json</http:contentType>
+            <http:timeout>${SF_CaseManagementAPIProxy.proxy.timeout}</http:timeout>
+         </http:binding.http>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="BillingVoucherManagementService"
+                      promote="PIMGatewayProxy/BillingVoucherManagementService">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http3">
+            <http:contextMapper includes="[Ss][Oo][Aa][Pp][Aa]ction|[Cc]ontent-[Tt]ype"/>
+            <http:address>${BillingVoucherMgmtEXTProxy.endpoint}</http:address>
+            <http:method>POST</http:method>
+            <http:contentType>text/xml</http:contentType>
+            <http:timeout>120000</http:timeout>
+         </http:binding.http>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="PartnersVoucherService"
+                      promote="PIMGatewayProxy/PartnersVoucherService SFVoucherIntProxy/PartnersVoucherService">
+         <sca:interface.wsdl interface="wsdl/PartnersVoucher.wsdl#wsdl.porttype(PartnersVoucherPortType)"/>
+         <soap:binding.soap name="soap1">
+            <soap:contextMapper soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/PartnersVoucher.wsdl</soap:wsdl>
+            <soap:endpointAddress>${PartnersVoucherService.proxy.endpoint}</soap:endpointAddress>
+            <soap:timeout>${SFPIMEXTProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="InstallerPortalEXTProxyService"
+                      promote="InstallerPortalEXTProxy/InstallerPortalEXTProxyService">
+         <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         <http:binding.http name="http1">
+            <http:contextMapper includes="[Ss][Oo][Aa][Pp][Aa]ction|[Cc]ontent-[Tt]ype"/>
+            <http:address>${InstallerPortalEXTProxy.proxy.endpoint}</http:address>
+            <http:method>POST</http:method>
+            <http:contentType>text/plain</http:contentType>
+            <http:timeout>120000</http:timeout>
+         </http:binding.http>
+      </sca:reference>
+      <sca:reference multiplicity="0..1" name="MockPartnersVoucherService"
+                      promote="PIMGatewayProxy/MockPartnersVoucherService">
+         <sca:interface.wsdl interface="wsdl/PartnersVoucher.wsdl#wsdl.porttype(PartnersVoucherPortType)"/>
+         <soap:binding.soap name="soap2">
+            <soap:contextMapper soapHeadersType="DOM"/>
+            <soap:wsdl>wsdl/PartnersVoucher.wsdl</soap:wsdl>
+            <soap:endpointAddress>http://requestb.in/xevmqxxe</soap:endpointAddress>
+            <soap:timeout>${SFPIMEXTProxy.proxy.timeout}</soap:timeout>
+         </soap:binding.soap>
+      </sca:reference>
+      <sca:component name="PartnerVSATAPIProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/PartnerVSATAPIRoute.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="PartnerVSATAPIProxy" requires="clientAuthentication"
+                       swyd:security="pim-bus">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:service>
+         <sca:reference name="DebugLogService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+      </sca:component>
+      <sca:component name="SFPIMEXTProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/SFPIMEXTProxy.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="SFPIMEXTProxy">
+            <sca:interface.wsdl interface="wsdl/PartnerOrder.wsdl#wsdl.porttype(PartnersOrderPortType)"/>
+         </sca:service>
+         <sca:reference name="PartnersOrderPortType">
+            <sca:interface.wsdl interface="wsdl/PartnerOrder.wsdl#wsdl.porttype(PartnersOrderPortType)"/>
+         </sca:reference>
+      </sca:component>
+      <sca:component name="PIMGatewayProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/PIMGatewayProxy.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="PIMGatewayProxy" requires="clientAuthentication" swyd:security="pim-bus">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:service>
+         <sca:reference name="TransportFeasibilityService">
+            <sca:interface.wsdl interface="wsdl/TransportFeasibilityService.wsdl#wsdl.porttype(TransportFeasibilityService)"/>
+         </sca:reference>
+         <sca:reference name="SLVTService">
+            <sca:interface.wsdl interface="wsdl/SLVT.wsdl#wsdl.porttype(SLVTService)"/>
+         </sca:reference>
+         <sca:reference name="PIMESBService">
+            <sca:interface.wsdl interface="wsdl/PIMESBProxy.wsdl#wsdl.porttype(PIMESBProxy)"/>
+         </sca:reference>
+         <sca:reference name="SFPIMEXTProxy">
+            <sca:interface.wsdl interface="wsdl/PartnerOrder.wsdl#wsdl.porttype(PartnersOrderPortType)"/>
+         </sca:reference>
+         <sca:reference name="SFPIMService">
+            <sca:interface.wsdl interface="wsdl/PartnerOrder.wsdl#wsdl.porttype(PartnersOrderPortType)"/>
+         </sca:reference>
+         <sca:reference name="APIFrmwkProxyService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+         <sca:reference name="MsgControllerBillingService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+         <sca:reference name="DebugLogService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+         <sca:reference name="BillingVoucherManagementService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+         <sca:reference name="PartnersVoucherService">
+            <sca:interface.wsdl interface="wsdl/PartnersVoucher.wsdl#wsdl.porttype(PartnersVoucherPortType)"/>
+         </sca:reference>
+         <sca:reference name="MockPartnersVoucherService">
+            <sca:interface.wsdl interface="wsdl/PartnersVoucher.wsdl#wsdl.porttype(PartnersVoucherPortType)"/>
+         </sca:reference>
+         <sca:reference name="ManageSiteInfoService">
+            <sca:interface.wsdl interface="wsdl/ManageSiteInfo.wsdl#wsdl.porttype(ManageSiteInfoService)"/>
+         </sca:reference>
+         <sca:reference name="BillingEXTProxyService">
+            <sca:interface.wsdl interface="wsdl/BillingEXTProxy.wsdl#wsdl.porttype(BillingEXTProxyPortType)"/>
+         </sca:reference>
+      </sca:component>
+      <sca:component name="SF_CaseManagementAPIProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/SF_CaseManagementAPIProxyRoute.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="SF_CaseManagementAPIProxy" requires="clientAuthentication"
+                       swyd:security="pim-bus">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:service>
+         <sca:reference name="SF_CaseManagementAPIService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+         <sca:reference name="DebugLogService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+      </sca:component>
+      <sca:component name="SFVoucherIntProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/SFVoucherIntProxy.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="SFVoucherIntProxy">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:service>
+         <sca:reference name="PartnersVoucherService">
+            <sca:interface.wsdl interface="wsdl/PartnersVoucher.wsdl#wsdl.porttype(PartnersVoucherPortType)"/>
+         </sca:reference>
+      </sca:component>
+      <sca:component name="ManageSiteInfoProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/ManageInfoSiteRoute.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="ManageSiteInfoProxy" requires="clientAuthentication"
+                       swyd:security="pim-bus">
+            <sca:interface.wsdl interface="wsdl/ManageSiteInfo.wsdl#wsdl.porttype(ManageSiteInfoService)"/>
+         </sca:service>
+         <sca:reference name="ManageSiteInfoService">
+            <sca:interface.wsdl interface="wsdl/ManageSiteInfo.wsdl#wsdl.porttype(ManageSiteInfoService)"/>
+         </sca:reference>
+      </sca:component>
+      <sca:component name="InstallerPortalEXTProxy">
+         <camel:implementation.camel>
+            <camel:xml path="routes/InstallerPortalEXTProxyRoute.xml"/>
+         </camel:implementation.camel>
+         <sca:service name="InstallerPortalEXTProxy" requires="clientAuthentication"
+                       swyd:security="pim-bus">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:service>
+         <sca:reference name="InstallerPortalEXTProxyService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+         <sca:reference name="DebugLogService">
+            <sca:interface.java interface="com.hughes.bits.esb.custom.service.ProxyService"/>
+         </sca:reference>
+      </sca:component>
+   </sca:composite>
+   <domain>
+      <properties>
+         <property name="org.switchyard.handlers.messageTrace.enabled" value="false"/>
+         <property name="soapPort" value="${org.switchyard.component.soap.standalone.port:8080}"/>
+      </properties>
+      <securities>
+         <security name="pim-bus" securityDomain="PIMDBAuthSecurityRealm"/>
+      </securities>
+   </domain>
+</switchyard>

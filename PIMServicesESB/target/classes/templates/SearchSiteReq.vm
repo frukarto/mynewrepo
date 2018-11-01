@@ -1,0 +1,4 @@
+<SearchSiteReq xmlns="http://fetchsiteinfo.bits.hughes.com">
+	<UserName>dssuser</UserName>
+	<SAN>${exchange.properties.SAN}</SAN>
+</SearchSiteReq>

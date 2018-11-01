@@ -1,0 +1,94 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+   <route xmlns:pim="http://www.hns.com/iag/schemas/partner" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error" handleFault="true">
+      <from uri="switchyard://PartnerVSATAPIProxy"/>
+	  <doTry>
+	  <setProperty propertyName="ProxyName">
+               <constant>PartnerVSATAPIProxy</constant>
+      </setProperty>
+	  <setProperty propertyName="PrintMessage">
+               <constant>Print Input Request</constant>
+      </setProperty>
+      <setProperty  propertyName="maskList">
+      			<constant>mask_SSN:1^mask_Number:1^mask_DOB:1^mask_CVV:1</constant>
+		</setProperty>
+	   <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+       
+       
+      <setProperty propertyName="ElementList">
+							   <constant>PartnerId,MessageHeader/TransactionCode,MessageHeader/TransactionSequenceId,Latitude,Longitude,TransportName,BeamID,SatelliteID,Source,SAN</constant>
+							  </setProperty>
+      
+      <bean beanType="com.hughes.bits.esb.custom.action.PIMProcessorAction" method="extractJSONToProperties"/>
+               
+        <setProperty propertyName="apiname">
+      		<simple>${exchangeProperty.TransactionCode}</simple>
+	</setProperty>         
+      <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" />
+      <bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+         <wireTap uri="switchyard://DebugLogService" />
+
+       <choice>
+              
+			   <when>
+						<simple>${exchangeProperty.TransactionCode} ==  'APISLVT'</simple>
+						  
+						<to uri="velocity:templates/ESB_JSON_APIFrmwk_SLVTRequest.vm" />
+							   <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+
+						<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=getSLVTParams&amp;httpClient.soTimeout={{PartnerVSATAPIProxy.proxy.timeout}}"/>
+               </when>
+			   
+			   <when>
+						<simple>${exchangeProperty.TransactionCode}  ==  'APIVSTTS'</simple>
+						     
+						<to uri="velocity:templates/ESB_JSON_APIFrmwk_GETVSATStatisticsRequest.vm" />
+							   <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+
+						<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=GetVSATStatistics&amp;httpClient.soTimeout={{PartnerVSATAPIProxy.proxy.timeout}}"/>
+
+                 				 
+               </when>  
+
+			    <when>
+						<simple>${exchangeProperty.TransactionCode}  ==  'APIVSTS'</simple>					
+                 		<to uri="velocity:templates/ESB_JSON_APIFrmwk_GETVSATStatusRequest.vm" />
+				<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+
+                 		<to uri="http://jdssserver:8180/SDS/apifrwk/csr/ReportAPIServlet.servlet?requestType=processReport&amp;apiName=GetVSATStatus&amp;httpClient.soTimeout={{PartnerVSATAPIProxy.proxy.timeout}}"/>
+			 
+               </when>
+               
+               <otherwise>
+				   	<setBody>
+				<constant>{ "status" : "false" ,"message" : "Invalid TransactionCode"    }</constant>
+				</setBody>
+               </otherwise>
+			  
+      </choice>
+      <convertBodyTo  type="java.lang.String" />
+	  							               
+	  <setProperty propertyName="PrintMessage">
+               <constant>Print Final Message</constant>
+      </setProperty>
+            <bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" />
+
+        <bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+         <wireTap uri="switchyard://DebugLogService" />
+
+	  <doCatch>
+				<exception>java.lang.Exception</exception>
+
+				<setProperty propertyName="PrintMessage">
+				  <constant>Print Exception</constant>
+				</setProperty>
+				<log message="${exchangeId}    ${exception.stacktrace}"/>
+					<setBody>
+				<simple>${exception.stacktrace}</simple>
+				</setBody>
+				<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+	            <wireTap uri="switchyard://DebugLogService" />			- 
+				 
+			</doCatch>
+		</doTry>
+   </route>
+</routes>

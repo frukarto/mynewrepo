@@ -1,0 +1,53 @@
+<routes xmlns="http://camel.apache.org/schema/spring" id="routes-434cf956-930b-43d4-9878-333feae8e7d8">
+   <route handleFault="true">
+      <from uri="switchyard://SFVoucherIntProxy" />
+      	<doTry>
+			<convertBodyTo type="java.lang.String"/>
+			<setProperty propertyName="SF_NS_PREFIX">
+				<constant>PartnersVoucher</constant>
+			</setProperty>
+			<setProperty propertyName="SF_NS">
+				<constant>http://www.salesforce.com</constant>
+			</setProperty>
+			<setProperty propertyName="ProxyName">
+				<constant>SFVoucherIntProxy</constant>
+			</setProperty>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print Before Invoking PartnersVoucherService</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="nomask"/>
+
+			<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="addSalesforceTokenForWebservice"/>
+			<setProperty propertyName="org.switchyard.operationName">
+				<constant>SFDCAPIEventRequest</constant>
+			</setProperty>
+			<setHeader headerName="Content-Type">
+				<constant>text/xml</constant>
+			</setHeader>
+			<to uri="switchyard://PartnersVoucherService"/>
+			<convertBodyTo type="java.lang.String"/>
+			<setProperty propertyName="PrintMessage">
+				<constant>Print After Invoking PartnersVoucherService</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction" method="nomask"/>
+			<doCatch>
+				<exception>java.lang.Exception</exception>
+				<log message="Exception occured in SFVoucherPartner:  ${exchangeId}:    ${exception.stacktrace}"/>
+				<setBody>
+					<constant>
+						<SFDCAPIEventResponse>
+							<result>
+								<TransactionSequenceId>TransactionId</TransactionSequenceId>
+								<APIName>GetSANByVoucher</APIName>
+								<Code>ESB301</Code>
+								<Message>Exception occured in SFVoucherPartner Service</Message>
+							</result>
+						</SFDCAPIEventResponse>
+					</constant>
+				</setBody>
+			</doCatch>
+		</doTry>
+      
+     
+   </route>
+</routes>

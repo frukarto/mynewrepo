@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:partner="http://www.hns.com/iag/schemas/partner"
+xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error"
+
+ xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:com.hughes.bits.fuse.esb:PIMServicesESB:1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="PIMESBProxy" targetNamespace="urn:com.hughes.bits.fuse.esb:PIMServicesESB:1.0"  >
+ 
+ 
+  <wsdl:types>
+  	<xsd:schema elementFormDefault="qualified">
+		<xsd:import namespace="http://www.hns.com/iag/schemas/partner" schemaLocation="./pim.xsd"/>
+	</xsd:schema>
+		
+			<xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xsd:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xsd:schema>
+	
+<!-- xsd:schema>
+		  <xsd:element name="integer" type="xsd:integer" />
+		</xsd:schema>
+	-->
+   
+  </wsdl:types>
+  <!-- Message Types Begin-->
+  
+  <wsdl:message name="EnhancedServicePrequalOpRequest">
+    <wsdl:part element="partner:EnhancedServicePrequalRequest" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="EnhancedServicePrequalOpResponse">
+    <wsdl:part element="partner:EnhancedServicePrequalResponse" name="parameters"/>
+  </wsdl:message>
+  
+<wsdl:message name="UpgradeOrderRequestRequest">
+      <wsdl:part element="partner:UpgradeOrderRequest" name="parameters" />
+   </wsdl:message>
+   <wsdl:message name="UpgradeOrderRequestResponse">
+      <wsdl:part element="partner:StandardResponse" name="parameters" />
+   </wsdl:message>
+  
+  <wsdl:message name="ModifyOrderRequestRequest">
+      <wsdl:part element="partner:ModifyOrderRequest" name="parameters" />
+   </wsdl:message>
+   <wsdl:message name="ModifyOrderRequestResponse">
+      <wsdl:part element="partner:StandardResponse" name="parameters" />
+   </wsdl:message>
+   
+  <wsdl:message name="NewOrderReqRequest">
+  	<wsdl:part name="parameters" element="partner:NewOrderRequest"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="NewOrderReqResponse">
+  	<wsdl:part name="parameters" element="partner:StandardResponse"></wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="CancelOrderRequestRequest">
+      <wsdl:part element="partner:CancelOrderRequest" name="parameters" />
+   </wsdl:message>
+   <wsdl:message name="CancelOrderRequestResponse">
+      <wsdl:part element="partner:StandardResponse" name="parameters" />
+   </wsdl:message>
+   
+   	 <wsdl:message name="ServiceFault">
+  	<wsdl:part name="parameters" element="xws:ServiceFault"></wsdl:part>
+  </wsdl:message>
+  
+ <!-- <message name="errorMessage">
+		<part name="errorCode" element="ens:integer" />
+	</message>-->
+	
+  <wsdl:portType name="PIMESBProxy">
+  
+    <wsdl:operation name="EnhancedServicePrequalOp">
+      <wsdl:input message="tns:EnhancedServicePrequalOpRequest"/>
+      <wsdl:output message="tns:EnhancedServicePrequalOpResponse"/>
+	  <!-- <wsdl:fault name="Server" 	message="tns:errorMessage" />-->
+	  <wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+    </wsdl:operation>
+	
+    <wsdl:operation name="NewOrderReq">
+    	<wsdl:input message="tns:NewOrderReqRequest"></wsdl:input>
+    	<wsdl:output message="tns:NewOrderReqResponse"></wsdl:output>
+		<wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+		<!-- <wsdl:fault name="Server"
+					message="tns:errorMessage" />-->
+    </wsdl:operation>
+	
+	<wsdl:operation name="UpgradeOrderRequest">
+         <wsdl:input message="tns:UpgradeOrderRequestRequest" />
+         <wsdl:output message="tns:UpgradeOrderRequestResponse" />
+		 <wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+      </wsdl:operation>
+	  
+	   <wsdl:operation name="ModifyOrderRequest">
+         <wsdl:input message="tns:ModifyOrderRequestRequest" />
+         <wsdl:output message="tns:ModifyOrderRequestResponse" />
+		 <wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+      </wsdl:operation>
+	  
+	   <wsdl:operation name="CancelOrderRequest">
+         <wsdl:input message="tns:CancelOrderRequestRequest" />
+         <wsdl:output message="tns:CancelOrderRequestResponse" />
+		 <wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+      </wsdl:operation>
+	  
+  </wsdl:portType>
+  <wsdl:binding name="PIMESBProxySOAP" type="tns:PIMESBProxy">
+
+  	<soap:binding style="document"
+  		transport="http://schemas.xmlsoap.org/soap/http" />
+		
+		<!-- FOR EPQ -->
+  	<wsdl:operation name="EnhancedServicePrequalOp">
+
+  		<soap:operation
+  			soapAction="" />
+  		<wsdl:input>
+
+  			<soap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+
+  			<soap:body use="literal" />
+  		</wsdl:output>
+		<!-- <wsdl:fault name="Server">
+    			<soap:fault use="literal" name="Server" />
+    	</wsdl:fault>-->
+  	</wsdl:operation>
+	
+	<!-- FOR NOR -->
+	<wsdl:operation name="NewOrderReq">
+
+  		<soap:operation
+  			soapAction="" />
+  		<wsdl:input>
+
+  			<soap:body use="literal" />
+  		</wsdl:input>
+  		<wsdl:output>
+
+  			<soap:body use="literal" />
+  		</wsdl:output>
+		<!-- <wsdl:fault name="Server">
+    			<soap:fault use="literal" name="Server" />
+    	</wsdl:fault>-->
+  	</wsdl:operation>
+	
+	<!-- FOR UPG -->
+	
+		<wsdl:operation name="UpgradeOrderRequest">
+         <soap:operation soapAction="" />
+         <wsdl:input>
+  
+            <soap:body use="literal" parts="parameters" />
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal" />
+         </wsdl:output>
+      </wsdl:operation>
+	  
+	  <!-- FOR MOR -->
+	  
+	  <wsdl:operation name="ModifyOrderRequest">
+         <soap:operation soapAction="" />
+         <wsdl:input>
+
+            <soap:body use="literal" parts="parameters" />
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal" />
+         </wsdl:output>
+      </wsdl:operation>
+	  
+	  
+	  <!-- FOR COR -->
+	  
+	   <wsdl:operation name="CancelOrderRequest">
+         <soap:operation soapAction="" />
+         <wsdl:input>
+          
+            <soap:body use="literal" parts="parameters" />
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal" />
+         </wsdl:output>
+      </wsdl:operation>
+	
+  </wsdl:binding>
+  
+  <plnk:partnerLinkType name="PIMESBProxyLinkType">
+		<plnk:role name="PIMESBProxyRole" portType="tns:PIMESBProxy" />
+	</plnk:partnerLinkType>
+  <wsdl:service name="PIMESBProxy">
+    <wsdl:port binding="tns:PIMESBProxySOAP" name="PIMESBProxySOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,24 @@
+<DownloadVoucherResponse xmlns="http://www.hns.com/iag/schemas/partner">
+	<MessageHeader>
+		<TransactionDateTime>${exchange.properties.TransactionDateTime}</TransactionDateTime>
+		<TransactionCode>${exchange.properties.TransactionCode}</TransactionCode>
+		<TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+	</MessageHeader>
+	#if ( ${exchange.properties.status}  ==  "true" )
+	 <Code>API1000</Code>
+	<Message>Message successfully Processed</Message>
+    <downloadFile>${exchange.properties.downloadFile}</downloadFile>
+	#elseif ( ${exchange.properties.MandatoryCheck}  ==  "false" )
+					<Code>${exchange.properties.Code}</Code>
+					<Message>${exchange.properties.Message}</Message>
+	#elseif ( ${exchange.properties.errorCode}  ==  "-1" )
+					<Code>ESB201</Code>
+					<Message>SoapFault thrown from BillingService</Message>
+	#elseif ( ${exchange.properties.errorCode}  !=  "0" )
+					<Code>${exchange.properties.errorCode}</Code>
+					<Message>BillingService Failed</Message>
+	#else
+	<Code>9000</Code>
+	<Message>Download Voucher Status Failed</Message>
+	#end	
+</DownloadVoucherResponse>

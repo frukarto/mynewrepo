@@ -1,0 +1,3949 @@
+<?xml version="1.0"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by HNS (Hughes Network Systems) -->
+<!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by Aditya Chakraborty (HSS) -->
+<!--Version	: 1.5.3 -->
+<xs:schema xmlns:core="http://www.hns.com/iag/schemas/core" xmlns="http://www.hns.com/iag/schemas/partner" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.hns.com/iag/schemas/partner" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!-- NewOrderRequest -->
+	<xs:element name="NewOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to initiate new order for a customer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="Name" type="NameType"/>
+				<xs:element name="BillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="InstallAddress" type="AddressType"/>
+				<xs:element name="PreviousBillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="CustomerPermissionFlags" type="CustomerPermissionsType" minOccurs="0"/>
+				<xs:choice>
+					<xs:element name="DayPhone" type="PhoneType"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType"/>
+				</xs:choice>
+				<xs:choice minOccurs="0">
+					<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType"/>
+				<xs:element name="Product" type="ProductType" minOccurs="0"/>
+				<xs:element name="SFDCProduct" type="SFDCProductType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="PIN" type="PINType" minOccurs="0"/>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="SSN" type="SSNType" minOccurs="0"/>
+				<xs:element name="CreditCardInfo" type="CreditCardType" minOccurs="0"/>
+				<xs:element name="SecurityPasscode" type="SecurityPasscodeType" minOccurs="0"/>
+				<xs:element name="AgentId" type="AgentIdType" minOccurs="0"/>
+				<xs:element name="PartnerType" type="PartnerTypeType" minOccurs="0"/>
+				<xs:element name="ReferralId" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Referral Id.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ReferralSource" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Referral Source.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved3" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved4" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved5" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved6" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved7" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved8" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DOB" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ODUParameters" type="ODUParametersType" minOccurs="0"/>
+				<xs:element name="LandlinePhoneNumber" type="LandlinePhoneType" minOccurs="0"/>
+				<xs:element name="PriceCheckFlag" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>If this is set as true, order will not be created in DSS but instead upfront charge will be returned. In case this flag is not provided or is provided as false, then order will be created in DSS</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FraudAlertOverrideFlag" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>There may be a fraudulent use of the Customer's Credit Profile. If  still want order to be submitted, please set Fraud Alert Override Flag as true and resubmit the order</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TransportInformation" type="TransportFeasibilityParameterListType" minOccurs="0"/>
+				<xs:element name="DuplicateOrderOverrideFlag" type="xs:boolean" minOccurs="0"/>
+				<xs:element name="BillingMethod" type="BillingMethodType" minOccurs="0"/>
+				<xs:element name="BankAccountInfo" type="BankAccountType" minOccurs="0"/>
+				<xs:element name="FederalTaxId" type="FederalTaxInfoType" minOccurs="0"/>
+				<xs:element name="OrganizationInfo" type="OrganizationInfoType" minOccurs="0"/>
+				<xs:element name="InternationalDayPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalNightPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalCellPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="BillingDueDay" type="xs:integer" minOccurs="0"/>
+				<xs:element name="isPostalMailRequired" type="xs:boolean" minOccurs="0"/>
+				<xs:element name="AcceptedCommunications" type="AcceptedCommunicationsType" minOccurs="0"/>
+				<xs:element name="ProtocolId" type="ProtocolIdType" minOccurs="0"/>
+				<xs:element name="CaseId" type="CaseIdType" minOccurs="0"/>
+				<xs:element name="UpfrontChargingDetails" type="UpfrontChargingDetailsType" minOccurs="0"/>
+				<!-- These elements are added from ECO as it will get depricated -->
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="CustomerLocationId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OrderType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OrderSubType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCompany" type="CompanyNameType" minOccurs="0"/>
+				<xs:element name="OrderingExtraFields" type="ExtraFieldType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ModifyOrderRequest Message -->
+	<xs:element name="ModifyOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to initiate order modification. This transaction can be used to modify product or order information for example; Product, InstallAddress, Phone Number, and Credit Card details.This transaction shall be used only when there is an open order existing for the SAN. This message shall NOT be used to upgrade hardware or service on an active commissioned site</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="ServiceOrderNumber" type="FSOIdType" minOccurs="0"/>
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="Name" type="NameType" minOccurs="0"/>
+				<xs:element name="BillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="InstallAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="PreviousBillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="CustomerPermissionFlags" type="CustomerPermissionsType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:choice minOccurs="0">
+					<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType" minOccurs="0"/>
+				<xs:element name="Product" type="ProductType" minOccurs="0"/>
+				<xs:element name="SFDCProduct" type="SFDCProductType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="PIN" type="PINType" minOccurs="0"/>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="SSN" type="SSNType" minOccurs="0"/>
+				<xs:element name="CreditCardInfo" type="CreditCardType" minOccurs="0"/>
+				<xs:element name="SecurityPasscode" type="SecurityPasscodeType" minOccurs="0"/>
+				<xs:element name="OrderType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OrderSubType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP 6. Franchisee 7. Corporate</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DOB" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ODUParameters" type="ODUParametersType" minOccurs="0"/>
+				<xs:element name="LandlinePhoneNumber" type="LandlinePhoneType" minOccurs="0"/>
+				<xs:element name="AdapterId" type="AdapterIdType" minOccurs="0"/>
+				<xs:element name="CustomerCompany" type="CompanyNameType" minOccurs="0"/>
+				<xs:element name="AgentId" type="AgentIdType" minOccurs="0"/>
+				<xs:element name="Reserved1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved3" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved4" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved5" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved6" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved7" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved8" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransportInformation" type="TransportFeasibilityParameterListType" minOccurs="0"/>
+				<xs:element name="BillingMethod" type="BillingMethodType" minOccurs="0"/>
+				<xs:element name="BankAccountInfo" type="BankAccountType" minOccurs="0"/>
+				<xs:element name="FederalTaxId" type="FederalTaxInfoType" minOccurs="0"/>
+				<xs:element name="OrganizationInfo" type="OrganizationInfoType" minOccurs="0"/>
+				<xs:element name="InternationalDayPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalNightPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalCellPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="BillingDueDay" type="xs:integer" minOccurs="0"/>
+				<xs:element name="isPostalMailRequired" type="xs:boolean" minOccurs="0"/>
+				<xs:element name="AcceptedCommunications" type="AcceptedCommunicationsType" minOccurs="0"/>
+				<xs:element name="ProtocolId" type="ProtocolIdType" minOccurs="0"/>
+				<xs:element name="CaseId" type="CaseIdType" minOccurs="0"/>
+				<xs:element name="UpfrontChargingDetails" type="UpfrontChargingDetailsType" minOccurs="0"/>
+				<xs:element name="OrderingExtraFields" type="ExtraFieldType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- CancelOrderRequest Message -->
+	<xs:element name="CancelOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to initiate cancellation of an existing open order for a customer. This message is used to cancel ONLY NewOrderRequest</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="ServiceOrderNumber" type="FSOIdType" minOccurs="0"/>
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="ReasonCode" type="CodeType"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP 6. Franchisee 7. Corporate</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FallOutReasonCode" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FallOutDate" type="DateType" minOccurs="0"/>
+				<xs:element name="FallOutNAPSource" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FallOutNAPSubType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- CustomerUpdateRequest Message -->
+	<xs:element name="CustomerUpdateRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to initiate customer information changes on an active commissioned site for a customer</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="Name" type="NameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:choice minOccurs="0">
+					<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType" minOccurs="0"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. SMEBI 2. Consumer 3. ConsumerSP 4. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ChangeServiceStatusRequest Message -->
+	<xs:element name="ChangeServiceStatusRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to change service status on active commissioned site for a customer</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="ServiceStatus" type="ServiceStatusType"/>
+				<xs:element name="ReasonCode" type="CodeType"/>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType" minOccurs="0"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. Franchisee 2. Corporate</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- StatusRequest Message -->
+	<xs:element name="StatusRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to poll the latest status of an order or site</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+				<xs:element name="SerialNumber" type="SerialNumberType" minOccurs="0"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- OrderStatusNotification Message-->
+	<xs:element name="OrderStatusNotification">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners to inform about order status updates or additional order information on an existing open order. A standard HTTP ACK is expected as response to this message</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="FSOId" type="FSOIdType" minOccurs="0"/>
+				<xs:element name="CONCode" type="CodeType"/>
+				<xs:element name="ConMessage">
+					<xs:annotation>
+						<xs:documentation>Message associated with ConCode.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reason" type="ReasonType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reason, if any, for the CON transaction</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Notes" type="NoteType" minOccurs="0"/>
+				<xs:element name="Name" type="NameType" minOccurs="0"/>
+				<xs:element name="InstallAddress" type="AddressType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:choice minOccurs="0">
+					<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="DistributorName" type="NameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DistributorPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DistributorPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="DealerName" type="NameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DealerPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DealerPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="ScheduledInstallDate" type="DateType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Confirmed Install/Repair Date (may be different than original install date requested).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PIN" type="PINType" minOccurs="0"/>
+				<xs:element name="InstallAMPM" type="AMPMType" minOccurs="0"/>
+				<xs:element name="PartnerRefNumber" type="PartnerRefNumberType" minOccurs="0"/>
+				<xs:element name="EventOccurrenceTime" type="DateTimeType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- InstallStatusNotification Message-->
+	<xs:element name="InstallStatusNotification">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners to inform about installation status updates on an existing open order. A standard HTTP ACK is expected as response to this message</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="FSOId" type="FSOIdType" minOccurs="0"/>
+				<xs:element name="IRSCode" type="CodeType"/>
+				<xs:element name="IRSMessage">
+					<xs:annotation>
+						<xs:documentation>Message associated with IRSCode</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reason" type="ReasonType" minOccurs="0"/>
+				<xs:element name="Notes" type="NoteType" minOccurs="0"/>
+				<xs:element name="DistributorName" type="NameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DistributorPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DistributorPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="DealerName" type="NameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DealerPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DealerPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="InstallerName" type="NameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="InstallerPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="InstallerPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="SignalStrength" type="SignalStrengthType" minOccurs="0"/>
+				<xs:element name="ActualInstalledDate" type="DateType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Confirmed Install/Repair Date (may be different than original install date requested).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="InstallAMPM" type="AMPMType" minOccurs="0"/>
+				<xs:element name="EventOccurrenceTime" type="DateTimeType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SiteStatusNotification Message -->
+	<xs:element name="SiteStatusNotification">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners to inform the changes in site state. A standard HTTP ACK is expected as response to this message</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="SSNCode" type="CodeType"/>
+				<xs:element name="ReasonCode" type="CodeType" minOccurs="0"/>
+				<xs:element name="SSNMessage">
+					<xs:annotation>
+						<xs:documentation>Message associated with SSNCode</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Notes" type="NoteType" minOccurs="0"/>
+				<xs:element name="SatelliteNumber" type="SatelliteNumberType" minOccurs="0"/>
+				<xs:element name="SiteId" type="SiteIdType" minOccurs="0"/>
+				<xs:element name="SerialNumber" type="SerialNumberType" minOccurs="0"/>
+				<xs:element name="AdapterClass" type="AdapterClassType" minOccurs="0"/>
+				<xs:element name="PvtIP" type="PvtIPType" minOccurs="0"/>
+				<xs:element name="HomeHubId" type="HUBIdType" minOccurs="0"/>
+				<xs:element name="ISPHubId" type="HUBIdType" minOccurs="0"/>
+				<xs:element name="ActualActivationDate" type="DateType" minOccurs="0"/>
+				<xs:element name="EventOccurrenceTime" type="DateTimeType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- StandardResponse Message -->
+	<xs:element name="StandardResponse">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="ServiceOrderNumber" type="FSOType" minOccurs="0"/>
+				<xs:element name="UpfrontCharge" type="xs:float" minOccurs="0"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SAN" type="SANType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Site Account Number associated with the order ID if available.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RequestType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:length value="3"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StandardizedInstallAddress" type="AddressType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Install address (corrected using third party)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="StandardizedBillingAddress" type="AddressType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Billing address (corrected using third party)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TransportInformation" type="TransportFeasibilityParameterType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- UpgradeOrderRequest Message -->
+	<xs:element name="UpgradeOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to upgrade hardware or service for an already active commissioned site</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="Email" type="EmailType"/>
+				<xs:element name="Product" type="ProductType" minOccurs="0"/>
+				<xs:element name="SFDCProduct" type="SFDCProductType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="PIN" type="PINType" minOccurs="0"/>
+				<xs:element name="RegistrationId" type="RegistrationIdType" minOccurs="0"/>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="SecurityPasscode" type="SecurityPasscodeType" minOccurs="0"/>
+				<xs:element name="AgentId" type="AgentIdType" minOccurs="0"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP 6. Franchisee 7. Corporate</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OrderType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OrderSubType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCompany" type="CompanyNameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Reserved1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved3" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved4" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved5" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved6" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved7" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved8" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransportInformation" type="TransportFeasibilityParameterListType" minOccurs="0"/>
+				<xs:element name="BillingMethod" type="BillingMethodType" minOccurs="0"/>
+				<xs:element name="BankAccountInfo" type="BankAccountType" minOccurs="0"/>
+				<xs:element name="FederalTaxId" type="FederalTaxInfoType" minOccurs="0"/>
+				<xs:element name="OrganizationInfo" type="OrganizationInfoType" minOccurs="0"/>
+				<xs:element name="InternationalDayPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalNightPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalCellPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="BillingDueDay" type="xs:integer" minOccurs="0"/>
+				<xs:element name="isPostalMailRequired" type="xs:boolean" minOccurs="0"/>
+				<xs:element name="AcceptedCommunications" type="AcceptedCommunicationsType" minOccurs="0"/>
+				<xs:element name="ProtocolId" type="ProtocolIdType" minOccurs="0"/>
+				<xs:element name="CaseId" type="CaseIdType" minOccurs="0"/>
+				<xs:element name="UpfrontChargingDetails" type="UpfrontChargingDetailsType" minOccurs="0"/>
+				<xs:element name="OrderingExtraFields" type="ExtraFieldType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ExistingCustomerOrderRequest Message -->
+	<xs:element name="ExistingCustomerOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to place a repeat order for an existing customer. Repeat orders supported are additional products purchased by an existing customer on an existing site.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="CustomerLocationId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="20"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Name" type="NameType" minOccurs="0"/>
+				<xs:element name="InstallAddress" type="AddressType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:choice minOccurs="0">
+					<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType"/>
+				<xs:element name="Product" type="ProductType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="PIN" type="PINType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>4-digit pin number of the customer. This pin number will be required when the customer activates the service.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="OrderType">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="OrderSubType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="AgentId" type="AgentIdType" minOccurs="0"/>
+				<xs:element name="Reserved1" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved2" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved3" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved4" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved5" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved6" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved7" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Reserved8" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Reserved for future use.</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: SMEBI, Franchisee, Corporate, EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CustomerCompany" type="CompanyNameType" minOccurs="0"/>
+				<xs:element name="ODUParameters" type="ODUParametersType" minOccurs="0"/>
+				<xs:element name="PriceCheckFlag" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>If this is set as true, order will not be created in DSS but instead upfront charge will be returned. In case this flag is not provided or is provided as false, then order will be created in DSS</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="LandlinePhoneNumber" type="LandlinePhoneType" minOccurs="0"/>
+				<xs:element name="OrderingExtraFields" type="ExtraFieldType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SearchSiteRequest Message -->
+	<xs:element name="SearchSiteRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to get site details based on filter criteria provided.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="SerialNumber" type="SerialNumberType" minOccurs="0"/>
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="SiteContactName" type="SearchNameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="SiteContactPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="SiteContactPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="PostalCode" type="ZipType" minOccurs="0"/>
+				<xs:element name="CountryCode" type="CountryType" minOccurs="0"/>
+				<xs:element name="StateCode" type="StateType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SiteDetailsResponse Message -->
+	<xs:element name="SiteDetailsResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to SearchSiteRequest message received from partners for searching and getting site details</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SiteDetails" type="SiteDetailsType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SearchOrderRequest Message -->
+	<xs:element name="SearchOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to search Orders based on filter criteria provided.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+				<xs:element name="CompanyName" type="CompanyNameType" minOccurs="0"/>
+				<xs:element name="SiteContactName" type="SearchNameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="SiteContactPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="SiteContactPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="FromDate" type="DateType" minOccurs="0"/>
+				<xs:element name="ToDate" type="DateType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- Request Message -->
+	<xs:element name="ViewOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to View the details of an order.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- RegenerateEmail Message -->
+	<xs:element name="RegenerateEmail">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to request email regeneration to customer for order waiting in Customer Approval Pending stage. In addition partner can specify an email which is used only for sending re-generated email.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="Email" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="EmailType">
+							<xs:pattern value="[^@,]+@[^@,]+"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SwitchBilling Message -->
+	<xs:element name="SwitchBilling">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to initiate transfer of customer billing type. This is one way process and applicable only to change Billing Type from Partner to Hughes.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- StatusResponse Message -->
+	<xs:element name="StatusResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to StatusRequest message from partners.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType">
+					<xs:annotation>
+						<xs:documentation>Response code</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Message">
+					<xs:annotation>
+						<xs:documentation>Text associated with the response code</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="OrderStatus" type="OrderStatusType" minOccurs="0"/>
+				<xs:element name="InstallStatus" type="InstallStatusType" minOccurs="0"/>
+				<xs:element name="SiteStatus" type="SiteStatusType" minOccurs="0"/>
+				<xs:element name="CurrentStatusCode" type="CodeType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Response code</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CurrentStatusMessage" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Text associated with the response code</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- VerifyAddressRequest Message -->
+	<xs:element name="VerifyAddressRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to verify, correct, or enhance address.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="InputAddress" type="InputAddressType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- VerifyAddressResponse Message -->
+	<xs:element name="VerifyAddressResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a response to VerifyAddressRequest (VER) message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="LocationInfo" type="LocationInfoType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- GetSANByOrderIdRequest Message -->
+	<xs:element name="GetSANByOrderIdRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to get the SAN associated with an order id.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- GetSANByOrderIdResponse Message -->
+	<xs:element name="GetSANByOrderIdResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to GetSANByOrderIdRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ResendNotifications Message -->
+	<xs:element name="ResendNotifications">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to request a resend of Notifications sent in the past for a specific time frame</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType">
+					<xs:annotation>
+						<xs:documentation>Common information header for each request transaction.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FromDate" type="DateTimeType">
+					<xs:annotation>
+						<xs:documentation>Start date for resend.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ToDate" type="DateTimeType">
+					<xs:annotation>
+						<xs:documentation>End date for resend.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- OrderModifiedNotification Message -->
+	<xs:element name="OrderModifiedNotification">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners to inform about order information updates on an existing open order. A standard HTTP ACK is expected as response to this message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType" minOccurs="0"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="OldOrderId" type="OrderIdType" minOccurs="0"/>
+				<xs:element name="Name" type="NameType" minOccurs="0"/>
+				<xs:element name="InstallAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="BillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:choice minOccurs="0">
+					<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType"/>
+				<xs:element name="Note" type="NoteType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType">
+					<xs:annotation>
+						<xs:documentation>ID of Partner who modified the order.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Product" type="ProductType" minOccurs="0"/>
+				<xs:element name="IsCreditCardModified" type="xs:boolean">
+					<xs:annotation>
+						<xs:documentation>Flag to identify if CC info is modified</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- CustomerStandardResponse Message -->
+	<xs:element name="CustomerStandardResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to messages received from partners.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CustomerId">
+					<xs:simpleType>
+						<xs:restriction base="CustomerIdType"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="UserName" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="25"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Password" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="32"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LoginURL" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RequestType" type="CodeType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SearchCustomerResponse  Message -->
+	<xs:element name="SearchCustomerResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to messages received from partners for search customers</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CustomerList" type="CustomerInfoShortType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- CustomerDetailsResponse Message -->
+	<xs:element name="CustomerDetailsResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to messages received from partners for view customer detail request</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="CompanyName" type="CompanyNameType" minOccurs="0"/>
+				<xs:element name="ContactName" type="NameType" minOccurs="0"/>
+				<xs:element name="ContactAddress" type="AddressType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="Phone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="PhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="Fax" type="PhoneType" minOccurs="0"/>
+					<xs:element name="FaxNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="BillingName" type="NameType" minOccurs="0"/>
+				<xs:element name="BillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="FederalTaxId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PaymentMode" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Possible Values: CC, INV</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CreditCardInfo" type="CreditCardType" minOccurs="0"/>
+				<xs:element name="ProspectId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DistributorFlag" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>If the value is True  then it designates the Class B as distributor.If no value is provided then by default is considered as False</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DistributorId" type="CustomerIdType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This identifies the Distributor of the Class B</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SearchOrderResponse Message -->
+	<xs:element name="SearchOrderResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to messages received from partners for search orders</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderList" type="OrderInfoShortType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="OrderDetailsResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to messages received from partners for view order detail request.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OrderDetailsResponse" type="OrderDetailsResponse_element" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="OrderDetailsResponse_element">
+		<xs:sequence>
+			<xs:element name="MessageHeader" type="MessageHeaderType"/>
+			<xs:element name="Code" type="CodeType"/>
+			<xs:element name="Message">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			
+			<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+			<xs:element name="SAN" type="SANType" minOccurs="0"/>
+			<xs:element name="FSOId" type="FSOIdType" minOccurs="0"/>
+			<xs:element name="OrderDate" type="DateTimeType" minOccurs="0"/>
+			<xs:element name="OrderStatus" type="CodeType" minOccurs="0"/>
+			<xs:element name="OrderHasError" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Possible Values:Y or N.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PIN" type="PINType" minOccurs="0"/>
+			<xs:element name="PartnerId" type="PartnerIdType" minOccurs="0"/>
+			<xs:element name="Product" type="ProductType" minOccurs="0"/>
+			<xs:element name="Name" type="NameType" minOccurs="0"/>
+			<xs:element name="InstallAddress" type="AddressType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:choice minOccurs="0">
+				<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="Email" type="EmailType" minOccurs="0"/>
+			<xs:element name="BillingAddress" type="AddressType" minOccurs="0"/>
+			<xs:element name="Note" type="NoteType" minOccurs="0"/>
+			<xs:element name="CreditCardInfo" type="CreditCardType" minOccurs="0"/>
+			<xs:element name="AgentId" type="AgentIdType" minOccurs="0"/>
+			<xs:element name="OrderType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="OrderSubType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+			<xs:element name="ReferralId" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ReferralSource" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved1" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved3" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved4" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved5" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved6" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved7" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reserved8" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ODUParameters" type="ODUParametersType" minOccurs="0"/>
+			<xs:element name="BeamId" type="BeamIdType" minOccurs="0"/>
+			<xs:element name="UpfrontCharge" type="xs:double" minOccurs="0"/>
+			<xs:element name="ProspectID" type="xs:string" minOccurs="0"/>
+			<xs:element name="BusinessModel" type="BusinessModelType" minOccurs="0"/>
+			<xs:element name="ClassAID" type="CustomerIdType" minOccurs="0"/>
+			<xs:element name="ClassAName" type="CompanyNameType" minOccurs="0"/>
+			<xs:element name="OrderParams" type="xs:string" minOccurs="0"/>
+			<xs:element name="SFDCProduct" type="SFDCProductType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="OrderingExtraFields" type="ExtraFieldType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- CreateCustomerRequest Message -->
+	<xs:element name="CreateCustomerRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to create a customer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CompanyName" type="CompanyNameType"/>
+				<xs:element name="ContactName" type="NameType"/>
+				<xs:element name="ContactAddress" type="AddressType"/>
+				<xs:choice>
+					<xs:element name="Phone" type="PhoneType"/>
+					<xs:element name="PhoneNumber" type="InternationalPhoneType"/>
+				</xs:choice>
+				<xs:element name="Email">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:choice minOccurs="0">
+					<xs:element name="Fax" type="PhoneType" minOccurs="0"/>
+					<xs:element name="FaxNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="BillingName" type="NameType"/>
+				<xs:element name="BillingAddress" type="AddressType">
+					<xs:annotation>
+						<xs:documentation>Customer's billing address</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FederalTaxId" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Customer's Federal tax ID</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PaymentMode">
+					<xs:annotation>
+						<xs:documentation>Customer's Payment mode
+							Possible Values: CC, INV</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CreditCardInfo" type="CreditCardType" minOccurs="0"/>
+				<xs:element name="ProspectId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCategory">
+					<xs:annotation>
+						<xs:documentation>Possible Values: SMEBI, EnterpriseSP, Franchisee</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="ProgramCode" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="InvoiceInfo" type="InvoiceInfoType" minOccurs="0"/>
+				<xs:element name="DistributorFlag" type="xs:boolean" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>If the value is True  then it designates the Class B as distributor.If no value is provided then by default is considered as False</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DistributorId" type="CustomerIdType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>This identifies the Distributor of the Class B</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ModifyCustomerRequest Message-->
+	<xs:element name="ModifyCustomerRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to modify a customer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CustomerId" type="CustomerIdType">
+					<xs:annotation>
+						<xs:documentation>Existing class B Customer Id.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ContactName" type="NameType" minOccurs="0"/>
+				<xs:element name="ContactAddress" type="AddressType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="Phone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="PhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="Email" type="EmailType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="Fax" type="PhoneType" minOccurs="0"/>
+					<xs:element name="FaxNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="BillingName" type="NameType" minOccurs="0"/>
+				<xs:element name="BillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="FederalTaxId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="PaymentMode" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Possible Values: CC, INV</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CreditCardInfo" type="CreditCardType" minOccurs="0"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Possible Values: EnterpriseSP, SMEBI</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- SearchCustomerRequest Message -->
+	<xs:element name="SearchCustomerRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to search a customer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CustomerId" type="CustomerIdType" minOccurs="0"/>
+				<xs:element name="CompanyName" type="CompanyNameType" minOccurs="0"/>
+				<xs:element name="ContactName" type="SearchNameType" minOccurs="0"/>
+				<xs:choice minOccurs="0">
+					<xs:element name="Phone" type="PhoneType" minOccurs="0"/>
+					<xs:element name="PhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+				</xs:choice>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Possible Values: EnterpriseSP, SMEBI</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- TriggerOrderRequest Message -->
+	<xs:element name="TriggerOrderRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to trigger an order for a customer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ViewCustomerRequest Message -->
+	<xs:element name="ViewCustomerRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to view details of a specific customer.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CustomerId" type="CustomerIdType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerCategory" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Possible Values: EnterpriseSP, SMEBI</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ServicePrequalRequest Message -->
+	<xs:element name="ServicePrequalRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to perform a service prequalification and get the eligible package information.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="InstallAddress" type="AddressType">
+					<xs:annotation>
+						<xs:documentation>Customer’s installation address</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PaymentOption" default="U">
+					<xs:annotation>
+						<xs:documentation>Payment option selected by customer –
+U - Upfront,L - Lease</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="1"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ServicePrequalResponse Message -->
+	<xs:element name="ServicePrequalResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to partners as synchronous response of SPQ.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Product" type="ProductType" minOccurs="0"/>
+				<xs:element name="StandardizedInstallAddress" type="AddressType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Install address (corrected using third party)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FAPTokenAllocateRequest">
+		<xs:annotation>
+			<xs:documentation>This message (FAR) is sent from Partners to HNS to allocate/de-allocate FAP Tokens for a given SAN.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="Quantity" type="xs:integer">
+					<xs:annotation>
+						<xs:documentation>Only positive values are expected, sign will be ignored</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TokenAction" type="TokenActionType" default="A">
+					<xs:annotation>
+						<xs:documentation>Possible Values: 
+A (Allocate)
+D (De-Allocate)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="FAPTokenAllocateResponse">
+		<xs:annotation>
+			<xs:documentation>This message (FAS) is sent from HNS to Partners as synchronous response of FAPTokenAllocateRequest (FAR).</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="FAPTokenServiceOfferingName" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="TransportServiceOfferingName" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="100"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!--CustomerDelinquencyStatusRequest Message -->
+	<xs:element name="CustomerDelinquencyStatusRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to check whether the customer is delinquent or not.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="CustomerId" type="CustomerIdType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- CustomerDelinquencyStatusResponse Message -->
+	<xs:element name="CustomerDelinquencyStatusResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners in response to CustomerDelinquencyStatusRequest.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="DelinquentStatus" type="xs:boolean" minOccurs="0"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- EnhancedServicePrequalRequest Message -->
+	<xs:element name="EnhancedServicePrequalRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to perform enhanced service prequalification and get the eligible packages information.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="CustomerName" type="NameType" minOccurs="0"/>
+				<xs:element name="InstallAddress" type="AddressType">
+					<xs:annotation>
+						<xs:documentation>Customer's installation address</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="BillingAddress" type="AddressType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Customer's billing address</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PreviousBillingAddress" type="AddressType" minOccurs="0"/>
+				<xs:element name="SSN" type="SSNType" minOccurs="0"/>
+				<xs:element name="CustomerCreditCheckConsentFlag" type="xs:boolean"/>
+				<xs:element name="ServiceGrade" type="xs:string" minOccurs="0"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. Consumer 3. ConsumerSP 4. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CustomerPermissionFlags" type="CustomerPermissionsType" minOccurs="0"/>
+				<xs:element name="DOB" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="LandlinePhoneNumber" type="LandlinePhoneType" minOccurs="0"/>
+				<xs:element name="IsInterestedInVoIP" type="xs:boolean" default="true" minOccurs="0"/>
+				<xs:element name="TransportInformation" type="TransportFeasibilityParameterListType" minOccurs="0"/>
+				<xs:element name="FederalTaxId" type="FederalTaxInfoType" minOccurs="0"/>
+				<xs:element name="InternationalDayPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalNightPhone" type="IntPhoneType" minOccurs="0"/>
+				<xs:element name="InternationalCellPhone" type="IntPhoneType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- EnhancedServicePrequalResponse Message -->
+	<xs:element name="EnhancedServicePrequalResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to partners as synchronous response of EPQ.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductList" type="ProductListType" minOccurs="0"/>
+				<xs:element name="SFDCProductList" type="SFDCProductListType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="StandardizedInstallAddress" type="AddressType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Install address (corrected using third party)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="StandardizedBillingAddress" type="AddressType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Billing address (corrected using third party)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CustomerPermissionFlags" type="CustomerPermissionsType" minOccurs="0"/>
+				<xs:element name="AvailableODUParameters" type="ODUParametersListType" minOccurs="0"/>
+				<xs:element name="TransportInformation" type="TransportFeasibilityParameterListType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- TPSPollingRequest Message-->
+	<xs:element name="TPSPollingRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from TPS to HNS to fetch transactions that have to be provisioned in NAP.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="NAPProvisioningRecordIDCursor" type="xs:string"/>
+				<xs:element name="NumberOfRecords" type="xs:integer"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- TPSPollingResponse Message -->
+	<xs:element name="TPSPollingResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to TPS as a synchronous response to the TPSPollingRequest. This includes transactions that have to be provisioned in NAP.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="NAPProvisioningRecordIDCursor" type="xs:string" minOccurs="0"/>
+				<xs:element name="NumberOfRecordsRemaining" type="xs:integer" minOccurs="0"/>
+				<xs:element name="NAPProvisioningRecord" type="NAPProvisioningRecordType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ServiceOrderActivityRequest-->
+	<xs:element name="ServiceOrderActivityRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from TPS to HNS in the following scenarios: 1. Acknowledge Service Orders that were retrieved via Polling  2. Service Order Activity Updates  3. Provisioning Information Updates</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="AdapterId" type="AdapterIdType"/>
+				<xs:element name="Type" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>"Acknowledgement" or "ServiceOrderActivity" or "ProvisioningInformation"</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ServiceOrder" type="ServiceOrderType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ServiceOrderActivityResponse-->
+	<xs:element name="ServiceOrderActivityResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to TPS as a synchronous response to ServiceOrderActivityRequest</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ServiceOrderResponse" type="ServiceOrderResponseType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ValidateEmail Message -->
+	<xs:element name="ValidateEmailRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to request email validation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="Email" type="EmailType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ValidateEmailResponse-->
+	<xs:element name="ValidateEmailResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a synchronous response to ValidateEmailRequest</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="EmailResponse" type="EmailResponseType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- GetFSOBySANOrderIdRequest Message -->
+	<xs:element name="GetFSOBySANOrderIdRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from Partners to HNS to get the FSOId associated with an order id and SAN.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Business Model/Customer Category of the request. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- GetFSOBySANOrderIdResponse Message -->
+	<xs:element name="GetFSOBySANOrderIdResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to GetFSOBySANOrderIdRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="OrderId" type="OrderIdType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="FSOId" type="FSOIdType" minOccurs="0"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- Voucher API's-->
+	<xs:element name="GenerateVoucherBatchRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to GenerateVoucherBatchRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="VoucherType" type="xs:string"/>
+				<xs:element name="VoucherQuantity" type="xs:int"/>
+				<xs:element name="VoucherExpirationDate" type="xs:dateTime"/>
+				<xs:element name="VoucherBatchName" type="VoucherBatchNameType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GenerateVoucherBatchResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to GenerateVoucherBatchResponse message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="VoucherBatchId" type="VoucherBatchIdType"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ActivateVoucherBatchRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to ActivateVoucherBatchRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="VoucherBatchId" type="VoucherBatchIdType"/>
+				<xs:element name="VoucherBatchName" type="VoucherBatchNameType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ActivateVoucherBatchResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to ActivateVoucherBatchResponse message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+			<!-- code and message-->
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckVoucherBatchStatusRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to CheckVoucherBatchRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="VoucherBatchId" type="VoucherBatchIdType"/>
+				<!--	<xs:element name="voucherBatchDetails" type="voucherBatchDetails" maxOccurs="unbounded"/> -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!--	</xs:element>
+	<xs:complexType name="voucherBatchDetails">
+		<xs:sequence>
+			<xs:element name="VoucherBatchId" type="VoucherBatchIdType" minOccurs="0"/>
+			<xs:element name="VoucherStatus" type="VoucherStatusType"/>
+			<xs:element name="errorCode" type="xs:int"/>
+			<xs:element name="errorDescr" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType> -->
+	<xs:element name="CheckVoucherBatchStatusResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to CheckVoucherBatchResponse message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+			<!-- according to VPP diagram -->
+			<!-- 	   <xs:element maxOccurs="unbounded" name="voucherBatchDetails" type="tns:voucherBatchDetails"/>
+               <xs:element name="transactionId" type="xs:string"/>     according to the wsdl-->
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DownloadVoucherRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from ESB to Billing as a reponse to DownloadVoucherRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="VoucherBatchId" type="VoucherBatchIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="DownloadVoucherResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to DownloadVoucherResponse message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<!--<xs:element name="ExceptionCode" type="ExceptionCodeType" minOccurs="0"/>
+					<xs:element maxOccurs="unbounded" name="VoucherBatchFile" type="VoucherBatchFileType" minOccurs="0"/> -->
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckVoucherStatusRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to CheckVoucherStatusRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="VoucherNumber" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CheckVoucherStatusResponce">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to CheckVoucherStatusResponce message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="VoucherStatus" type="VoucherStatusType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RedeemVoucherRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to RedeemVoucherRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="RedeemVoucherhResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to RedeemVoucherhResponse message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReverseVoucherRequest">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to ReverseVoucherRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="VoucherNumber" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ReverseVoucherhResponse">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to ReverseVoucherhResponse message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="Code" type="CodeType" minOccurs="0"/>
+				<xs:element name="Message" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<!-- <xs:element name="return" type="manageVoucherResponse" minOccurs="0"/> -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- Billing API-->
+	<xs:element name="GetBillingDetailsReq">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to GenerateVoucherBatchRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="PartnerId" type="PartnerIdType"/>
+				<xs:element name="SAN" type="SANType"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GetBillingDetailsResp">
+		<xs:annotation>
+			<xs:documentation>This message is sent from HNS to Partners as a reponse to GenerateVoucherBatchRequest message.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="MessageHeader" type="MessageHeaderType"/>
+				<xs:element name="SAN" type="SANType"/>
+				<xs:element name="NoOfUnusedFAPTokens" type="xs:int" minOccurs="0"/>
+				<xs:element name="Code" type="CodeType"/>
+				<xs:element name="Message">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="2000"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- <xs:complexType name="manageVoucherResponse">
+		<xs:sequence>
+			<xs:element name="reverseAndVoidVoucherDetailList" type="reverseAndVoidVoucherDetail" maxOccurs="unbounded"/>
+			<xs:element name="transactionId" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="reverseAndVoidVoucherDetail">
+		<xs:sequence>
+			<xs:element name="actionStatus" type="xs:boolean"/>
+			<xs:element name="errorCode" type="xs:int"/>
+			<xs:element name="errorDescr" type="xs:string" minOccurs="0"/>
+			<xs:element name="voucherNumber" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType> -->
+	<!-- *************************** Data Types Below This Line ***************************-->
+	<!-- Common Message Header Type -->
+	<xs:complexType name="MessageHeaderType">
+		<xs:annotation>
+			<xs:documentation>Common Mesaage Header type used in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TransactionDateTime" type="DateTimeType"/>
+			<xs:element name="TransactionCode" type="CodeType"/>
+			<xs:element name="TransactionSequenceId" type="TransactionSequenceIdType"/>
+			<xs:element name="CorrelationTransactionId" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<!--xs:element name="ProtocolNumber" type="ProtocolIdType" minOccurs="0"/>
+			<xs:element name="CaseId" type="CaseIdType" minOccurs="0"/-->
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Date and Time Type -->
+	<xs:simpleType name="DateTimeType">
+		<xs:annotation>
+			<xs:documentation>Date and time string. This is of the format: mm/dd/yyyy hh:nn:ss</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- SAN Type -->
+	<xs:simpleType name="SANType">
+		<xs:annotation>
+			<xs:documentation> Site Account Number used to identify customer account</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- County Type -->
+	<xs:simpleType name="CountyType">
+		<xs:annotation>
+			<xs:documentation>County information of the address.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Name Type -->
+	<xs:complexType name="NameType">
+		<xs:annotation>
+			<xs:documentation>Name type used to define the name of an entity in all the PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FirstName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MiddleName" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LastName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LastNameSuffix" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Address Type -->
+	<xs:complexType name="AddressType">
+		<xs:sequence>
+			<xs:element name="StreetAddress1" type="Street1Type"/>
+			<xs:element name="StreetAddress2" type="Street2Type" minOccurs="0"/>
+			<xs:element name="City" type="CityType"/>
+			<xs:element name="State" type="StateType"/>
+			<xs:element name="PostalCode" type="ZipType"/>
+			<xs:element name="CountryCode" type="CountryType" minOccurs="0"/>
+			<xs:element name="OverrideAddress" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The value TRUE indicate that address has been forced entered by the user and should not be validated. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="County" type="CountyType" minOccurs="0"/>
+			<xs:element name="Latitude" type="xs:string" minOccurs="0"/>
+			<xs:element name="Longitude" type="xs:string" minOccurs="0"/>
+			<xs:element name="Landmark" type="xs:string" minOccurs="0"/>
+			<xs:element name="RBDI" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>RBDI stands for Residential and Business Delivery Indicator. Possible Values are Residential or Business.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EACFStatus" type="xs:int" minOccurs="0"/>
+			<xs:element name="ErrorCode" type="xs:int" minOccurs="0"/>
+			<xs:element name="ErrorDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="Neighborhood" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Complement" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Street1 Type -->
+	<xs:simpleType name="Street1Type">
+		<xs:annotation>
+			<xs:documentation>The first line of a street address.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Street2 Type -->
+	<xs:simpleType name="Street2Type">
+		<xs:annotation>
+			<xs:documentation>The second line of a street address.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- City Type -->
+	<xs:simpleType name="CityType">
+		<xs:annotation>
+			<xs:documentation>Name of a city</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Country Type -->
+	<xs:simpleType name="CountryType">
+		<xs:annotation>
+			<xs:documentation>Country Code </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- State Type -->
+	<xs:simpleType name="StateType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Zip Type -->
+	<xs:simpleType name="ZipType">
+		<xs:annotation>
+			<xs:documentation>A US ZIP code or Canadian postal code.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- US, CA Phone Type -->
+	<xs:complexType name="PhoneType">
+		<xs:annotation>
+			<xs:documentation>Represents the US, CA Phone number in all the PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AreaCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Prefix">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Exchange">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="LandlinePhoneType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- International Phone Type -->
+	<xs:simpleType name="InternationalPhoneType">
+		<xs:annotation>
+			<xs:documentation>Represents the International Phone number in all the PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Email Type -->
+	<xs:simpleType name="EmailType">
+		<xs:annotation>
+			<xs:documentation>Represents the email address in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Plan Type -->
+	<xs:complexType name="PlanType">
+		<xs:annotation>
+			<xs:documentation>Represents the Plan in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ServiceOffering">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PONumber" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExtraParameter" type="ExtraFieldType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Product Type -->
+	<xs:complexType name="ProductType">
+		<xs:annotation>
+			<xs:documentation>Represents the Product in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Package">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ProgramCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="OptionPlan" type="PlanType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="ExtraParameters" type="ExtraFieldType" minOccurs="0"/>
+			<xs:element name="ProgramName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ProductListType -->
+	<xs:complexType name="ProductListType">
+		<xs:annotation>
+			<xs:documentation>Represents the ProductList for EnhancedServicePrequalResponse message</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Product" type="ProductType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- PartnerId Type -->
+	<xs:simpleType name="PartnerIdType">
+		<xs:annotation>
+			<xs:documentation>Represents the PartnerId in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- CustomerId Type -->
+	<xs:simpleType name="CustomerIdType">
+		<xs:annotation>
+			<xs:documentation>Represents the CustomerId in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- PIN Type -->
+	<xs:simpleType name="PINType">
+		<xs:annotation>
+			<xs:documentation>Represents the PIN in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Note Type -->
+	<xs:simpleType name="NoteType">
+		<xs:annotation>
+			<xs:documentation>Represents the Notes in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- SecurityPasscode Type -->
+	<xs:simpleType name="SecurityPasscodeType">
+		<xs:annotation>
+			<xs:documentation>Represents the Security Passcode in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Agent Id Type -->
+	<xs:simpleType name="AgentIdType">
+		<xs:annotation>
+			<xs:documentation>Represents the Agent Id in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Business Model Type -->
+	<xs:simpleType name="CustomerCategoryType">
+		<xs:annotation>
+			<xs:documentation>Represents the Business Model/Customer Category in all PARTNER messages. Possible values: 1. ConsumerVAR 2. SMEBI 3. Consumer 4. ConsumerSP 5. EnterpriseSP 6. Franchisee 7.Corporate</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- OrderId Type -->
+	<xs:simpleType name="OrderIdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- FSOId Type -->
+	<xs:simpleType name="FSOIdType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="12"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- SSN Type -->
+	<xs:simpleType name="SSNType">
+		<xs:annotation>
+			<xs:documentation>Represents the SSN in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="ExtraFieldType">
+		<xs:annotation>
+			<xs:documentation>Defines format for the extra service deal paramaeters that will be passed by the partners. Partners pass name-value pairs. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExtraField" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="ParameterName" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- CreditCard Type -->
+	<xs:complexType name="CreditCardType">
+		<xs:sequence>
+			<xs:element name="CreditCardName" type="NameType"/>
+			<xs:element name="CreditCardNumber">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TokenNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="ExpirationMonth">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ExpirationYear">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CVV" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CreditCardType">
+				<xs:annotation>
+					<xs:documentation>
+						Possible values:
+						 Visa
+						 MasterCard
+						 Discover
+						 AmericanExpress
+			 </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BilingAddress" type="AddressType" minOccurs="0"/>
+			<xs:element name="CCAuthAmount" type="xs:double" minOccurs="0"/>
+			<xs:element name="CCAuthAmtReleaseDate" type="xs:dateTime" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- TradeReference Type -->
+	<xs:complexType name="TradeReferenceType">
+		<xs:annotation>
+			<xs:documentation>Represents the Trade References</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Name" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Phone" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Fax" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- InvoiceInfo Type -->
+	<xs:complexType name="InvoiceInfoType">
+		<xs:sequence>
+			<xs:element name="BusinessType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Possible Values: Franchisee, Corporation, Partnership, Proprietorship</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="14"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="YearsInBusiness" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BusinessBankReference" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Branch" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BusinessBankAccountNumber" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Phone" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TradeReference" type="TradeReferenceType" minOccurs="0" maxOccurs="3"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ServiceStatus Type -->
+	<xs:simpleType name="ServiceStatusType">
+		<xs:annotation>
+			<xs:documentation>Represents the Service Status Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer"/>
+	</xs:simpleType>
+	<!-- Code Type -->
+	<xs:simpleType name="CodeType">
+		<xs:annotation>
+			<xs:documentation>Represents the Code Types in messages</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Date Type -->
+	<xs:simpleType name="DateType">
+		<xs:annotation>
+			<xs:documentation>Date string. This is of the format: mm/dd/yyyy</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="10"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- AMPM Type -->
+	<xs:simpleType name="AMPMType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AM"/>
+			<xs:enumeration value="PM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- TokenActionType Type -->
+	<xs:simpleType name="TokenActionType">
+		<xs:annotation>
+			<xs:documentation>A: Allocate D: De-Allocate</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="D"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Reason Type -->
+	<xs:simpleType name="ReasonType">
+		<xs:annotation>
+			<xs:documentation>Reason for, if any, for the CON transaction</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- SignalStrength Type -->
+	<xs:simpleType name="SignalStrengthType">
+		<xs:annotation>
+			<xs:documentation>Satellite signal strength observed after the installation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- SatelliteNumber Type -->
+	<xs:simpleType name="SatelliteNumberType">
+		<xs:annotation>
+			<xs:documentation>The Satellite Number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- SiteId Type -->
+	<xs:simpleType name="SiteIdType">
+		<xs:annotation>
+			<xs:documentation>Site Id for the remote</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- SerialNumber Type -->
+	<xs:simpleType name="SerialNumberType">
+		<xs:annotation>
+			<xs:documentation>Serial number of the adapter commissioned</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- AdapterClass Type -->
+	<xs:simpleType name="AdapterClassType">
+		<xs:annotation>
+			<xs:documentation>General class of the adapter being commissioned</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- PvtIP Type -->
+	<xs:simpleType name="PvtIPType">
+		<xs:annotation>
+			<xs:documentation>Private IP assigned by HNS</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- HUBId Type -->
+	<xs:simpleType name="HUBIdType">
+		<xs:annotation>
+			<xs:documentation>HUB Id of the format nnnnnnnnnn:nn</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- PartnerType Type -->
+	<xs:simpleType name="PartnerTypeType">
+		<xs:annotation>
+			<xs:documentation>Type of Partner. Partner can be 'Consumer' or 'VAR'</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- PartnerRefNumber Type -->
+	<xs:simpleType name="PartnerRefNumberType">
+		<xs:annotation>
+			<xs:documentation>Partner reference number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- RegistrationId Type -->
+	<xs:simpleType name="RegistrationIdType">
+		<xs:annotation>
+			<xs:documentation>Transponder Id of the satellite for upgrade</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!--Transaction Sequence Id Type -->
+	<xs:simpleType name="TransactionSequenceIdType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!--Company Name Type -->
+	<xs:simpleType name="CompanyNameType">
+		<xs:annotation>
+			<xs:documentation>Customer's company name</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- OrderStatus Type -->
+	<xs:complexType name="OrderStatusType">
+		<xs:sequence>
+			<xs:element name="SAN" type="SANType" minOccurs="0"/>
+			<xs:element name="OrderId" type="OrderIdType"/>
+			<xs:element name="FSOId" type="FSOIdType" minOccurs="0"/>
+			<xs:element name="CONCode" type="CodeType"/>
+			<xs:element name="ConMessage">
+				<xs:annotation>
+					<xs:documentation>Message associated with ConCode.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reason" type="ReasonType" minOccurs="0"/>
+			<xs:element name="Notes" type="NoteType" minOccurs="0"/>
+			<xs:element name="Name" type="NameType" minOccurs="0"/>
+			<xs:element name="InstallAddress" type="AddressType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="DayPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="DayPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:choice minOccurs="0">
+				<xs:element name="NightPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="NightPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="DistributorName" type="NameType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="DistributorPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="DistributorPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="DealerName" type="NameType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="DealerPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="DealerPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="ScheduledInstallDate" type="DateType" minOccurs="0"/>
+			<xs:element name="PIN" type="PINType" minOccurs="0"/>
+			<xs:element name="InstallAMPM" type="AMPMType" minOccurs="0"/>
+			<xs:element name="PartnerRefNumber" type="PartnerRefNumberType" minOccurs="0"/>
+			<xs:element name="EventOccurrenceTime" type="DateTimeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- InstallStatus Type -->
+	<xs:complexType name="InstallStatusType">
+		<xs:sequence>
+			<xs:element name="SAN" type="SANType" minOccurs="0"/>
+			<xs:element name="OrderId" type="OrderIdType"/>
+			<xs:element name="FSOId" type="FSOIdType" minOccurs="0"/>
+			<xs:element name="IRSCode" type="CodeType"/>
+			<xs:element name="IRSMessage">
+				<xs:annotation>
+					<xs:documentation>Message associated with IRSCode</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Reason" type="ReasonType" minOccurs="0"/>
+			<xs:element name="Notes" type="NoteType" minOccurs="0"/>
+			<xs:element name="DistributorName" type="NameType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="DistributorPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="DistributorPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="DealerName" type="NameType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="DealerPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="DealerPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="InstallerName" type="NameType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="InstallerPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="InstallerPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+			<xs:element name="SignalStrength" type="SignalStrengthType" minOccurs="0"/>
+			<xs:element name="ActualInstalledDate" type="DateType" minOccurs="0"/>
+			<xs:element name="InstallAMPM" type="AMPMType" minOccurs="0"/>
+			<xs:element name="EventOccurrenceTime" type="DateTimeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Site Details Type -->
+	<xs:complexType name="SiteDetailsType">
+		<xs:sequence>
+			<xs:element name="SAN" type="SANType"/>
+			<xs:element name="SerialNumber" type="SerialNumberType" minOccurs="0"/>
+			<xs:element name="CustomerId" type="CustomerIdType"/>
+			<xs:element name="SiteContactName" type="NameType"/>
+			<xs:element name="SiteAddress" type="AddressType"/>
+			<xs:choice>
+				<xs:element name="SiteContactPhone" type="PhoneType"/>
+				<xs:element name="SiteContactPhoneNumber" type="InternationalPhoneType"/>
+			</xs:choice>
+			<xs:element name="Email" type="EmailType" minOccurs="0"/>
+			<xs:element name="SiteStatus" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Site Status: 0,2 - Inactive
+1 - Active
+3 - Terminated</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- SiteStatus Type -->
+	<xs:complexType name="SiteStatusType">
+		<xs:sequence>
+			<xs:element name="SAN" type="SANType"/>
+			<xs:element name="SSNCode" type="CodeType"/>
+			<xs:element name="ReasonCode" type="CodeType" minOccurs="0"/>
+			<xs:element name="SSNMessage">
+				<xs:annotation>
+					<xs:documentation>Message associated with SSNCode</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Notes" type="NoteType" minOccurs="0"/>
+			<xs:element name="SatelliteNumber" type="SatelliteNumberType" minOccurs="0"/>
+			<xs:element name="SiteId" type="SiteIdType" minOccurs="0"/>
+			<xs:element name="SerialNumber" type="SerialNumberType" minOccurs="0"/>
+			<xs:element name="AdapterClass" type="AdapterClassType" minOccurs="0"/>
+			<xs:element name="PvtIP" type="PvtIPType" minOccurs="0"/>
+			<xs:element name="HomeHubId" type="HUBIdType" minOccurs="0"/>
+			<xs:element name="ISPHubId" type="HUBIdType" minOccurs="0"/>
+			<xs:element name="ActualActivationDate" type="DateType" minOccurs="0"/>
+			<xs:element name="EventOccurrenceTime" type="DateTimeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- InputAddress Type -->
+	<xs:complexType name="InputAddressType">
+		<xs:sequence>
+			<xs:element name="Address1" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The first line of street address. This parameter is mandatory if country code is 'CA', optional if country code is 'US' and zip code is provided. Required complete or minimum of 2 characters street name  to get enhance address or candidates for US address.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Address2" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This parameter contains suite, apartment or building information.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="City" type="CityType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This parameter contains the name of city.It is mandatory if country code is 'CA',if country code is 'US', then it is optional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="State" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This parameter contains two character state code.It is mandatory if country code is 'CA', if country code is 'US', then it is optional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Zip">
+				<xs:annotation>
+					<xs:documentation>If country code is US, then 5 or 9 digit zip is required.If country code is CA then 6 alphanumeric characters are needed. </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CountryCode">
+				<xs:annotation>
+					<xs:documentation>Two letters country code e.g. 'US' or 'CA'.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="County" type="CountyType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>County information for address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- GeoCodeInfoType -->
+	<xs:complexType name="GeoCodeInfoType">
+		<xs:annotation>
+			<xs:documentation>This data type contains the latitude, longitude, geo coding status code, geo status message based on zip code provided in input address.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Latitude" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>latitude information calculated based on zip code provided in input address.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Longitude" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>longitude information calculated based on zip code provided in input address.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GeoCodingStatusCode">
+				<xs:annotation>
+					<xs:documentation>Status code representing the  status of geo coding.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GeoCodingStatusMessage">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ZipInfoType -->
+	<xs:complexType name="ZipInfoType">
+		<xs:annotation>
+			<xs:documentation>This data type contains city and state candidates if only 5 digit zip code is provided for US address in VER.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="City" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>It will contain an array list of city candidates.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StateCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- AddressLine2Type -->
+	<xs:complexType name="AddressLine2Type">
+		<xs:annotation>
+			<xs:documentation>This data structure is used in Location data structure. It defines the suite components of candidate suggestion</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SuiteRangeLow" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="8"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SuiteRangeHigh" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="8"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SuiteRangeOddEven" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="SuiteName" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Plus4Low" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Plus4High" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="AddressTypeCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- AddressLine1Type -->
+	<xs:complexType name="AddressLine1Type">
+		<xs:annotation>
+			<xs:documentation>This data structure is used in Location data structure. It defines the street components of candidate suggestion.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrimaryRangeHigh" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PrimaryRangeLow" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PrimaryRangeOddEven" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PreDirection" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StreetName" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StreetSuffix" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="PostDirection" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- LocationType -->
+	<xs:complexType name="LocationType">
+		<xs:annotation>
+			<xs:documentation>This data structure is used in LocationInfo data structure. It defines the components of candidate suggestions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AddressLine1" type="AddressLine1Type" minOccurs="0"/>
+			<xs:element name="AddressLine2" type="AddressLine2Type" minOccurs="0"/>
+			<xs:element name="GeoCodeInfo" type="GeoCodeInfoType" minOccurs="0"/>
+			<xs:element name="FullAddressLine1" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="FullAddressLine2" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- LocationInfoType -->
+	<xs:complexType name="LocationInfoType">
+		<xs:annotation>
+			<xs:documentation>This data structure defines the output address components.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Address" type="InputAddressType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This field will provide enhance address in case of exact match. In case of error or no match it will contain input address provided by user.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ZipCandidates" type="ZipInfoType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>In case only zip code is provided for US address, this field will contain city and state candidates.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Address Match Type -->
+	<xs:simpleType name="AddressMatchType">
+		<xs:annotation>
+			<xs:documentation>Match Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="40"/>
+			<xs:enumeration value="EXACT"/>
+			<xs:enumeration value="NOMATCH"/>
+			<xs:enumeration value="CANDIDATES"/>
+			<xs:enumeration value="ERROR"/>
+			<xs:enumeration value="PARTIAL"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CustomerPermissionsType">
+		<xs:annotation>
+			<xs:documentation>A set of permission flags. These permission flags are used by SM while processing the response from equifax for credit report.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OwnerPermission" type="PermissionFlagType" minOccurs="0"/>
+			<xs:element name="LandlordPermission" type="PermissionFlagType" minOccurs="0"/>
+			<xs:element name="VermontFlag" type="PermissionFlagType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag signifies explicit permission to access the credit report from a customer who is a Vermont resident.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataConfirmed" type="PermissionFlagType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag signifies that CSR is satisfied with the authenticity of the data and explicitely confirmes it. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NoHitOverride" type="PermissionFlagType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This permission flag is sent when the credit evaluation from credit agency resulted in a NO HIT being reported. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="PermissionFlagType">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<!-- SearchName Type -->
+	<xs:complexType name="SearchNameType">
+		<xs:sequence>
+			<xs:element name="FirstName" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LastName" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- CustomerInfoShortType -->
+	<xs:complexType name="CustomerInfoShortType">
+		<xs:sequence>
+			<xs:element name="CustomerId" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CompanyName" type="CompanyNameType" minOccurs="0"/>
+			<xs:element name="ContactName" type="NameType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="ContactPhone" type="PhoneType" minOccurs="0"/>
+				<xs:element name="ContactPhoneNumber" type="InternationalPhoneType" minOccurs="0"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- OrderInfoShortType -->
+	<xs:complexType name="OrderInfoShortType">
+		<xs:sequence>
+			<xs:element name="OrderId" type="OrderIdType" minOccurs="0"/>
+			<xs:element name="PartnerId" type="PartnerIdType" minOccurs="0"/>
+			<xs:element name="SAN" type="SANType" minOccurs="0"/>
+			<xs:element name="OrderDate" type="DateTimeType" minOccurs="0"/>
+			<xs:element name="Name" type="NameType" minOccurs="0"/>
+			<xs:element name="OrderStatus" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="OrderHasError" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag represents if order processing is blocked due to some error.
+Possible Values: Y or N.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ODUParametersListType">
+		<xs:annotation>
+			<xs:documentation>Represents the list of SLVT Parameters</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ODUParameters" type="ODUParametersType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ODUParametersType">
+		<xs:annotation>
+			<xs:documentation>SLVT Parameter information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AntennaSize" type="AntennaSizeType"/>
+			<xs:element name="RadioPower" type="ODUPowerType"/>
+			<xs:element name="Availability" type="AvailabilityType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AntennaSizeType">
+		<xs:annotation>
+			<xs:documentation> A simple type that defines the antennaSize in Meters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="3.5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ODUPowerType">
+		<xs:annotation>
+			<xs:documentation>ODU Power in Watts</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="100.0" fixed="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AvailabilityType">
+		<xs:annotation>
+			<xs:documentation>Availability Levels in %</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="100.0" fixed="false"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- NAPProvisioningRecordType -->
+	<xs:complexType name="NAPProvisioningRecordType">
+		<xs:sequence>
+			<xs:element name="NAPProvisioningRecordID" type="NAPProvisioningRecordIDType"/>
+			<xs:element name="TransactionType" type="xs:string"/>
+			<xs:element name="CompanyName" type="CompanyNameType" minOccurs="0"/>
+			<xs:element name="SAN" type="SANType"/>
+			<xs:element name="ServiceOrderNumber" type="FSOIdType"/>
+			<xs:element name="CustomerId" type="PartnerIdType"/>
+			<xs:element name="InstallAddress" type="AddressType"/>
+			<xs:element name="OrderType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="OrderSubType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Product" type="ProductType" minOccurs="0"/>
+			<xs:element name="HNSLocationId" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CustomerCategory" type="CustomerCategoryType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- NAPProvisioningRecordIDType -->
+	<xs:simpleType name="NAPProvisioningRecordIDType">
+		<xs:annotation>
+			<xs:documentation> NAPProvisioningRecordIDType</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- Service Order Activity -->
+	<xs:complexType name="ServiceOrderType">
+		<xs:sequence>
+			<xs:element name="SAN" type="SANType"/>
+			<xs:element name="ServiceOrderNumber" type="FSOIdType"/>
+			<xs:element name="PartnerId" type="PartnerIdType"/>
+			<xs:element name="ExtraParameters" type="ExtraFieldType" minOccurs="0"/>
+			<xs:element name="ArrayExtraParameters" type="ArrayExtraFieldType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Array Extra Field Type-->
+	<xs:complexType name="ArrayExtraFieldType">
+		<xs:annotation>
+			<xs:documentation>Defines format for the extra service deal paramaeters that will be passed by the partners. Partners pass name-value pairs. </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ExtraField" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="ParameterName" type="xs:string" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ArrayName" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- Service Order Activity -->
+	<xs:complexType name="ServiceOrderResponseType">
+		<xs:sequence>
+			<xs:element name="SAN" type="SANType" minOccurs="0"/>
+			<xs:element name="ServiceOrderNumber" type="FSOIdType"/>
+			<xs:element name="Code" type="CodeType"/>
+			<xs:element name="Message" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- AdapterIdType -->
+	<xs:simpleType name="AdapterIdType">
+		<xs:annotation>
+			<xs:documentation>Represents the Adapter Id</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- BeamId Type -->
+	<xs:simpleType name="BeamIdType">
+		<xs:annotation>
+			<xs:documentation>Identifies the Beam Type</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BusinessModelType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- EmailResponse Type -->
+	<xs:complexType name="EmailResponseType">
+		<xs:sequence>
+			<xs:element name="EmailAddress" type="EmailType"/>
+			<xs:element name="MailboxName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DomainName" type="xs:string" minOccurs="0"/>
+			<xs:element name="TopLevelDomain" type="xs:string" minOccurs="0"/>
+			<xs:element name="TopLevelDomainName" type="xs:string" minOccurs="0"/>
+			<xs:element name="Status" type="xs:boolean"/>
+			<xs:element name="Message" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="SatelliteIdType">
+		<xs:annotation>
+			<xs:documentation>Satellite Id </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PolarizationType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BandType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransportNameType">
+		<xs:annotation>
+			<xs:documentation>The name of the transport. Possible values are : Jupiter, Broadband Remote and Spaceway</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="256"/>
+			<xs:whiteSpace value="collapse"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="FSOType">
+		<xs:annotation>
+			<xs:documentation>Field Service OrderType</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="TransportInformationType">
+		<xs:annotation>
+			<xs:documentation>Service/Transport Availability Information filled by Services in response of new/modify/upgrade order</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SatellitedID" type="SatelliteIdType" minOccurs="0"/>
+			<xs:element name="BeamID" type="BeamIdType" minOccurs="0"/>
+			<xs:element name="Polarization" type="PolarizationType" minOccurs="0"/>
+			<xs:element name="Band" type="BandType" minOccurs="0"/>
+			<xs:element name="MinODUPower" type="ODUPowerType" minOccurs="0"/>
+			<xs:element name="MinAntennaSize" type="AntennaSizeType" minOccurs="0"/>
+			<xs:element name="TransportName" type="TransportNameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SFDCProductListType">
+		<xs:annotation>
+			<xs:documentation>SFDC Offer List</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SFDCProduct" type="SFDCProductType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SFDCProductType">
+		<xs:annotation>
+			<xs:documentation>SDFC Offer Information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OfferName" type="xs:string"/>
+			<xs:element name="OfferDisplayName" type="xs:string" minOccurs="0"/>
+			<xs:element name="OfferType" type="xs:string"/>
+			<xs:element name="UploadSpeed" type="xs:double" minOccurs="0"/>
+			<xs:element name="AnytimeBytes" type="xs:double" minOccurs="0"/>
+			<xs:element name="BonusBytes" type="xs:double" minOccurs="0"/>
+			<xs:element name="DataAllowanceManager" type="xs:string" minOccurs="0"/>
+			<xs:element name="DownloadSpeed" type="xs:double" minOccurs="0"/>
+			<xs:element name="EndDate" type="xs:string" minOccurs="0"/>
+			<xs:element name="OfferLineItemList" type="OfferLineItemListType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="TransportName" type="TransportNameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OfferLineItemListType">
+		<xs:annotation>
+			<xs:documentation>SFDC Offer Line Item List</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OfferLineItem" type="OfferLineItemType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OfferLineItemType">
+		<xs:annotation>
+			<xs:documentation>SDFC Offer Information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="OfferLineItemCategory" type="xs:string" minOccurs="0"/>
+			<xs:element name="OfferLineItemName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransportFeasibilityParameterListType">
+		<xs:annotation>
+			<xs:documentation>SFDC Offer Line Item List</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TransportFeasibilityParameter" type="TransportFeasibilityParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransportFeasibilityParameterType">
+		<xs:annotation>
+			<xs:documentation>This is used to signify the feasibility of a transport along with network parameters if transport is available</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AvailabilityFlag" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag determines the Technical availability of a transport Service at given LAT/LONG.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BusinessAvailabilityFlag" type="xs:boolean" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>This flag determines the Business availability of a transport Service at given LAT/LONG.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SatellitedID" type="SatelliteIdType" minOccurs="0"/>
+			<xs:element name="BeamID" type="BeamIdType" minOccurs="0"/>
+			<xs:element name="Polarization" type="PolarizationType" minOccurs="0"/>
+			<xs:element name="Band" type="BandType" minOccurs="0"/>
+			<xs:element name="MinODUPower" type="ODUPowerType" minOccurs="0"/>
+			<xs:element name="MinAntennaSize" type="AntennaSizeType" minOccurs="0"/>
+			<xs:element name="TransportName" type="TransportNameType" minOccurs="0"/>
+			<xs:element name="SLVTParametersList" type="SLVTParametersListType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SLVTParametersListType">
+		<xs:annotation>
+			<xs:documentation>Represents the SLVT Parameters List</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SLVTParameters" type="SLVTParametersType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SLVTParametersType">
+		<xs:annotation>
+			<xs:documentation>SLVT parameter information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AntennaSize" type="AntennaSizeType"/>
+			<xs:element name="RadioPower" type="ODUPowerType"/>
+			<xs:element name="Availability" type="AvailabilityType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ServiceReferenceType">
+		<xs:annotation>
+			<xs:documentation>Represents the Plan in all PARTNER messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ServiceOfferingName" type="xs:string"/>
+			<xs:element name="ServiceReferenceNoList" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrganizationInfoType">
+		<xs:sequence>
+			<xs:element name="TradeName" type="TradeNameType" minOccurs="0"/>
+			<xs:element name="StateRegistry" type="StateRegistryType" minOccurs="0"/>
+			<xs:element name="MunicipalRegistry" type="MunicipalRegistryType" minOccurs="0"/>
+			<xs:element name="Activity" type="ActivityType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="TradeNameType">
+		<xs:annotation>
+			<xs:documentation>TradeName</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StateRegistryType">
+		<xs:annotation>
+			<xs:documentation>StateRegistry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MunicipalRegistryType">
+		<xs:annotation>
+			<xs:documentation>MunicipalRegistry</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ActivityType">
+		<xs:annotation>
+			<xs:documentation>Activity</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="IntPhoneType">
+		<xs:sequence>
+			<xs:element name="ISDCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="AreaCode" type="AreaCodeType" minOccurs="0"/>
+			<xs:element name="IntPhoneNo" type="IntPhoneNumberType"/>
+			<xs:element name="Extension" type="ExtnType" minOccurs="0"/>
+			<xs:element name="Type" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AreaCodeType">
+		<xs:annotation>
+			<xs:documentation>AreaCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IntPhoneNumberType">
+		<xs:annotation>
+			<xs:documentation>Number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="15"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExtnType">
+		<xs:annotation>
+			<xs:documentation>Number</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="BankAccountType">
+		<xs:sequence>
+			<xs:element name="AgencyNumber" type="AgencyNumberType"/>
+			<xs:element name="BankCode" type="BankCodeType"/>
+			<xs:element name="BankAccountNumber" type="BankAccountNumberType"/>
+			<xs:element name="AgencyVerifierDigit" type="AgencyVerifierDigitType" minOccurs="0"/>
+			<xs:element name="AccountNumberVerifierDigit" type="AccountNumberVerifierDigitDigitType"/>
+			<xs:element name="NameOfOwner" type="NameType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AgencyNumberType">
+		<xs:annotation>
+			<xs:documentation>AgencyNumber</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankCodeType">
+		<xs:annotation>
+			<xs:documentation>BankCode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BankAccountNumberType">
+		<xs:annotation>
+			<xs:documentation>BankAccountNumber</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AgencyVerifierDigitType">
+		<xs:annotation>
+			<xs:documentation>AgencyVerifierDigit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AccountNumberVerifierDigitDigitType">
+		<xs:annotation>
+			<xs:documentation>AccountNumberVerifierDigitDigit</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="AcceptedCommunicationsType">
+		<xs:sequence>
+			<xs:element name="AcceptsSMS" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptsEmail" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptsPhoneCall" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="AcceptsLetter" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ProtocolIdType">
+		<xs:annotation>
+			<xs:documentation>Protocol ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CPFType">
+		<xs:annotation>
+			<xs:documentation>CPF</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="14"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CNPJType">
+		<xs:annotation>
+			<xs:documentation>CNPJ</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="18"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HTBOrderOwnerType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="PaymentModeType">
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:complexType name="GlobalPhoneType">
+		<xs:choice>
+			<xs:element name="PhoneNumber" type="PhoneType"/>
+			<xs:element name="InternationalPhoneNumber" type="InternationalPhoneType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="FederalTaxInfoType">
+		<xs:choice>
+			<xs:element name="CPF" type="CPFType"/>
+			<xs:element name="CNPJ" type="CNPJType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:simpleType name="CaseIdType">
+		<xs:annotation>
+			<xs:documentation>Case ID</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="90"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="UpfrontChargingDetailsType">
+		<xs:annotation>
+			<xs:documentation>This includes Upfront charging details. For Pre-paid, Credit card details should be populated. For Post-paid,Number Of Installments should be populated</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UpfrontAmount" type="xs:double"/>
+			<xs:element name="NumberOfInstallments" type="xs:int" minOccurs="0"/>
+			<xs:element name="PaymentDetails" type="CreditCardType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BillingMethodType">
+		<xs:annotation>
+			<xs:documentation>Can have values  CreditCard, Invoice
+               Possible Values :
+                1. CreditCard for Credit/Debit Card 
+                2. DirectDebit for ECheck/ACH
+                3. Boleto 
+                4. Invoice
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Type">
+		<xs:annotation>
+			<xs:documentation>Can have values 
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VoucherBatchIdType">
+		<xs:annotation>
+			<xs:documentation>Can have int values 
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="ExceptionCodeType">
+		<xs:annotation>
+			<xs:documentation>Can have int values 
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="VoucherListType">
+		<xs:annotation>
+			<xs:documentation>Can have string values 
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="VoucherBatchNameType">
+		<xs:annotation>
+			<xs:documentation>Can have string values 
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="VoucherStatusType">
+		<xs:annotation>
+			<xs:documentation>Can have string values 
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

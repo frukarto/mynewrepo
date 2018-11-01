@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions  xmlns:tns="http://msgcontrollerservice.bits.hughes.com"
+  xmlns:wsr="http://www.openuri.org/2002/10/soap/reliability/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+  xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding"
+  xmlns:conv="http://www.openuri.org/2002/04/wsdl/conversation/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:s="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  targetNamespace="http://msgcontrollerservice.bits.hughes.com">
+ <types   xmlns:tns="http://msgcontrollerservice.bits.hughes.com"
+   xmlns:wsr="http://www.openuri.org/2002/10/soap/reliability/"
+   xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+   xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+   xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+   xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+   xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding"
+   xmlns:conv="http://www.openuri.org/2002/04/wsdl/conversation/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:s="http://www.w3.org/2001/XMLSchema"
+   xmlns="http://schemas.xmlsoap.org/wsdl/">
+   	
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xs:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xs:schema>
+  <xs:schema    xmlns:tns="http://msgcontrollerservice.bits.hughes.com"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    elementFormDefault="qualified"
+    targetNamespace="http://msgcontrollerservice.bits.hughes.com">
+   <xs:complexType     name="WSMessageRequest">
+    <xs:sequence>
+     <xs:element       type="xs:string"
+       name="destination">
+     </xs:element>
+     <xs:element       type="tns:WSMessage"
+       name="message">
+     </xs:element>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType     name="WSMessageResponse">
+    <xs:sequence>
+     <xs:element       type="tns:WSMessage"
+       name="message"
+       minOccurs="0">
+     </xs:element>
+     <xs:element       type="tns:WSException"
+       name="exception"
+       minOccurs="0">
+     </xs:element>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType     name="WSMessage">
+    <xs:sequence>
+     <xs:element       type="xs:string"
+       name="id"
+       minOccurs="0">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="correlationID"
+       minOccurs="0">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="sender">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="originator"
+       minOccurs="0">
+     </xs:element>
+     <xs:element       type="xs:boolean"
+       name="replyRequired">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="clazz">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="payLoad"
+       minOccurs="0">
+     </xs:element>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:complexType     name="WSException">
+    <xs:sequence>
+     <xs:element       type="xs:string"
+       name="clazz">
+     </xs:element>
+     <xs:element       type="xs:int"
+       name="errorCode">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="message"
+       minOccurs="0">
+     </xs:element>
+     <xs:element       type="xs:string"
+       name="parameter"
+       minOccurs="0"
+       maxOccurs="unbounded">
+     </xs:element>
+    </xs:sequence>
+   </xs:complexType>
+   <xs:element     type="tns:WSMessageRequest"
+     name="Process"
+     nillable="true">
+   </xs:element>
+   <xs:element     type="tns:WSMessageResponse"
+     name="ProcessResponse"
+     nillable="true">
+   </xs:element>
+  </xs:schema>
+ </types>
+ <message   name="process">
+  <part    xmlns:partns="http://msgcontrollerservice.bits.hughes.com"
+    name="parameters"
+    element="partns:Process">
+  </part>
+ </message>
+ <message   name="processResponse">
+  <part    xmlns:partns="http://msgcontrollerservice.bits.hughes.com"
+    name="parameters"
+    element="partns:ProcessResponse">
+  </part>
+ </message>
+ 	 <message name="ServiceFault">
+  	<part name="parameters" element="xws:ServiceFault"></part>
+  </message>
+ <portType   name="MsgControllerService">
+  <operation    name="process">
+   <input     message="tns:process">
+   </input>
+   <output     message="tns:processResponse">
+   </output>
+   <fault name="fault" message="tns:ServiceFault"></fault>
+  </operation>
+ </portType>
+ <binding   type="tns:MsgControllerService"
+   name="MsgControllerServiceImplPort">
+   <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+  <operation    name="process">
+    <soap:operation style="document" soapAction="" />
+   <input>
+     <soap:body use="literal" />
+   </input>
+   <output>
+     <soap:body use="literal" />
+   </output>
+  </operation>
+ </binding>
+ <service   name="MsgControllerService">
+  <port    name="MsgControllerServiceImplPort"
+    binding="tns:MsgControllerServiceImplPort">
+    <soap:address location="http://BFW_SERVER_HOST_NAME:BFW_SERVER_PORT/SDS/BFW/MsgControllerService" />
+  </port>
+ </service>
+</definitions>

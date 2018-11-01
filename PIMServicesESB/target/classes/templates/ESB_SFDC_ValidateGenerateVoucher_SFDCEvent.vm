@@ -1,0 +1,18 @@
+<SFDCAPIEventRequest xmlns="http://soap.sforce.com/schemas/class/PartnersVoucher">
+            <req>
+                <TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+                <APIName>ValidateGenerateVoucher</APIName>
+                <Parameters>
+                    <Key>SPPartnerID</Key>
+                    <Value>${exchange.properties.PartnerId}</Value>
+                </Parameters>
+                <Parameters>
+                    <Key>VoucherBatchName</Key>
+                    <Value>${exchange.properties.VoucherBatchName}</Value>
+                </Parameters>
+                <Parameters>
+                    <Key>VoucherType</Key>
+                    <Value>${exchange.properties.VoucherType}</Value>
+                </Parameters>               
+            </req>
+</SFDCAPIEventRequest>

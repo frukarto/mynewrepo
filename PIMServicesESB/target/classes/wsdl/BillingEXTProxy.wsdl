@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://com.hughes.bits.esb/Billing" xmlns:esbns1="http://www.hns.com/iag/schemas/dssbilling" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://com.hughes.bits.esb/Billing" xmlns:core="http://www.hns.com/iag/schemas/core" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:p="http://www.w3.org/2001/XMLSchema" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+	<wsdl:types>
+	
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+			<xs:import namespace="http://www.hns.com/iag/schemas/dssbilling" schemaLocation="./schemas/Billing.xsd"/>	    
+		</xs:schema>
+		
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xs:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xs:schema>
+	
+	
+	</wsdl:types>
+
+
+	<wsdl:message name="GetAccountInfoOpRequest">
+		<wsdl:part name="parameters" element="esbns1:GetAccountInfoMsg"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetAccountInfoOpResponse">
+		<wsdl:part name="parameters" element="esbns1:GetAccountInfoResponseMsg"></wsdl:part>
+	</wsdl:message>
+		 <wsdl:message name="ServiceFault">
+  	<wsdl:part name="parameters" element="xws:ServiceFault"></wsdl:part>
+  </wsdl:message>
+	
+	<wsdl:portType name="BillingEXTProxyPortType">
+		
+
+			<wsdl:operation name="GetAccountInfoOp">
+				<wsdl:input message="tns:GetAccountInfoOpRequest"></wsdl:input>
+				<wsdl:output message="tns:GetAccountInfoOpResponse"></wsdl:output>
+				<wsdl:fault name="fault" message="tns:ServiceFault"></wsdl:fault>
+			</wsdl:operation>
+		
+	</wsdl:portType>
+	<wsdl:binding name="BillingEXTProxyProxyBinding" type="tns:BillingEXTProxyPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		
+		 <wsdl:operation name="GetAccountInfoOp">
+					<soap:operation soapAction="http://com.hughes.bits.esb/Billing/GetAccountInfoOp"/>
+					<wsdl:input>
+						<soap:body use="literal"/>
+					</wsdl:input>
+					<wsdl:output>
+						<soap:body use="literal"/>
+					</wsdl:output>
+		</wsdl:operation>
+		
+	
+	</wsdl:binding>
+	<plnk:partnerLinkType name="BillingEXTLinkType">
+		<plnk:role name="BillingEXTServiceRole" portType="tns:BillingEXTProxyPortType" />
+	</plnk:partnerLinkType>
+	
+	<wsdl:service name="BillingEXTProxyService">
+		<wsdl:port binding="tns:BillingEXTProxyProxyBinding" name="BillingEXTProxyPortType">
+			<soap:address location="http://sagedwebs1.iaglab.com/public/http/BILLING/BillingEXTProxy"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

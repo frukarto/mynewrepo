@@ -1,0 +1,9 @@
+<ViewOrderRequest xmlns="http://www.hns.com/iag/schemas/partner">
+	<MessageHeader>
+		<TransactionDateTime>${exchange.properties.TransactionDateTime}</TransactionDateTime>
+		<TransactionCode>${exchange.properties.TransactionCode}</TransactionCode>
+		<TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+	</MessageHeader>
+	<OrderId>${exchange.properties.OrderId}</OrderId>
+	<SAN>${exchange.properties.SAN}</SAN>
+</ViewOrderRequest>

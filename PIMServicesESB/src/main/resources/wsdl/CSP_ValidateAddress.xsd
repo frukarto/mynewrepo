@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:cct="http://cspcommontypes.bits.hughes.com" xmlns:tns="http://validateaddress.bits.hughes.com" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://validateaddress.bits.hughes.com" elementFormDefault="qualified">
+	<xs:import namespace="http://cspcommontypes.bits.hughes.com" schemaLocation="./CSPCommonTypes.xsd"/>
+	<xs:element name="ValidateAddressReq">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tns:ValidateAddressRequest"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ValidateAddressResp">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tns:ValidateAddressResponse"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ValidateAddressRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="UserName" type="cct:UserIDType"/>
+				<xs:element name="ProcessInstanceID" type="xs:string" minOccurs="0"/>
+				<xs:element name="Address" type="tns:AddressType" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ValidateAddressResponse">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="cct:ResponseType"/>
+				<xs:element name="AddressInfo" type="cct:AddressValueType" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>	
+	<xs:complexType name="AddressType">
+		<xs:sequence>
+			<xs:element name="AddressType" type="xs:string"/>
+			<xs:element name="GeoCodingRequired" type="xs:boolean"/>
+			<xs:element name="CommonAddress" type="cct:BasicAddressType"/>
+			<xs:element name="IsForcedAddressFlag" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="IsPartialAddress" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="FallbacktoUSPS" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="RBDIRequired" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

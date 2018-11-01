@@ -1,0 +1,8 @@
+<GetAccountInfoMsg xmlns="http://com.hughes.bits.esb/Billing">
+	<UserCredential>
+		<LoginId xmlns="http://www.hns.com/iag/schemas/core">dssadmin</LoginId>
+		<AuthorizationFlag xmlns="http://www.hns.com/iag/schemas/core">true</AuthorizationFlag>
+	</UserCredential>
+	<ChildWanted>true</ChildWanted>
+	<SAN>${exchange.properties.SAN}</SAN>
+</GetAccountInfoMsg>

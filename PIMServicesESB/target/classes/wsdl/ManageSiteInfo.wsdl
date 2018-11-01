@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="ManageSiteInfoService" targetNamespace="http://fetchsiteinfo.bits.hughes.com"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://fetchsiteinfo.bits.hughes.com"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+	<!-- IMPORTED XSDs PLUS SURROUNDING OPERATION WRAPPER ELEMENTS-->
+	<types>
+	
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+			<xs:import namespace="http://fetchsiteinfo.bits.hughes.com" schemaLocation="./CSP_ManageSiteInfo.xsd"/>
+	        </xs:schema>
+			
+			<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+			<xs:import namespace="http://www.hughes.com/bits/fuse/bpel/error" schemaLocation="./schemas/ServiceFault.xsd"/>	    
+		</xs:schema>
+		
+	</types>
+	<!-- REQUEST/RESPONSE MESSAGE FORMATS -->
+	<message name="GetSpecialOffersReq">
+		<part element="tns:GetSpecialOffersReq" name="parameters" />
+	</message>
+	<message name="GetSpecialOffersResp">
+		<part element="tns:GetSpecialOffersResp" name="parameters" />
+	</message>	
+	
+	<message name="SearchSiteReq">
+		<part element="tns:SearchSiteReq" name="parameters" />
+	</message>
+	<message name="SearchSiteResp">
+		<part element="tns:SearchSiteResp" name="parameters" />
+	</message>	
+	<message name="GetSiteDetailsReq">
+		<part element="tns:GetSiteDetailsReq" name="parameters" />
+	</message>
+	<message name="GetSiteDetailsResp">
+		<part element="tns:GetSiteDetailsResp" name="parameters" />
+	</message>
+	<message name="RetrieveSiteStatusReq">
+		<part element="tns:RetrieveSiteStatusRequest" name="parameters" />
+	</message>
+	<message name="RetrieveSiteStatusResp">
+		<part element="tns:RetrieveSiteStatusResponse" name="parameters" />
+	</message>
+	<message name="UpdateSiteDetailsReq">
+		<part element="tns:UpdateSiteDetailsRequest" name="parameters" />
+	</message>
+	<message name="UpdateSiteDetailsResp">
+		<part element="tns:UpdateSiteDetailsResponse" name="parameters" />
+	</message>
+		 <message name="ServiceFault">
+  	<part name="parameters" element="xws:ServiceFault"></part>
+  </message>
+	<!-- DEFINITION OF THE SERVICE AND ITS OPERATIONS -->
+	<portType name="ManageSiteInfoService">
+		<operation name="GetSpecialOffersForSAN">
+			<input message="tns:GetSpecialOffersReq" />
+			<output message="tns:GetSpecialOffersResp" />
+			<fault name="fault" message="tns:ServiceFault"></fault>
+					
+		</operation>
+		<operation name="SearchSite">
+			<input message="tns:SearchSiteReq" />
+			<output message="tns:SearchSiteResp" />		
+			<fault name="fault" message="tns:ServiceFault"></fault>
+		</operation>
+		<operation name="GetSiteDetails">
+			<input message="tns:GetSiteDetailsReq" />
+			<output message="tns:GetSiteDetailsResp" />	
+			<fault name="fault" message="tns:ServiceFault"></fault>
+		</operation>
+		<operation name="RetrieveSiteStatus">
+			<input message="tns:RetrieveSiteStatusReq" />
+			<output message="tns:RetrieveSiteStatusResp" />	
+			<fault name="fault" message="tns:ServiceFault"></fault>
+		</operation>
+		<operation name="UpdateSiteDetails">
+			<input message="tns:UpdateSiteDetailsReq" />
+			<output message="tns:UpdateSiteDetailsResp" />		
+			<fault name="fault" message="tns:ServiceFault"></fault>
+		</operation>		
+	</portType>
+	
+	
+	
+	<!--
+		BIND SERICE OPERATIONS TO USE SOAP-HTTP WITH DOCUMENT-LITERAL STYLE
+	-->
+	<binding name="ManageSiteInfoServiceSOAP" type="tns:ManageSiteInfoService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="GetSpecialOffersForSAN">
+			<soap:operation
+				soapAction="" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+			
+		</operation>
+		<operation name="SearchSite">
+			<soap:operation
+				soapAction="http://www.hughes.com/managesiteinfo/ManageSiteInfoService/SearchSiteReq" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>			
+		</operation>
+		<operation name="GetSiteDetails">
+			<soap:operation
+				soapAction="http://www.hughes.com/managesiteinfo/ManageSiteInfoService/GetSiteDetails" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>			
+		</operation>
+		<operation name="RetrieveSiteStatus">
+			<soap:operation
+				soapAction="http://www.hughes.com/managesiteinfo/ManageSiteInfoService/RetrieveSiteStatus" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>			
+		</operation>
+		<operation name="UpdateSiteDetails">
+			<soap:operation
+				soapAction="http://www.hughes.com/managesiteinfo/ManageSiteInfoService/UpdateSiteDetails" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>			
+		</operation>		
+	</binding>
+		 <plnk:partnerLinkType name="ManageSiteInfoLinkType">
+		<plnk:role name="ManageSiteInfoServiceRole" portType="tns:ManageSiteInfoService" />
+	</plnk:partnerLinkType>
+	<!-- DEFINITION OF SERVICE'S ENDPONT URL -->
+	<service name="ManageSiteInfoService">
+		<port binding="tns:ManageSiteInfoServiceSOAP" name="ManageSiteInfoServiceImplPort">
+			<soap:address location="http://cspwsserver:8080/CSP_ManageSiteInfo/ManageSiteInfoService"/>
+		</port>
+	</service>
+</definitions>

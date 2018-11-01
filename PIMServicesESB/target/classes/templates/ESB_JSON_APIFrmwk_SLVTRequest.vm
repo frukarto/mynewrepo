@@ -1,0 +1,13 @@
+{
+  "TransactionCode":"${exchange.properties.TransactionCode}",
+  "TransactionSequenceId":"${exchange.properties.TransactionSequenceId}",
+  "ClassACustomerId":"${exchange.properties.PartnerId}",
+  "Latitude":"${exchange.properties.Latitude}",
+  "Longitude":"${exchange.properties.Longitude}",
+  "TransportName":"${exchange.properties.TransportName}",
+  "BeamID":"${exchange.properties.BeamID}",
+  "SatelliteID":"${exchange.properties.SatelliteID}",
+  "Source":"${exchange.properties.Source}",
+  "PartnerId":"${exchange.properties.PartnerId}"
+
+}

@@ -1,0 +1,81 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+	<route xmlns:pim="http://www.hns.com/iag/schemas/partner" xmlns:xws="http://www.hughes.com/bits/fuse/bpel/error" handleFault="true">
+		<from uri="switchyard://InstallerPortalEXTProxy"/>
+		<doTry>
+			<setProperty propertyName="ProxyName">
+				<constant>InstallerPortalEXTProxy</constant>
+			</setProperty>
+			<convertBodyTo type="java.lang.String"/>
+				<setProperty propertyName="TransactionId">
+			<constant>TransactionSequenceId</constant>
+			</setProperty>			
+			<bean beanType="com.hughes.bits.esb.custom.action.TransactionMarkerAction"   method="start"    />
+			<setProperty propertyName="ActionStep">
+				<constant>Authorization</constant>
+			</setProperty>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+			<bean beanType="com.hughes.bits.esb.custom.action.MiscellaneousCustomAction" method="removeEmptyTags"/>
+			<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+				<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+				<wireTap uri="switchyard://DebugLogService"/>
+			<doTry>			
+				<bean beanType="com.hughes.bits.esb.custom.action.CustomPIMAuthorizationAction" method="process"/>
+				<setProperty propertyName="status">
+					<constant>true</constant>
+				</setProperty>
+				<doCatch>
+				<exception>java.lang.Exception</exception>
+					<log message="${exception.stacktrace}" />
+					<handled>
+						<constant>true</constant>
+					</handled>
+					<setProperty propertyName="status">
+						<constant>false</constant>
+					</setProperty>
+					<setBody>
+						<constant><![CDATA[ 
+										<HNS_Output xsi:noNamespaceSchemaLocation="https://dwayinstalls.hns.com/xml/MSG_STD_OUTPUT.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+										   <ERROR key="">Authentication Failed</ERROR>
+										</HNS_Output>
+								]]></constant>
+					</setBody>
+				</doCatch>
+			</doTry>
+			<choice>
+				<when>
+					<simple>${exchangeProperty.status}  == 'true'</simple>				
+					<recipientList ignoreInvalidEndpoints="false">
+						<simple>${sys.CRM.CLO.domainname}/xml/Msg.jsp?httpClient.soTimeout=${sys.InstallerPortalEXTProxy.proxy.timeout}&amp;${header.http_request_info.queryString}&amp;user=${sys.CRMproxy.header.username}&amp;pass=${sys.CRMproxy.header.password}</simple>
+					</recipientList>
+					<convertBodyTo type="java.lang.String"/>
+					<bean beanType="com.hughes.bits.esb.custom.action.Log4jCustomESBAction"/>
+				</when>
+				<otherwise>
+				
+				</otherwise>
+			</choice>
+			<doCatch>
+				<exception>java.lang.Exception</exception>
+				<setProperty propertyName="PrintMessage">
+					<constant>Print Exception</constant>
+				</setProperty>
+				<log message="${exchangeId}    ${exception.stacktrace}"/>
+				<setBody>
+					<constant><![CDATA[ 
+										<HNS_Output xsi:noNamespaceSchemaLocation="https://dwayinstalls.hns.com/xml/MSG_STD_OUTPUT.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+										   <ERROR key="">Backend Service Failed</ERROR>
+										</HNS_Output>
+								]]></constant>
+				</setBody>
+				<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+				<wireTap uri="switchyard://DebugLogService"/>
+			</doCatch>
+			<doFinally>
+			
+				<bean beanType="com.hughes.bits.esb.custom.action.PrepareDBAuditAction"/>
+				<wireTap uri="switchyard://DebugLogService"/>							
+			<bean beanType="com.hughes.bits.esb.custom.action.TransactionMarkerAction"   method="end"    />
+			</doFinally>
+		</doTry>
+	</route>
+</routes>

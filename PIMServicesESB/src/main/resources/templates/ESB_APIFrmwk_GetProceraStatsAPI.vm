@@ -1,0 +1,5 @@
+{
+  "request" : "{  \"id\" : ${exchange.properties.VoucherNumber},  \"method\" : \"object.getByAid\",  \"params\" : [ \"subscriber\", \"${exchange.properties.SAN}\" ]}",
+  "transportName" : "${exchange.properties.TransportName}",
+  "satelliteId" : "${exchange.properties.Satellite}"
+}

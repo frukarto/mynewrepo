@@ -1,0 +1,14 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="service">
+   <soapenv:Header/>
+   <soapenv:Body>
+   <ser:getVoucherStatusList  xmlns:ser="service">
+         <arg0>
+            <MAN>${exchange.properties.PartnerId}</MAN>
+            <voucherList>
+               <voucherNumber>${exchange.properties.VoucherNumber}</voucherNumber>
+            </voucherList>
+            <transactionId>${exchange.properties.TransactionSequenceId}</transactionId>
+         </arg0>
+      </ser:getVoucherStatusList>
+	     </soapenv:Body>
+</soapenv:Envelope>

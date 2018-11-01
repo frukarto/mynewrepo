@@ -1,0 +1,10 @@
+</ServicePrequalResponse  xmlns="http://www.hns.com/iag/schemas/partner">
+	<MessageHeader>
+		<TransactionDateTime>${exchange.properties.TransactionDateTime}</TransactionDateTime>
+		<TransactionCode>${exchange.properties.TransactionCode}</TransactionCode>
+		<TransactionSequenceId>${exchange.properties.TransactionSequenceId}</TransactionSequenceId>
+	</MessageHeader>	
+	<Message>${exchange.properties.Message}</Longitude>
+	<Code>${exchange.properties.Code}</Code>      
+	
+</ServicePrequalResponse>
